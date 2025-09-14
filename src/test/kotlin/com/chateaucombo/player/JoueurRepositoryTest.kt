@@ -1,8 +1,8 @@
 package com.chateaucombo.player
 
-import com.chateaucombo.card.model.Blason
-import com.chateaucombo.card.model.Chatelain
-import com.chateaucombo.card.model.Villageois
+import com.chateaucombo.carte.model.Blason
+import com.chateaucombo.carte.model.Chatelain
+import com.chateaucombo.carte.model.Villageois
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -14,6 +14,7 @@ class JoueurRepositoryTest {
     fun `un joueur prend un chatelain`() {
         val joueur = Joueur(id = 1)
         val chatelain = Chatelain(
+            nom = "Aumônier",
             cout = 5,
             blasons = listOf(Blason.RELIGIEUX)
         )
@@ -28,7 +29,8 @@ class JoueurRepositoryTest {
     fun `un joueur prend un villageois`() {
         val joueur = Joueur(id = 1)
         val villageois = Villageois(
-            cout = 5,
+            nom = "Curé",
+            cout = 0,
             blasons = listOf(Blason.RELIGIEUX)
         )
 

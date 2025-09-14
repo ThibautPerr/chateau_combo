@@ -1,0 +1,470 @@
+[
+  {
+    "type": "CHATELAIN",
+    "nom": "Alchimiste",
+    "cout": 6,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Apothicaire",
+    "cout": 3,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Architecte",
+    "cout": 4,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Astronome",
+    "cout": 5,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Aumônier",
+    "cout": 5,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Banquière",
+    "cout": 7,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Baron",
+    "cout": 3,
+    "blasons": ["NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Bouffon",
+    "cout": 3,
+    "blasons": ["NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Capitaine",
+    "cout": 5,
+    "blasons": ["MILITAIRE", "MILITAIRE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Cardinale",
+    "cout": 4,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Chancelière",
+    "cout": 6,
+    "blasons": ["NOBLE", "ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Chevaleresse",
+    "cout": 5,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Châtelaine",
+    "cout": 2,
+    "blasons": ["NOBLE", "ARTISAN"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Doyenne",
+    "cout": 3,
+    "blasons": ["NOBLE", "NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Duchesse",
+    "cout": 5,
+    "blasons": ["NOBLE", "NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Dévot",
+    "cout": 4,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Fossoyeur",
+    "cout": 4,
+    "blasons": ["RELIGIEUX", "ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Garde royal",
+    "cout": 4,
+    "blasons": ["MILITAIRE", "NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Générale",
+    "cout": 7,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Intendant",
+    "cout": 0,
+    "blasons": ["NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Juge",
+    "cout": 4,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Maître de guilde",
+    "cout": 5,
+    "blasons": ["ARTISAN", "ARTISAN"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Mécène",
+    "cout": 7,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Mère supérieur",
+    "cout": 5,
+    "blasons": ["RELIGIEUX", "RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Nonne",
+    "cout": 3,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Officier",
+    "cout": 5,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Orfèvre",
+    "cout": 4,
+    "blasons": ["ERUDIT", "ARTISAN"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Pèlerin",
+    "cout": 6,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Prince",
+    "cout": 6,
+    "blasons": ["NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Princesse",
+    "cout": 3,
+    "blasons": ["NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Prêteur sur gages",
+    "cout": 4,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Professeur",
+    "cout": 4,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Sa Majesté la reine",
+    "cout": 7,
+    "blasons": ["NOBLE"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Sa Sainteté",
+    "cout": 7,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Scribe",
+    "cout": 4,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Son Altesse",
+    "cout": 6,
+    "blasons": ["NOBLE", "RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Souffleur de verre",
+    "cout": 5,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Templier",
+    "cout": 5,
+    "blasons": ["MILITAIRE", "RELIGIEUX"]
+  },
+  {
+    "type": "CHATELAIN",
+    "nom": "Veilleur",
+    "cout": 6,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Agricultrice",
+    "cout": 5,
+    "blasons": ["PAYSAN", "PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Apiculteur",
+    "cout": 2,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Artificier",
+    "cout": 2,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Armurière",
+    "cout": 3,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Aubergiste",
+    "cout": 0,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Barbare",
+    "cout": 2,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Bâtard",
+    "cout": 4,
+    "blasons": ["PAYSAN", "NOBLE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Bergère",
+    "cout": 5,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Boulangère",
+    "cout": 0,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Bourreau",
+    "cout": 0,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Brigand",
+    "cout": 7,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Bûcheron",
+    "cout": 0,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Charpentier",
+    "cout": 0,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Curé",
+    "cout": 0,
+    "blasons": ["RELIGIEUX"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Écuyer",
+    "cout": 0,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Épicière",
+    "cout": 0,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Espion",
+    "cout": 4,
+    "blasons": ["MILITAIRE", "ERUDIT"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Fermière",
+    "cout": 0,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Forgeronne",
+    "cout": 5,
+    "blasons": ["ARTISAN", "MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Horlogère",
+    "cout": 3,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Inventeur",
+    "cout": 2,
+    "blasons": ["ERUDIT", "ERUDIT"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Maître d'armes",
+    "cout": 2,
+    "blasons": ["MILITAIRE", "MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Médecin",
+    "cout": 5,
+    "blasons": ["PAYSAN", "ERUDIT"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Mercenaire",
+    "cout": 6,
+    "blasons": ["PAYSAN", "MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Mendiante",
+    "cout": 0,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Milicien",
+    "cout": 2,
+    "blasons": ["MILITAIRE"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Miraculée",
+    "cout": 2,
+    "blasons": ["RELIGIEUX", "RELIGIEUX"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Moine",
+    "cout": 4,
+    "blasons": ["RELIGIEUX", "PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Philosophe",
+    "cout": 2,
+    "blasons": ["ERUDIT"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Pêcheur",
+    "cout": 2,
+    "blasons": ["PAYSAN", "PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Potier",
+    "cout": 2,
+    "blasons": ["ARTISAN", "ARTISAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Révolutionnaire",
+    "cout": 4,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Sculptrice",
+    "cout": 3,
+    "blasons": ["ARTISAN", "RELIGIEUX"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Serrurier",
+    "cout": 4,
+    "blasons": ["ARTISAN", "PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Sorcière",
+    "cout": 4,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Tailleuse de pierre",
+    "cout": 3,
+    "blasons": ["ARTISAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Usurpateur",
+    "cout": 5,
+    "blasons": ["PAYSAN"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Vigneron",
+    "cout": 2,
+    "blasons": ["PAYSAN", "ERUDIT"]
+  },
+  {
+    "type": "VILLAGEOIS",
+    "nom": "Voyageuse",
+    "cout": 0,
+    "blasons": ["PAYSAN"]
+  }
+]

@@ -1,6 +1,6 @@
 package com.chateaucombo.joueur.model
 
-import com.chateaucombo.card.model.Carte
+import com.chateaucombo.carte.model.Carte
 
 data class Joueur(
     val id: Int,
