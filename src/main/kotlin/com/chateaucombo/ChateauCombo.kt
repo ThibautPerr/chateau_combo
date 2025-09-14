@@ -1,11 +1,12 @@
 package com.chateaucombo
 
-import com.chateaucombo.player.Player
+import com.chateaucombo.joueur.model.Joueur
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 class ChateauCombo {
     private val logger = KotlinLogging.logger {  }
-    fun play(players: List<Player>) {
-        players.forEach { logger.info { "Player ${it.id} : ${it.gold} golds, ${it.key} keys" } }
+
+    fun play(joueurs: List<Joueur>) {
+        joueurs.forEach { logger.info { "Joueur ${it.id} : ${it.or} or, ${it.cle} clés" } }
     }
 }

@@ -1,6 +1,6 @@
 package com.chateaucombo
 
-import com.chateaucombo.player.Player
+import com.chateaucombo.joueur.model.Joueur
 import org.junit.jupiter.api.Test
 
 class ChateauComboTest {
@@ -11,16 +11,16 @@ class ChateauComboTest {
         play()
     }
 
-    private fun play(players: List<Player> = given4Players()) {
-        app.play(players)
+    private fun play(joueurs: List<Joueur> = given4Joueurs()) {
+        app.play(joueurs)
     }
 
     @Test
     fun `should play a game with 4 players`() {
-        val players = given4Players()
+        val joueurs = given4Joueurs()
 
-        play(players)
+        play(joueurs)
     }
 
-    private fun given4Players() = List(4) { Player(id = it) }
+    private fun given4Joueurs() = List(4) { Joueur(id = it) }
 }
