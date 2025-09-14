@@ -1,10 +1,10 @@
 package com.chateaucombo.joueur.model
 
-import com.chateaucombo.carte.model.Carte
+import com.chateaucombo.tableau.model.Tableau
 
 data class Joueur(
     val id: Int,
     val or: Int = 15,
     val cle: Int = 2,
-    val cartes: MutableList<Carte> = mutableListOf()
+    val tableau: Tableau = Tableau()
 )

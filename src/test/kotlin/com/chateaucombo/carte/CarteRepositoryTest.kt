@@ -1,8 +1,7 @@
 package com.chateaucombo.carte
 
-import com.chateaucombo.carte.model.Blason
-import com.chateaucombo.carte.model.Blason.MILITAIRE
 import com.chateaucombo.carte.model.Blason.ERUDIT
+import com.chateaucombo.carte.model.Blason.MILITAIRE
 import com.chateaucombo.carte.model.Villageois
 import com.chateaucombo.carte.repository.CarteRepository
 import org.assertj.core.api.Assertions.assertThat
