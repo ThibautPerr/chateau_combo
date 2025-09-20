@@ -10,4 +10,12 @@ class JoueurRepository(
 ) {
     fun prendUneCarte(joueur: Joueur, carte: Carte, position: Position): Boolean =
         tableauRepository.ajouteCarte(tableau = joueur.tableau, carte = carte, position = position)
+
+    fun deplaceAGauche(joueur: Joueur) = tableauRepository.deplaceAGauche(joueur.tableau)
+
+    fun deplaceADroite(joueur: Joueur) = tableauRepository.deplaceADroite(joueur.tableau)
+
+    fun deplaceEnHaut(joueur: Joueur) = tableauRepository.deplaceEnHaut(joueur.tableau)
+
+    fun deplaceEnBas(joueur: Joueur) = tableauRepository.deplaceEnBas(joueur.tableau)
 }

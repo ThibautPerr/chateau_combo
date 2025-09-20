@@ -6,8 +6,8 @@ import com.chateaucombo.tableau.model.PositionVerticale.BAS
 import com.chateaucombo.tableau.model.PositionVerticale.HAUT
 
 enum class Position(
-    private val positionVerticale: PositionVerticale,
-    private val positionHorizontale: PositionHorizontale
+    val positionVerticale: PositionVerticale,
+    val positionHorizontale: PositionHorizontale
 ) {
     HAUTGAUCHE(positionVerticale = HAUT, positionHorizontale = GAUCHE),
     HAUTMILIEU(positionVerticale = HAUT, positionHorizontale = PositionHorizontale.MILIEU),
@@ -17,5 +17,25 @@ enum class Position(
     MILIEUDROITE(positionVerticale = PositionVerticale.MILIEU, positionHorizontale = DROITE),
     BASGAUCHE(positionVerticale = BAS, positionHorizontale = GAUCHE),
     BASMILIEU(positionVerticale = BAS, positionHorizontale = PositionHorizontale.MILIEU),
-    BASDROITE(positionVerticale = BAS, positionHorizontale = DROITE),
+    BASDROITE(positionVerticale = BAS, positionHorizontale = DROITE);
+
+    fun positionAGauche() =
+        Position.entries.first {
+            it.positionVerticale == this.positionVerticale && it.positionHorizontale.x == this.positionHorizontale.x - 1
+        }
+
+    fun positionADroite() =
+        Position.entries.first {
+            it.positionVerticale == this.positionVerticale && it.positionHorizontale.x == this.positionHorizontale.x + 1
+        }
+
+    fun positionEnHaut() =
+        Position.entries.first {
+            it.positionHorizontale == this.positionHorizontale && it.positionVerticale.y == this.positionVerticale.y - 1
+        }
+
+    fun positionEnBas() =
+        Position.entries.first {
+            it.positionHorizontale == this.positionHorizontale && it.positionVerticale.y == this.positionVerticale.y + 1
+        }
 }
