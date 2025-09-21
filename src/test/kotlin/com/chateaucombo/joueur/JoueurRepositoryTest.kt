@@ -1,9 +1,9 @@
-package com.chateaucombo.player
+package com.chateaucombo.joueur
 
-import com.chateaucombo.carte.model.Blason
-import com.chateaucombo.carte.model.Carte
-import com.chateaucombo.carte.model.Chatelain
-import com.chateaucombo.carte.model.Villageois
+import com.chateaucombo.deck.model.Blason
+import com.chateaucombo.deck.model.Carte
+import com.chateaucombo.deck.model.Chatelain
+import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.tableau.model.Position
@@ -41,7 +41,7 @@ class JoueurRepositoryTest {
                 "BASDROITE",
             ]
         )
-        fun `un joueur prend un chatelain et le place`(position: Position) {
+        fun `doit placer un chatelain dans le tableau d'un joueur`(position: Position) {
             val joueur = Joueur(id = 1)
             val chatelain = Chatelain(
                 nom = "Aumônier",
@@ -70,7 +70,7 @@ class JoueurRepositoryTest {
                 "BASDROITE",
             ]
         )
-        fun `un joueur prend un villageois et le place`(position: Position) {
+        fun `doit placer un villageois dans le tableau d'un joueur`(position: Position) {
             val joueur = Joueur(id = 1)
             val villageois = villageois()
 
@@ -95,7 +95,7 @@ class JoueurRepositoryTest {
                 "BASDROITE",
             ]
         )
-        fun `renvoie faux et empeche l'ajout d'une carte sur une position deja occupee`(position: Position) {
+        fun `doit renvoyer faux et empecher l'ajout d'une carte sur une position deja occupee`(position: Position) {
             val joueur = Joueur(id = 1)
             val villageois = villageois()
 
@@ -133,7 +133,7 @@ class JoueurRepositoryTest {
                     "BASDROITE,BASMILIEU",
                 ]
             )
-            fun `deplace toutes les cartes d'un joueur vers la gauche lorsqu'il n'y a pas de cartes a gauche`(
+            fun `doit deplacer toutes les cartes d'un joueur vers la gauche lorsqu'il n'y a pas de cartes a gauche`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -154,7 +154,7 @@ class JoueurRepositoryTest {
                     "BASGAUCHE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un joueur vers la gauche lorsqu'il y a des cartes a gauche`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un joueur vers la gauche lorsqu'il y a des cartes a gauche`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()
@@ -181,7 +181,7 @@ class JoueurRepositoryTest {
                     "BASMILIEU,BASDROITE",
                 ]
             )
-            fun `deplace toutes les cartes d'un joueur vers la droite lorsqu'il n'y a pas de cartes a droite`(
+            fun `doit deplacer toutes les cartes d'un joueur vers la droite lorsqu'il n'y a pas de cartes a droite`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -202,7 +202,7 @@ class JoueurRepositoryTest {
                     "BASDROITE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un joueur vers la droite lorsqu'il y a des cartes a droite`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un joueur vers la droite lorsqu'il y a des cartes a droite`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()
@@ -228,7 +228,7 @@ class JoueurRepositoryTest {
                     "BASDROITE,MILIEUDROITE",
                 ]
             )
-            fun `deplace toutes les cartes d'un joueur vers le haut lorsqu'il n'y a pas de cartes en haut`(
+            fun `doit deplacer toutes les cartes d'un joueur vers le haut lorsqu'il n'y a pas de cartes en haut`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -249,7 +249,7 @@ class JoueurRepositoryTest {
                     "HAUTDROITE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un joueur vers le haut lorsqu'il y a des cartes en haut`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un joueur vers le haut lorsqu'il y a des cartes en haut`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()
@@ -275,7 +275,7 @@ class JoueurRepositoryTest {
                     "MILIEUDROITE,BASDROITE",
                 ]
             )
-            fun `deplace toutes les cartes d'un joueur vers le bas lorsqu'il n'y a pas de cartes en bas`(
+            fun `doit deplacer toutes les cartes d'un joueur vers le bas lorsqu'il n'y a pas de cartes en bas`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -296,7 +296,7 @@ class JoueurRepositoryTest {
                     "BASDROITE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un joueur vers le bas lorsqu'il y a des cartes en bas`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un joueur vers le bas lorsqu'il y a des cartes en bas`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()

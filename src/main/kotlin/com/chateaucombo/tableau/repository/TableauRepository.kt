@@ -1,6 +1,6 @@
 package com.chateaucombo.tableau.repository
 
-import com.chateaucombo.carte.model.Carte
+import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Tableau

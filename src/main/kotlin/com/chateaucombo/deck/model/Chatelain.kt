@@ -1,4 +1,4 @@
-package com.chateaucombo.carte.model
+package com.chateaucombo.deck.model
 
 data class Chatelain(
     override val cout: Int,

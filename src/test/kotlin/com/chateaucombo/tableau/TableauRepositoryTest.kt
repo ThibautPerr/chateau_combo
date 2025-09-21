@@ -1,8 +1,9 @@
 package com.chateaucombo.tableau
 
-import com.chateaucombo.carte.model.Blason
-import com.chateaucombo.carte.model.Carte
-import com.chateaucombo.carte.model.Villageois
+import com.chateaucombo.deck.model.Blason
+import com.chateaucombo.deck.model.Carte
+import com.chateaucombo.deck.model.Chatelain
+import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Tableau
 import com.chateaucombo.tableau.repository.TableauRepository
@@ -31,7 +32,61 @@ class TableauRepositoryTest {
                 "BASDROITE",
             ]
         )
-        fun `renvoie faux et empeche l'ajout d'une carte sur une position deja occupee`(position: Position) {
+        fun `doit placer un chatelain dans le tableau`(position: Position) {
+            val tableau = Tableau()
+            val chatelain = Chatelain(
+                nom = "Aumônier",
+                cout = 5,
+                blasons = listOf(Blason.RELIGIEUX)
+            )
+
+            repository.ajouteCarte(tableau, chatelain, position)
+
+            assertThat(tableau.cartesPositionees).hasSize(1)
+            assertThat(tableau.cartesPositionees.first().carte).isEqualTo(chatelain)
+            assertThat(tableau.cartesPositionees.first().position).isEqualTo(position)
+        }
+
+        @ParameterizedTest
+        @CsvSource(
+            value = [
+                "HAUTGAUCHE",
+                "HAUTMILIEU",
+                "HAUTDROITE",
+                "MILIEUGAUCHE",
+                "MILIEUMILIEU",
+                "MILIEUDROITE",
+                "BASGAUCHE",
+                "BASMILIEU",
+                "BASDROITE",
+            ]
+        )
+        fun `doit placer un villageois dans le tableau`(position: Position) {
+            val tableau = Tableau()
+            val villageois = villageois()
+
+            repository.ajouteCarte(tableau, villageois, position)
+
+            assertThat(tableau.cartesPositionees).hasSize(1)
+            assertThat(tableau.cartesPositionees.first().carte).isEqualTo(villageois)
+            assertThat(tableau.cartesPositionees.first().position).isEqualTo(position)
+        }
+
+        @ParameterizedTest
+        @CsvSource(
+            value = [
+                "HAUTGAUCHE",
+                "HAUTMILIEU",
+                "HAUTDROITE",
+                "MILIEUGAUCHE",
+                "MILIEUMILIEU",
+                "MILIEUDROITE",
+                "BASGAUCHE",
+                "BASMILIEU",
+                "BASDROITE",
+            ]
+        )
+        fun `doit renvoyer faux et empecher l'ajout d'une carte sur une position deja occupee`(position: Position) {
             val tableau = Tableau()
             val villageois = villageois()
 
@@ -76,7 +131,7 @@ class TableauRepositoryTest {
                     "BASDROITE,BASMILIEU",
                 ]
             )
-            fun `deplace toutes les cartes d'un tableau vers la gauche lorsqu'il n'y a pas de cartes a gauche`(
+            fun `doit deplacer toutes les cartes d'un tableau vers la gauche lorsqu'il n'y a pas de cartes a gauche`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -97,7 +152,7 @@ class TableauRepositoryTest {
                     "BASGAUCHE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un tableau vers la gauche lorsqu'il y a des cartes a gauche`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un tableau vers la gauche lorsqu'il y a des cartes a gauche`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()
@@ -124,7 +179,7 @@ class TableauRepositoryTest {
                     "BASMILIEU,BASDROITE",
                 ]
             )
-            fun `deplace toutes les cartes d'un tableau vers la droite lorsqu'il n'y a pas de cartes a droite`(
+            fun `doit deplacer toutes les cartes d'un tableau vers la droite lorsqu'il n'y a pas de cartes a droite`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -145,7 +200,7 @@ class TableauRepositoryTest {
                     "BASDROITE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un tableau vers la droite lorsqu'il y a des cartes a droite`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un tableau vers la droite lorsqu'il y a des cartes a droite`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()
@@ -171,7 +226,7 @@ class TableauRepositoryTest {
                     "BASDROITE,MILIEUDROITE",
                 ]
             )
-            fun `deplace toutes les cartes d'un tableau vers le haut lorsqu'il n'y a pas de cartes en haut`(
+            fun `doit deplacer toutes les cartes d'un tableau vers le haut lorsqu'il n'y a pas de cartes en haut`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -192,7 +247,7 @@ class TableauRepositoryTest {
                     "HAUTDROITE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un tableau vers le haut lorsqu'il y a des cartes en haut`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un tableau vers le haut lorsqu'il y a des cartes en haut`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()
@@ -218,7 +273,7 @@ class TableauRepositoryTest {
                     "MILIEUDROITE,BASDROITE",
                 ]
             )
-            fun `deplace toutes les cartes d'un tableau vers le bas lorsqu'il n'y a pas de cartes en bas`(
+            fun `doit deplacer toutes les cartes d'un tableau vers le bas lorsqu'il n'y a pas de cartes en bas`(
                 positionInitiale: Position,
                 positionFinale: Position
             ) {
@@ -239,7 +294,7 @@ class TableauRepositoryTest {
                     "BASDROITE",
                 ]
             )
-            fun `renvoie faux et ne deplace pas les cartes d'un tableau vers le bas lorsqu'il y a des cartes en bas`(
+            fun `doit renvoyer faux et ne pas deplacer les cartes d'un tableau vers le bas lorsqu'il y a des cartes en bas`(
                 positionInitiale: Position,
             ) {
                 val villageois = villageois()

@@ -1,4 +1,4 @@
-package com.chateaucombo.carte.model
+package com.chateaucombo.deck.model
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo

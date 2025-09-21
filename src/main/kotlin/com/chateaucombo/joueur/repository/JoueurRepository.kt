@@ -1,6 +1,6 @@
 package com.chateaucombo.joueur.repository
 
-import com.chateaucombo.carte.model.Carte
+import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.repository.TableauRepository
