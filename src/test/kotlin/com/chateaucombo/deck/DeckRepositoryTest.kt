@@ -22,7 +22,9 @@ class DeckRepositoryTest {
             val (chatelains, villageois) = repository.creeDeuxDecksChatelainsEtVillageoisDepuis(file)
 
             assertThat(chatelains.cartes).hasSize(39)
+            assertThat(chatelains.cartesDisponibles).hasSize(0)
             assertThat(villageois.cartes).hasSize(39)
+            assertThat(villageois.cartesDisponibles).hasSize(0)
         }
 
         private fun givenUnFichierAvecPlusieursCartes() = File("src/test/resources/cartes.json")
@@ -153,6 +155,71 @@ class DeckRepositoryTest {
                     && this.cartes[4].nom == "Horlogère"
                     && this.cartes[5].nom == "Mendiante"
                     && this.cartes[6].nom == "Milicien"
+    }
+
+    @Nested
+    inner class RemplitCartesDispo {
+        @Test
+        fun `doit remplir zero cartes disponibles avec trois cartes`() {
+            val deck = deckAvecQuatreCartesEtAucuneCarteDisponible()
+
+            val nouveauDeck = repository.remplitLesCartesDisponibles(deck)
+
+            assertThat(nouveauDeck.cartes).hasSize(1)
+            assertThat(nouveauDeck.cartes.first()).isEqualTo(fermiere())
+            assertThat(nouveauDeck.cartesDisponibles).hasSize(3)
+            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(cure())
+            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(ecuyer())
+            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(epiciere())
+        }
+
+        private fun deckAvecQuatreCartesEtAucuneCarteDisponible() =
+            Deck(cartes = listOf(cure(), ecuyer(), epiciere(), fermiere()))
+
+        private fun cure() = Villageois(
+            nom = "Curé",
+            cout = 0,
+            blasons = listOf(RELIGIEUX)
+        )
+
+        private fun ecuyer() = Villageois(
+            nom = "Écuyer",
+            cout = 0,
+            blasons = listOf(MILITAIRE)
+        )
+
+        private fun epiciere() = Villageois(
+            nom = "Épicière",
+            cout = 0,
+            blasons = listOf(ARTISAN)
+        )
+
+        private fun fermiere() = Villageois(
+            nom = "Fermière",
+            cout = 0,
+            blasons = listOf(PAYSAN)
+        )
+
+        @Test
+        fun `doit remplir une liste de cartes disponibles non vide pour avoir trois cartes`() {
+            val deck = deckAvecTroisCartesEtUneCarteDisponible()
+
+            val nouveauDeck = repository.remplitLesCartesDisponibles(deck)
+
+            assertThat(nouveauDeck.cartes).hasSize(1)
+            assertThat(nouveauDeck.cartes.first()).isEqualTo(fermiere())
+            assertThat(nouveauDeck.cartesDisponibles).hasSize(3)
+            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(cure())
+            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(ecuyer())
+            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(epiciere())
+        }
+
+        private fun deckAvecTroisCartesEtUneCarteDisponible() =
+            Deck(
+                cartes = listOf(ecuyer(), epiciere(), fermiere()),
+                cartesDisponibles = listOf(cure())
+            )
+
     }
 
 }
