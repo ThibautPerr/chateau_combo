@@ -1,15 +1,15 @@
 package com.chateaucombo.joueur
 
-import com.chateaucombo.deck.model.Blason
-import com.chateaucombo.deck.model.Carte
-import com.chateaucombo.deck.model.Chatelain
-import com.chateaucombo.deck.model.Villageois
+import com.chateaucombo.deck.DeckBuilder
+import com.chateaucombo.deck.model.*
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.repository.TableauRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
@@ -18,6 +18,8 @@ class JoueurRepositoryTest {
 
     private val joueurRepository = JoueurRepository(tableauRepository)
 
+    private val deckBuilder = DeckBuilder()
+
     private fun villageois() = Villageois(
         nom = "Curé",
         cout = 0,
@@ -25,7 +27,74 @@ class JoueurRepositoryTest {
     )
 
     @Nested
-    inner class PrendUneCarte {
+    inner class ChoisitUneCarte {
+        @RepeatedTest(10)
+        fun `doit choisir une carte parmi les cartes du deck disponible`() {
+            val joueur = Joueur(id = 1, or = 15)
+            val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.ecuyer(), deckBuilder.epiciere())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(cartesDisponibles).contains(carteChoisie)
+        }
+
+        @RepeatedTest(10)
+        fun `doit choisir une carte qu'il peut acheter`() {
+            val joueur = Joueur(id = 1, or = 0)
+            val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+            val cartesAchetables = listOf(deckBuilder.cure(), deckBuilder.fermiere())
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(cartesAchetables).contains(carteChoisie)
+        }
+
+        @Test
+        fun `doit choisir une carte face verso s'il n'a pas assez d'or pour acheter une carte disponible`() {
+            val joueur = Joueur(id = 1, or = 0)
+            val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+            val cartesVersos: List<Carte> = cartesDisponibles.map { it.toCarteVerso() }
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(cartesVersos).contains(carteChoisie)
+        }
+
+        private fun Carte.toCarteVerso() = CarteVerso(nom = "Carte Verso (${this.nom})", carteOriginale = this)
+
+        @Test
+        fun `doit payer pour choisir une carte`() {
+            val orInitial = 10
+            val joueur = Joueur(id = 1, or = orInitial)
+            val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(joueur.or).isEqualTo(orInitial - carteChoisie.cout)
+        }
+
+        @Test
+        fun `doit gagner 6 or et deux cles lorsqu'il choisit une carte verso`() {
+            val orInitial = 0
+            val cleInitial = 2
+            val joueur = Joueur(id = 1, or = orInitial, cle = cleInitial)
+            val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(carteChoisie).isInstanceOf(CarteVerso::class.java)
+            assertThat(joueur.or).isEqualTo(orInitial + 6)
+            assertThat(joueur.cle).isEqualTo(cleInitial + 2)
+        }
+    }
+
+    @Nested
+    inner class PlaceUneCarte {
 
         @ParameterizedTest
         @CsvSource(
@@ -49,7 +118,7 @@ class JoueurRepositoryTest {
                 blasons = listOf(Blason.RELIGIEUX)
             )
 
-            joueurRepository.prendUneCarte(joueur, chatelain, position)
+            joueurRepository.placeUneCarte(joueur, chatelain, position)
 
             assertThat(joueur.tableau.cartesPositionees).hasSize(1)
             assertThat(joueur.tableau.cartesPositionees.first().carte).isEqualTo(chatelain)
@@ -74,7 +143,7 @@ class JoueurRepositoryTest {
             val joueur = Joueur(id = 1)
             val villageois = villageois()
 
-            joueurRepository.prendUneCarte(joueur, villageois, position)
+            joueurRepository.placeUneCarte(joueur, villageois, position)
 
             assertThat(joueur.tableau.cartesPositionees).hasSize(1)
             assertThat(joueur.tableau.cartesPositionees.first().carte).isEqualTo(villageois)
@@ -99,8 +168,8 @@ class JoueurRepositoryTest {
             val joueur = Joueur(id = 1)
             val villageois = villageois()
 
-            val premierCoup = joueurRepository.prendUneCarte(joueur, villageois, position)
-            val deuxiemeCoup = joueurRepository.prendUneCarte(joueur, villageois, position)
+            val premierCoup = joueurRepository.placeUneCarte(joueur, villageois, position)
+            val deuxiemeCoup = joueurRepository.placeUneCarte(joueur, villageois, position)
 
             assertThat(premierCoup).isTrue()
             assertThat(deuxiemeCoup).isFalse()
@@ -114,7 +183,7 @@ class JoueurRepositoryTest {
 
         private fun joueurAvecUneCarte(carte: Carte, position: Position): Joueur {
             val joueur = Joueur(id = 1)
-            joueurRepository.prendUneCarte(joueur, carte, position)
+            joueurRepository.placeUneCarte(joueur, carte, position)
             return joueur
         }
 

@@ -1,6 +1,7 @@
 package com.chateaucombo.deck
 
-import com.chateaucombo.deck.model.Blason.*
+import com.chateaucombo.deck.model.Blason.ERUDIT
+import com.chateaucombo.deck.model.Blason.MILITAIRE
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
@@ -12,6 +13,8 @@ import java.io.File
 
 class DeckRepositoryTest {
     private val repository = DeckRepository()
+
+    private val deckBuilder = DeckBuilder()
 
     @Nested
     inner class CreeDeuxDecks {
@@ -99,53 +102,12 @@ class DeckRepositoryTest {
     inner class Melange {
         @Test
         fun `doit melanger un deck`() {
-            val deck = deckAvecDesCartes()
+            val deck = deckBuilder.deckAvecDesCartes()
 
             val deckMelange = repository.melange(deck)
 
             assertThat(deckMelange.toutesLesCartesDansLOrdreDeDepart()).isFalse()
         }
-
-        private fun deckAvecDesCartes() =
-            Deck(
-                cartes = listOf(
-                    Villageois(
-                        nom = "Curé",
-                        cout = 0,
-                        blasons = listOf(RELIGIEUX)
-                    ),
-                    Villageois(
-                        nom = "Écuyer",
-                        cout = 0,
-                        blasons = listOf(MILITAIRE)
-                    ),
-                    Villageois(
-                        nom = "Épicière",
-                        cout = 0,
-                        blasons = listOf(ARTISAN)
-                    ),
-                    Villageois(
-                        nom = "Fermière",
-                        cout = 0,
-                        blasons = listOf(PAYSAN)
-                    ),
-                    Villageois(
-                        nom = "Horlogère",
-                        cout = 3,
-                        blasons = listOf(ARTISAN)
-                    ),
-                    Villageois(
-                        nom = "Mendiante",
-                        cout = 0,
-                        blasons = listOf(PAYSAN)
-                    ),
-                    Villageois(
-                        nom = "Milicien",
-                        cout = 2,
-                        blasons = listOf(MILITAIRE)
-                    )
-                )
-            )
 
         private fun Deck.toutesLesCartesDansLOrdreDeDepart(): Boolean =
             this.cartes.first().nom == "Curé"
@@ -161,64 +123,31 @@ class DeckRepositoryTest {
     inner class RemplitCartesDispo {
         @Test
         fun `doit remplir zero cartes disponibles avec trois cartes`() {
-            val deck = deckAvecQuatreCartesEtAucuneCarteDisponible()
+            val deck = deckBuilder.deckAvecQuatreCartesEtAucuneCarteDisponible()
 
             val nouveauDeck = repository.remplitLesCartesDisponibles(deck)
 
             assertThat(nouveauDeck.cartes).hasSize(1)
-            assertThat(nouveauDeck.cartes.first()).isEqualTo(fermiere())
+            assertThat(nouveauDeck.cartes.first()).isEqualTo(deckBuilder.fermiere())
             assertThat(nouveauDeck.cartesDisponibles).hasSize(3)
-            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(cure())
-            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(ecuyer())
-            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(epiciere())
+            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(deckBuilder.cure())
+            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(deckBuilder.ecuyer())
+            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(deckBuilder.epiciere())
         }
-
-        private fun deckAvecQuatreCartesEtAucuneCarteDisponible() =
-            Deck(cartes = listOf(cure(), ecuyer(), epiciere(), fermiere()))
-
-        private fun cure() = Villageois(
-            nom = "Curé",
-            cout = 0,
-            blasons = listOf(RELIGIEUX)
-        )
-
-        private fun ecuyer() = Villageois(
-            nom = "Écuyer",
-            cout = 0,
-            blasons = listOf(MILITAIRE)
-        )
-
-        private fun epiciere() = Villageois(
-            nom = "Épicière",
-            cout = 0,
-            blasons = listOf(ARTISAN)
-        )
-
-        private fun fermiere() = Villageois(
-            nom = "Fermière",
-            cout = 0,
-            blasons = listOf(PAYSAN)
-        )
 
         @Test
         fun `doit remplir une liste de cartes disponibles non vide pour avoir trois cartes`() {
-            val deck = deckAvecTroisCartesEtUneCarteDisponible()
+            val deck = deckBuilder.deckAvecTroisCartesEtUneCarteDisponible()
 
             val nouveauDeck = repository.remplitLesCartesDisponibles(deck)
 
             assertThat(nouveauDeck.cartes).hasSize(1)
-            assertThat(nouveauDeck.cartes.first()).isEqualTo(fermiere())
+            assertThat(nouveauDeck.cartes.first()).isEqualTo(deckBuilder.fermiere())
             assertThat(nouveauDeck.cartesDisponibles).hasSize(3)
-            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(cure())
-            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(ecuyer())
-            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(epiciere())
+            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(deckBuilder.cure())
+            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(deckBuilder.ecuyer())
+            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(deckBuilder.epiciere())
         }
-
-        private fun deckAvecTroisCartesEtUneCarteDisponible() =
-            Deck(
-                cartes = listOf(ecuyer(), epiciere(), fermiere()),
-                cartesDisponibles = listOf(cure())
-            )
 
     }
 
