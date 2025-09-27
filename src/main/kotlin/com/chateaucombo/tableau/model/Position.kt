@@ -19,23 +19,26 @@ enum class Position(
     BASMILIEU(positionVerticale = BAS, positionHorizontale = PositionHorizontale.MILIEU),
     BASDROITE(positionVerticale = BAS, positionHorizontale = DROITE);
 
+    fun positionsAdjacentes() =
+        listOfNotNull(positionAGauche(), positionADroite(), positionEnHaut(), positionEnBas())
+
     fun positionAGauche() =
-        Position.entries.first {
+        Position.entries.firstOrNull {
             it.positionVerticale == this.positionVerticale && it.positionHorizontale.x == this.positionHorizontale.x - 1
         }
 
     fun positionADroite() =
-        Position.entries.first {
+        Position.entries.firstOrNull {
             it.positionVerticale == this.positionVerticale && it.positionHorizontale.x == this.positionHorizontale.x + 1
         }
 
     fun positionEnHaut() =
-        Position.entries.first {
+        Position.entries.firstOrNull {
             it.positionHorizontale == this.positionHorizontale && it.positionVerticale.y == this.positionVerticale.y - 1
         }
 
     fun positionEnBas() =
-        Position.entries.first {
+        Position.entries.firstOrNull {
             it.positionHorizontale == this.positionHorizontale && it.positionVerticale.y == this.positionVerticale.y + 1
         }
 }

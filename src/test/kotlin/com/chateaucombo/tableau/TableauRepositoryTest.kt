@@ -1,19 +1,26 @@
 package com.chateaucombo.tableau
 
+import com.chateaucombo.deck.DeckBuilder
 import com.chateaucombo.deck.model.Blason
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Villageois
+import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position
+import com.chateaucombo.tableau.model.Position.*
 import com.chateaucombo.tableau.model.Tableau
 import com.chateaucombo.tableau.repository.TableauRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 class TableauRepositoryTest {
     private val repository = TableauRepository()
+
+    private val deckBuilder = DeckBuilder()
 
     @Nested
     inner class Ajout {
@@ -306,5 +313,69 @@ class TableauRepositoryTest {
                 assertThat(tableau.carteAvecPosition(positionInitiale)?.carte).isEqualTo(villageois)
             }
         }
+    }
+
+    @Nested
+    inner class ChoisitUnePosition {
+        @Test
+        fun `doit renvoyer la position du milieu milieu s'il n'y a aucune carte`() {
+            val tableau = Tableau()
+
+            val positionChoisie = repository.choisitUnePosition(tableau)
+
+            assertThat(positionChoisie).isEqualTo(MILIEUMILIEU)
+        }
+
+        @RepeatedTest(20)
+        fun `doit renvoyer la position d'une case adjacente a la carte posee au milieu`() {
+            val tableau = tableauAvecUneCarteAuMilieuMilieu()
+            val positionAutorisees = listOf(HAUTMILIEU, MILIEUGAUCHE, MILIEUDROITE, BASMILIEU)
+
+            val positionChoisie = repository.choisitUnePosition(tableau)
+
+            assertThat(positionAutorisees).contains(positionChoisie)
+        }
+
+        private fun tableauAvecUneCarteAuMilieuMilieu() =
+            Tableau(cartesPositionees = mutableListOf(CartePositionee(deckBuilder.cure(), MILIEUMILIEU)))
+
+        @RepeatedTest(20)
+        fun `doit renvoyer la position d'une case adjacente dans un tableau avec trois cartes au milieu vertical`() {
+            val tableau = tableauAvecTroisCartesAuMilieuVertical()
+            val positionAutorisees = listOf(HAUTGAUCHE, HAUTDROITE, MILIEUGAUCHE, MILIEUDROITE, BASGAUCHE, BASDROITE)
+
+            val positionChoisie = repository.choisitUnePosition(tableau)
+
+            assertThat(positionAutorisees).contains(positionChoisie)
+        }
+
+        private fun tableauAvecTroisCartesAuMilieuVertical() =
+            Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(deckBuilder.cure(), HAUTMILIEU),
+                    CartePositionee(deckBuilder.cure(), MILIEUMILIEU),
+                    CartePositionee(deckBuilder.cure(), BASMILIEU),
+                )
+            )
+
+        @RepeatedTest(20)
+        fun `doit renvoyer la position d'une case adjacente dans un tableau avec trois cartes au milieu horizontal`() {
+            val tableau = tableauAvecTroisCartesAuMilieuHorizontal()
+            val positionAutorisees = listOf(HAUTGAUCHE, HAUTMILIEU, HAUTDROITE, BASGAUCHE, BASMILIEU, BASDROITE)
+
+            val positionChoisie = repository.choisitUnePosition(tableau)
+
+            assertThat(positionAutorisees).contains(positionChoisie)
+        }
+
+        private fun tableauAvecTroisCartesAuMilieuHorizontal() =
+            Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(deckBuilder.cure(), MILIEUGAUCHE),
+                    CartePositionee(deckBuilder.cure(), MILIEUMILIEU),
+                    CartePositionee(deckBuilder.cure(), MILIEUDROITE),
+                )
+            )
+
     }
 }

@@ -27,6 +27,7 @@ class TableauRepository {
 
     private fun CartePositionee.deplaceAGauche(): CartePositionee {
         val nouvellePosition = this.position.positionAGauche()
+        requireNotNull(nouvellePosition)
         return this.copy(position = nouvellePosition)
     }
 
@@ -38,6 +39,7 @@ class TableauRepository {
 
     private fun CartePositionee.deplaceADroite(): CartePositionee {
         val nouvellePosition = this.position.positionADroite()
+        requireNotNull(nouvellePosition)
         return this.copy(position = nouvellePosition)
     }
 
@@ -49,6 +51,7 @@ class TableauRepository {
 
     private fun CartePositionee.deplaceEnHaut(): CartePositionee {
         val nouvellePosition = this.position.positionEnHaut()
+        requireNotNull(nouvellePosition)
         return this.copy(position = nouvellePosition)
     }
 
@@ -60,6 +63,21 @@ class TableauRepository {
 
     private fun CartePositionee.deplaceEnBas(): CartePositionee {
         val nouvellePosition = this.position.positionEnBas()
+        requireNotNull(nouvellePosition)
         return this.copy(position = nouvellePosition)
     }
+
+    fun choisitUnePosition(tableau: Tableau): Position =
+        when (tableau.cartesPositionees.isEmpty()) {
+            true -> Position.MILIEUMILIEU
+            false -> tableau.trouvePositionAutorisees().random()
+        }
+
+    private fun Tableau.trouvePositionAutorisees() =
+        this.cartesPositionees
+            .map { it.position.positionsAdjacentes() }
+            .flatten()
+            .distinct()
+            .filter { position -> this.cartesPositionees.none { cartePositionnee -> cartePositionnee.position == position } }
+
 }

@@ -13,17 +13,6 @@ class JoueurRepository(
 ) {
     private val logger = KotlinLogging.logger { }
 
-    fun placeUneCarte(joueur: Joueur, carte: Carte, position: Position): Boolean =
-        tableauRepository.ajouteCarte(tableau = joueur.tableau, carte = carte, position = position)
-
-    fun deplaceAGauche(joueur: Joueur) = tableauRepository.deplaceAGauche(joueur.tableau)
-
-    fun deplaceADroite(joueur: Joueur) = tableauRepository.deplaceADroite(joueur.tableau)
-
-    fun deplaceEnHaut(joueur: Joueur) = tableauRepository.deplaceEnHaut(joueur.tableau)
-
-    fun deplaceEnBas(joueur: Joueur) = tableauRepository.deplaceEnBas(joueur.tableau)
-
     fun choisitUneCarte(joueur: Joueur, deck: Deck): Carte {
         val cartesDisponibles = deck.cartesDisponibles
         val cartesAchetables = cartesDisponibles.filter { carte -> joueur.or >= carte.cout }
@@ -55,4 +44,19 @@ class JoueurRepository(
             this.cle += 2
         }
     }
+
+    fun placeUneCarte(joueur: Joueur, carte: Carte, position: Position): Boolean =
+        tableauRepository.ajouteCarte(tableau = joueur.tableau, carte = carte, position = position)
+
+    fun deplaceAGauche(joueur: Joueur) = tableauRepository.deplaceAGauche(joueur.tableau)
+
+    fun deplaceADroite(joueur: Joueur) = tableauRepository.deplaceADroite(joueur.tableau)
+
+    fun deplaceEnHaut(joueur: Joueur) = tableauRepository.deplaceEnHaut(joueur.tableau)
+
+    fun deplaceEnBas(joueur: Joueur) = tableauRepository.deplaceEnBas(joueur.tableau)
+
+    fun choisitUnePosition(joueur: Joueur): Position =
+        tableauRepository.choisitUnePosition(joueur.tableau)
+
 }
