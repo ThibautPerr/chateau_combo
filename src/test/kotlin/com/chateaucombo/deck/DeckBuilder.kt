@@ -8,17 +8,17 @@ import com.chateaucombo.deck.model.Villageois
 class DeckBuilder {
 
     fun deckAvecQuatreCartesEtAucuneCarteDisponible() =
-        Deck(cartes = listOf(cure(), ecuyer(), epiciere(), fermiere()))
+        Deck(cartes = mutableListOf(cure(), ecuyer(), epiciere(), fermiere()))
 
     fun deckAvecTroisCartesEtUneCarteDisponible() =
         Deck(
-            cartes = listOf(ecuyer(), epiciere(), fermiere()),
-            cartesDisponibles = listOf(cure())
+            cartes = mutableListOf(ecuyer(), epiciere(), fermiere()),
+            cartesDisponibles = mutableListOf(cure())
         )
 
     fun deckAvecDesCartes() =
         Deck(
-            cartes = listOf(
+            cartes = mutableListOf(
                 cure(),
                 ecuyer(),
                 epiciere(),
@@ -29,10 +29,10 @@ class DeckBuilder {
             )
         )
 
-    fun deckAvecTroisCartesDispos(cartesDisponibles: List<Carte>) =
+    fun deckAvecTroisCartesDispos(cartesDisponibles: MutableList<Carte>) =
         Deck(
             cartesDisponibles = cartesDisponibles,
-            cartes = listOf(fermiere())
+            cartes = mutableListOf(fermiere())
         )
 
     fun cure(): Carte = Villageois(

@@ -20,7 +20,15 @@ class JoueurRepository(
         logger.info { "Le joueur ${joueur.id} a choisi la carte ${carteChoisie.nom}" }
         joueur.metAJourOr(carteChoisie)
         joueur.metAJourCle(carteChoisie)
+        deck.retireLaCarte(carteChoisie)
         return carteChoisie
+    }
+
+    private fun Deck.retireLaCarte(carteChoisie: Carte) {
+        when {
+            carteChoisie is CarteVerso -> this.cartesDisponibles.remove(carteChoisie.carteOriginale)
+            else -> this.cartesDisponibles.remove(carteChoisie)
+        }
     }
 
     private fun choisitUneCarte(cartesAchetables: List<Carte>, cartesDisponibles: List<Carte>) =

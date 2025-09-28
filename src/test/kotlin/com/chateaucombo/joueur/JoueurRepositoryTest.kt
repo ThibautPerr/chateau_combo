@@ -35,7 +35,7 @@ class JoueurRepositoryTest {
         fun `doit choisir une carte parmi les cartes du deck disponible`() {
             val joueur = Joueur(id = 1, or = 15)
             val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.ecuyer(), deckBuilder.epiciere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -46,7 +46,7 @@ class JoueurRepositoryTest {
         fun `doit choisir une carte qu'il peut acheter`() {
             val joueur = Joueur(id = 1, or = 0)
             val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
             val cartesAchetables = listOf(deckBuilder.cure(), deckBuilder.fermiere())
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
@@ -58,7 +58,7 @@ class JoueurRepositoryTest {
         fun `doit choisir une carte face verso s'il n'a pas assez d'or pour acheter une carte disponible`() {
             val joueur = Joueur(id = 1, or = 0)
             val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
             val cartesVersos: List<Carte> = cartesDisponibles.map { it.toCarteVerso() }
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
@@ -73,7 +73,7 @@ class JoueurRepositoryTest {
             val orInitial = 10
             val joueur = Joueur(id = 1, or = orInitial)
             val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -86,13 +86,25 @@ class JoueurRepositoryTest {
             val cleInitial = 2
             val joueur = Joueur(id = 1, or = orInitial, cle = cleInitial)
             val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
             assertThat(carteChoisie).isInstanceOf(CarteVerso::class.java)
             assertThat(joueur.or).isEqualTo(orInitial + 6)
             assertThat(joueur.cle).isEqualTo(cleInitial + 2)
+        }
+
+        @Test
+        fun `doit retirer la carte choisie des cartes disponibles du deck`() {
+            val joueur = Joueur(id = 1, or = 15)
+            val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(deck.cartesDisponibles).hasSize(2)
+            assertThat(deck.cartesDisponibles).isEqualTo(cartesDisponibles.minus(carteChoisie))
         }
     }
 

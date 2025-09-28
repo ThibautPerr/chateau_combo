@@ -16,29 +16,26 @@ class DeckRepository {
         val cartes = mapper.readValue<List<Carte>>(file)
         val chatelains = cartes.recupereLesChatelains()
         val villageois = cartes.recupereLesVillageois()
-        return Deck(cartes = chatelains) to Deck(cartes = villageois)
+        return Deck(cartes = chatelains.toMutableList()) to Deck(cartes = villageois.toMutableList())
     }
 
     private fun List<Carte>.recupereLesChatelains() = this.filterIsInstance<Chatelain>()
 
     private fun List<Carte>.recupereLesVillageois() = this.filterIsInstance<Villageois>()
 
-    fun melange(deck: Deck): Deck = Deck(cartes = deck.cartes.shuffled())
-
-    fun remplitLesCartesDisponibles(deck: Deck): Deck {
-        return when (deck.cartesDisponibles.size < 3) {
-            true -> remplitTroisCartesDisponibles(deck)
-            false -> deck
-        }
+    fun melange(deck: Deck) {
+        deck.cartes.shuffle()
     }
 
-    private fun remplitTroisCartesDisponibles(deck: Deck): Deck {
-        val nouvellesCartes = deck.cartes.toMutableList()
-        val nouvellesCartesDisponibles = deck.cartesDisponibles.toMutableList()
+    fun remplitLesCartesDisponibles(deck: Deck) {
+        if (deck.cartesDisponibles.size < 3)
+            remplitTroisCartesDisponibles(deck)
+    }
+
+    private fun remplitTroisCartesDisponibles(deck: Deck) {
         (1..(3 - deck.cartesDisponibles.size)).forEach { _ ->
-            nouvellesCartesDisponibles += nouvellesCartes.first()
-            nouvellesCartes.removeFirst()
+            deck.cartesDisponibles += deck.cartes.first()
+            deck.cartes.removeFirst()
         }
-        return Deck(cartes = nouvellesCartes.toList(), cartesDisponibles = nouvellesCartesDisponibles.toList())
     }
 }

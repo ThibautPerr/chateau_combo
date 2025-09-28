@@ -104,9 +104,9 @@ class DeckRepositoryTest {
         fun `doit melanger un deck`() {
             val deck = deckBuilder.deckAvecDesCartes()
 
-            val deckMelange = repository.melange(deck)
+            repository.melange(deck)
 
-            assertThat(deckMelange.toutesLesCartesDansLOrdreDeDepart()).isFalse()
+            assertThat(deck.toutesLesCartesDansLOrdreDeDepart()).isFalse()
         }
 
         private fun Deck.toutesLesCartesDansLOrdreDeDepart(): Boolean =
@@ -125,28 +125,28 @@ class DeckRepositoryTest {
         fun `doit remplir zero cartes disponibles avec trois cartes`() {
             val deck = deckBuilder.deckAvecQuatreCartesEtAucuneCarteDisponible()
 
-            val nouveauDeck = repository.remplitLesCartesDisponibles(deck)
+            repository.remplitLesCartesDisponibles(deck)
 
-            assertThat(nouveauDeck.cartes).hasSize(1)
-            assertThat(nouveauDeck.cartes.first()).isEqualTo(deckBuilder.fermiere())
-            assertThat(nouveauDeck.cartesDisponibles).hasSize(3)
-            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(deckBuilder.cure())
-            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(deckBuilder.ecuyer())
-            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(deckBuilder.epiciere())
+            assertThat(deck.cartes).hasSize(1)
+            assertThat(deck.cartes.first()).isEqualTo(deckBuilder.fermiere())
+            assertThat(deck.cartesDisponibles).hasSize(3)
+            assertThat(deck.cartesDisponibles.first()).isEqualTo(deckBuilder.cure())
+            assertThat(deck.cartesDisponibles[1]).isEqualTo(deckBuilder.ecuyer())
+            assertThat(deck.cartesDisponibles[2]).isEqualTo(deckBuilder.epiciere())
         }
 
         @Test
         fun `doit remplir une liste de cartes disponibles non vide pour avoir trois cartes`() {
             val deck = deckBuilder.deckAvecTroisCartesEtUneCarteDisponible()
 
-            val nouveauDeck = repository.remplitLesCartesDisponibles(deck)
+            repository.remplitLesCartesDisponibles(deck)
 
-            assertThat(nouveauDeck.cartes).hasSize(1)
-            assertThat(nouveauDeck.cartes.first()).isEqualTo(deckBuilder.fermiere())
-            assertThat(nouveauDeck.cartesDisponibles).hasSize(3)
-            assertThat(nouveauDeck.cartesDisponibles.first()).isEqualTo(deckBuilder.cure())
-            assertThat(nouveauDeck.cartesDisponibles[1]).isEqualTo(deckBuilder.ecuyer())
-            assertThat(nouveauDeck.cartesDisponibles[2]).isEqualTo(deckBuilder.epiciere())
+            assertThat(deck.cartes).hasSize(1)
+            assertThat(deck.cartes.first()).isEqualTo(deckBuilder.fermiere())
+            assertThat(deck.cartesDisponibles).hasSize(3)
+            assertThat(deck.cartesDisponibles.first()).isEqualTo(deckBuilder.cure())
+            assertThat(deck.cartesDisponibles[1]).isEqualTo(deckBuilder.ecuyer())
+            assertThat(deck.cartesDisponibles[2]).isEqualTo(deckBuilder.epiciere())
         }
 
     }
