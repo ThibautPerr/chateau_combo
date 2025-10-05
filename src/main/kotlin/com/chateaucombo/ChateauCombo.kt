@@ -9,6 +9,7 @@ import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Position.*
 import com.chateaucombo.tableau.model.Tableau
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.io.File
 
 class ChateauCombo(
     private val joueurRepository: JoueurRepository,
@@ -16,24 +17,41 @@ class ChateauCombo(
 ) {
     private val logger = KotlinLogging.logger { }
 
-    fun play(joueurs: List<Joueur>, deckChatelains: Deck, deckVillageois: Deck) {
+    fun play(joueurs: List<Joueur>, fichierCartes: File) {
         logger.info { "Début de la partie" }
-        deckChatelains.setup()
-        deckVillageois.setup()
+        val decks = setupLesDecks(fichierCartes)
         for (i in 1..9) {
             logger.info { "\n------------ TOUR $i ------------\n" }
             joueurs.forEach { joueur ->
                 logger.info { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" }
-                val carte = joueur.choisitUneCarte(deckVillageois)
-                val position = joueur.choisitUnePosition()
-                joueur.placeUneCarte(carte, position)
-                logger.info { "Le joueur ${joueur.id} a placé la carte ${carte.nom} à la position ${position.name}" }
-                deckVillageois.remplitLesCartesDisponibles()
-                logger.info { "\nCartes disponibles : ${deckVillageois.cartesDisponibles.joinToString(separator = ", ") { it.nom }}\n" }
+                joueur.utiliseUneCle(decks)
+
+                val currentDeck = decks.first { it.estLeDeckActuel }
+                joueur.placeUneCarte(currentDeck)
+                currentDeck.remplitLesCartesDisponibles()
+
+                logger.info {
+                    "\nCartes disponibles : \n" +
+                            "${
+                                decks.joinToString("\n") { deck ->
+                                    deck.cartesDisponibles.joinToString(
+                                        prefix = "  ",
+                                        separator = ", "
+                                    ) { it.nom }
+                                }
+                            }\n"
+                }
             }
             logger.info { "\n------------ FIN DU TOUR $i ------------\n" }
             logLesTableaux(joueurs)
         }
+    }
+
+    private fun setupLesDecks(fichier: File): List<Deck> {
+        val (deckChatelains, deckVillageois) = deckRepository.creeDeuxDecksChatelainsEtVillageoisDepuis(fichier)
+        deckChatelains.setup()
+        deckVillageois.setup()
+        return listOf(deckChatelains, deckVillageois)
     }
 
     private fun Deck.setup() {
@@ -43,6 +61,37 @@ class ChateauCombo(
 
     private fun Deck.remplitLesCartesDisponibles() {
         deckRepository.remplitLesCartesDisponibles(this)
+    }
+
+    private fun Joueur.utiliseUneCle(decks: List<Deck>) {
+        if (this.cle > 0) {
+            when ((0..2).random()) {
+                0 -> Unit
+                1 -> this.rafraichitLeDeck(decks)
+                2 -> this.changeLeDeckActuel(decks)
+            }
+        }
+    }
+
+    private fun Joueur.rafraichitLeDeck(decks: List<Deck>) {
+        logger.info { "Le joueur ${this.id} rafraichit le deck ${decks.deckActuel().nom}" }
+        joueurRepository.rafraichitLeDeck(this, decks.deckActuel())
+    }
+
+    private fun Joueur.changeLeDeckActuel(decks: List<Deck>) {
+        logger.info { "Le joueur ${this.id} change le deck actuel (${decks.deckActuel().nom} -> ${decks.prochainDeckActuel().nom})" }
+        joueurRepository.changeLeDeckActuel(this, decks.deckActuel(), decks.prochainDeckActuel())
+    }
+
+    private fun List<Deck>.deckActuel() = this.first { it.estLeDeckActuel }
+
+    private fun List<Deck>.prochainDeckActuel() = this.first { it.estLeDeckActuel.not() }
+
+    private fun Joueur.placeUneCarte(currentDeck: Deck) {
+        val carte = this.choisitUneCarte(currentDeck)
+        val position = this.choisitUnePosition()
+        this.placeUneCarte(carte, position)
+        logger.info { "Le joueur ${this.id} a placé la carte ${carte.nom} à la position ${position.name}" }
     }
 
     private fun Joueur.choisitUneCarte(deckChatelains: Deck) =

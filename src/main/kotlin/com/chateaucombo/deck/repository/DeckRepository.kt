@@ -14,9 +14,9 @@ class DeckRepository {
 
     fun creeDeuxDecksChatelainsEtVillageoisDepuis(file: File): Pair<Deck, Deck> {
         val cartes = mapper.readValue<List<Carte>>(file)
-        val chatelains = cartes.recupereLesChatelains()
-        val villageois = cartes.recupereLesVillageois()
-        return Deck(cartes = chatelains.toMutableList()) to Deck(cartes = villageois.toMutableList())
+        val deckChatelains = Deck(nom = "Chatelains", cartes = cartes.recupereLesChatelains().toMutableList(), estLeDeckActuel = false)
+        val deckVillageois = Deck(nom = "Villageois", cartes = cartes.recupereLesVillageois().toMutableList(), estLeDeckActuel = true)
+        return deckChatelains to deckVillageois
     }
 
     private fun List<Carte>.recupereLesChatelains() = this.filterIsInstance<Chatelain>()

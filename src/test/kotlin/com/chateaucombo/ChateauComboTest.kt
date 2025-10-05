@@ -18,8 +18,7 @@ class ChateauComboTest {
 
     private fun play(joueurs: List<Joueur>) {
         val fichier = fichierAvecToutesLesCartes()
-        val (chatelains, villageois) = deckRepository.creeDeuxDecksChatelainsEtVillageoisDepuis(fichier)
-        app.play(joueurs = joueurs, deckChatelains = chatelains, deckVillageois = villageois)
+        app.play(joueurs = joueurs, fichierCartes = fichier)
     }
 
     private fun fichierAvecToutesLesCartes() = File("src/test/resources/cartes.json")
