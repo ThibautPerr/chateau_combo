@@ -1,0 +1,10 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Agricultrice",
+  "cout": 5,
+  "blasons": [
+    "PAYSAN",
+    "PAYSAN"
+  ],
+  "effets": {}
+}

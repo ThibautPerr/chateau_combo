@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Philosophe",
+  "cout": 2,
+  "blasons": [
+    "ERUDIT"
+  ],
+  "effets": {}
+}

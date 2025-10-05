@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
-import java.io.File
 import kotlin.io.path.Path
 import kotlin.io.path.deleteIfExists
 
@@ -28,11 +27,11 @@ class ChateauComboTest {
     private val app = ChateauCombo(joueurRepository, deckRepository)
 
     private fun play(joueurs: List<Joueur>) {
-        val fichier = fichierAvecToutesLesCartes()
-        app.play(joueurs = joueurs, fichierCartes = fichier)
+        val path = pathAvecToutesLesCartes()
+        app.play(joueurs = joueurs, pathCartes = path)
     }
 
-    private fun fichierAvecToutesLesCartes() = File("src/test/resources/cartes.json")
+    private fun pathAvecToutesLesCartes() = Path("src/main/resources/cartes")
 
     private lateinit var fileAppender: FileAppender<ILoggingEvent>
 

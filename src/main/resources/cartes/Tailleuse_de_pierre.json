@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Tailleuse de pierre",
+  "cout": 3,
+  "blasons": [
+    "ARTISAN"
+  ],
+  "effets": {}
+}

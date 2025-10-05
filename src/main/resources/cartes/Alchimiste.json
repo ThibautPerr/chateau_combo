@@ -1,0 +1,9 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Alchimiste",
+  "cout": 6,
+  "blasons": [
+    "ERUDIT"
+  ],
+  "effets": {}
+}

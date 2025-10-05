@@ -1,0 +1,10 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Fossoyeur",
+  "cout": 4,
+  "blasons": [
+    "RELIGIEUX",
+    "ERUDIT"
+  ],
+  "effets": {}
+}

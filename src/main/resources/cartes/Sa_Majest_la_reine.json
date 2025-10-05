@@ -1,0 +1,9 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Sa Majesté la reine",
+  "cout": 7,
+  "blasons": [
+    "NOBLE"
+  ],
+  "effets": {}
+}

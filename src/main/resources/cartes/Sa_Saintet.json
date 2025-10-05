@@ -1,0 +1,21 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Sa Sainteté",
+  "cout": 7,
+  "blasons": [
+    "RELIGIEUX"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCle",
+        "cle": 3
+      },
+      {
+        "type": "AjouteClePourTousLesAdversaires",
+        "cle": 1
+      }
+    ],
+    "separateur": "ET"
+  }
+}

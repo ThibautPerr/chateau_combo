@@ -1,0 +1,16 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Banquière",
+  "cout": 7,
+  "blasons": [
+    "ARTISAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCle",
+        "cle": 3
+      }
+    ]
+  }
+}

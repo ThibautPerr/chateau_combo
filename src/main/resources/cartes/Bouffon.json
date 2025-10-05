@@ -1,0 +1,17 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Bouffon",
+  "cout": 3,
+  "blasons": [
+    "NOBLE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 2,
+        "blason": "NOBLE"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Mère supérieure",
+  "cout": 5,
+  "blasons": [
+    "RELIGIEUX",
+    "RELIGIEUX"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCle",
+        "cle": 4
+      }
+    ]
+  }
+}

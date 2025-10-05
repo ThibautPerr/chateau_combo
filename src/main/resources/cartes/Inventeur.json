@@ -1,0 +1,18 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Inventeur",
+  "cout": 2,
+  "blasons": [
+    "ERUDIT",
+    "ERUDIT"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "ERUDIT"
+      }
+    ]
+  }
+}

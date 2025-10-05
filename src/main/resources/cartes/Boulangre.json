@@ -1,0 +1,17 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Boulangère",
+  "cout": 0,
+  "blasons": [
+    "PAYSAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "PAYSAN"
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Maître d'armes",
+  "cout": 2,
+  "blasons": [
+    "MILITAIRE",
+    "MILITAIRE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "MILITAIRE"
+      }
+    ]
+  }
+}

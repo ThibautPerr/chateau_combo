@@ -1,0 +1,16 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Barbare",
+  "cout": 2,
+  "blasons": [
+    "MILITAIRE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCle",
+        "cle": 2
+      }
+    ]
+  }
+}

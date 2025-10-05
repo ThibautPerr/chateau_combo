@@ -1,0 +1,10 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Maître de guilde",
+  "cout": 5,
+  "blasons": [
+    "ARTISAN",
+    "ARTISAN"
+  ],
+  "effets": {}
+}

@@ -1,0 +1,23 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Souffleur de verre",
+  "cout": 5,
+  "blasons": [
+    "ARTISAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "RELIGIEUX"
+      },
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "ARTISAN"
+      }
+    ],
+    "separateur": "ET"
+  }
+}

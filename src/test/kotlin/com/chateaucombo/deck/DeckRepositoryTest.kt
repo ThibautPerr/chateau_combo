@@ -10,6 +10,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.Path
+import kotlin.io.path.createDirectories
+import kotlin.io.path.pathString
 
 class DeckRepositoryTest {
     private val repository = DeckRepository()
@@ -20,9 +24,9 @@ class DeckRepositoryTest {
     inner class CreeDeuxDecks {
         @Test
         fun `doit renvoyer un deck de chatelains et un deck de villageois`() {
-            val file = givenUnFichierAvecPlusieursCartes()
+            val path = repertoireAvecToutesLesCartes()
 
-            val (chatelains, villageois) = repository.creeDeuxDecksChatelainsEtVillageoisDepuis(file)
+            val (chatelains, villageois) = repository.creeDeuxDecksChatelainsEtVillageoisDepuis(path)
 
             assertThat(chatelains.cartes).hasSize(39)
             assertThat(chatelains.cartesDisponibles).hasSize(0)
@@ -30,7 +34,7 @@ class DeckRepositoryTest {
             assertThat(villageois.cartesDisponibles).hasSize(0)
         }
 
-        private fun givenUnFichierAvecPlusieursCartes() = File("src/test/resources/cartes.json")
+        private fun repertoireAvecToutesLesCartes() = Path("src/main/resources/cartes")
 
         @Test
         fun `doit renvoyer un deck chatelains contenant une carte Alchimiste avec ses attributs`() {
@@ -45,30 +49,30 @@ class DeckRepositoryTest {
             assertThat(chatelains.cartes.first().blasons).isEqualTo(listOf(ERUDIT))
         }
 
-        private fun givenUnFichierAvecUnAlchimiste(): File {
-            val file = File("target/carte.json")
+        private fun givenUnFichierAvecUnAlchimiste(): Path {
+            val path = Path("target/cartes")
+            path.createDirectories()
+            val file = File(path.pathString, "carte.json")
             file.writeText(alchimisteJson())
-            return file
+            return path
         }
 
         private fun alchimisteJson() =
             """
-            [
-              {
+            {
                 "type": "CHATELAIN",
                 "nom": "Alchimiste",
                 "cout": 6,
                 "blasons": ["ERUDIT"],
                 "effets": {}
-              }
-            ]
-        """.trimIndent()
+            }
+            """.trimIndent()
 
         @Test
         fun `doit renvoyer un deck villageois contenant une carte Espion avec ses attributs`() {
-            val file = givenUnFichierAvecUnEspion()
+            val path = givenUnFichierAvecUnEspion()
 
-            val (_, villageois) = repository.creeDeuxDecksChatelainsEtVillageoisDepuis(file)
+            val (_, villageois) = repository.creeDeuxDecksChatelainsEtVillageoisDepuis(path)
 
             assertThat(villageois.cartes).hasSize(1)
             assertThat(villageois.cartes.first().nom).isEqualTo("Espion")
@@ -77,27 +81,27 @@ class DeckRepositoryTest {
             assertThat(villageois.cartes.first().blasons).isEqualTo(listOf(MILITAIRE, ERUDIT))
         }
 
-        private fun givenUnFichierAvecUnEspion(): File {
-            val file = File("target/carte.json")
+        private fun givenUnFichierAvecUnEspion(): Path {
+            val path = Path("target/cartes")
+            path.createDirectories()
+            val file = File(path.pathString, "carte.json")
             file.writeText(espionJson())
-            return file
+            return path
         }
 
         private fun espionJson() =
             """
-            [
-              {
+            {
                 "nom": "Espion",
                 "type": "VILLAGEOIS",
                 "cout": 4,
                 "blasons": [
-                  "MILITAIRE",
-                  "ERUDIT"
+                    "MILITAIRE",
+                    "ERUDIT"
                 ],
                 "effets": {}
-              }
-            ]
-        """.trimIndent()
+            }
+            """.trimIndent()
     }
 
     @Nested
@@ -158,7 +162,8 @@ class DeckRepositoryTest {
         @Test
         fun `doit defausser les cartes disponibles et remplir les cartes disponibles`() {
             val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
-            val nouvellesCartesDisponibles = listOf(deckBuilder.fermiere(), deckBuilder.milicien(), deckBuilder.mendiante())
+            val nouvellesCartesDisponibles =
+                listOf(deckBuilder.fermiere(), deckBuilder.milicien(), deckBuilder.mendiante())
             val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles, nouvellesCartesDisponibles)
 
             repository.rafraichitLeDeck(deck)

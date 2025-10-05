@@ -1,0 +1,17 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Horlogère",
+  "cout": 3,
+  "blasons": [
+    "ARTISAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "ARTISAN"
+      }
+    ]
+  }
+}

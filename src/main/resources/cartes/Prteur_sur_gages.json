@@ -1,0 +1,9 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Prêteur sur gages",
+  "cout": 4,
+  "blasons": [
+    "ARTISAN"
+  ],
+  "effets": {}
+}

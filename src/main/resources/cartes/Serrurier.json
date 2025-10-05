@@ -1,0 +1,10 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Serrurier",
+  "cout": 4,
+  "blasons": [
+    "ARTISAN",
+    "PAYSAN"
+  ],
+  "effets": {}
+}

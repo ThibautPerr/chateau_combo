@@ -1,0 +1,10 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Sculptrice",
+  "cout": 3,
+  "blasons": [
+    "ARTISAN",
+    "RELIGIEUX"
+  ],
+  "effets": {}
+}

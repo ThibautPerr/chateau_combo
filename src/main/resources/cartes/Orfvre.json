@@ -1,0 +1,10 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Orfèvre",
+  "cout": 4,
+  "blasons": [
+    "ERUDIT",
+    "ARTISAN"
+  ],
+  "effets": {}
+}

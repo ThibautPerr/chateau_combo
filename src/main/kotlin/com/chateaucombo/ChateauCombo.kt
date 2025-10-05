@@ -12,7 +12,7 @@ import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Position.*
 import com.chateaucombo.tableau.model.Tableau
 import io.github.oshai.kotlinlogging.KotlinLogging
-import java.io.File
+import java.nio.file.Path
 
 class ChateauCombo(
     private val joueurRepository: JoueurRepository,
@@ -20,9 +20,9 @@ class ChateauCombo(
 ) {
     private val logger = KotlinLogging.logger { }
 
-    fun play(joueurs: List<Joueur>, fichierCartes: File) {
+    fun play(joueurs: List<Joueur>, pathCartes: Path) {
         logger.info { "Début de la partie" }
-        val decks = setupLesDecks(fichierCartes)
+        val decks = setupLesDecks(pathCartes)
         decks.logCartesDisponibles()
         for (i in 1..9) {
             logger.info { "\n------------ TOUR $i ------------\n" }
@@ -44,8 +44,8 @@ class ChateauCombo(
         logger.info { "\n------------ FIN DE LA PARTIE ------------\n" }
     }
 
-    private fun setupLesDecks(fichier: File): List<Deck> {
-        val (deckChatelains, deckVillageois) = deckRepository.creeDeuxDecksChatelainsEtVillageoisDepuis(fichier)
+    private fun setupLesDecks(path: Path): List<Deck> {
+        val (deckChatelains, deckVillageois) = deckRepository.creeDeuxDecksChatelainsEtVillageoisDepuis(path)
         deckChatelains.setup()
         deckVillageois.setup()
         return listOf(deckChatelains, deckVillageois)

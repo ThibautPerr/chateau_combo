@@ -1,0 +1,17 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Sorcière",
+  "cout": 4,
+  "blasons": [
+    "PAYSAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "PAYSAN"
+      }
+    ]
+  }
+}

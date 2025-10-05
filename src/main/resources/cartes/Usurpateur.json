@@ -1,0 +1,15 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Usurpateur",
+  "cout": 5,
+  "blasons": [
+    "PAYSAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCleParCarteAvecUnSeulBlason"
+      }
+    ]
+  }
+}
