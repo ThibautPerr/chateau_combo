@@ -2,6 +2,7 @@ package com.chateaucombo.joueur
 
 import com.chateaucombo.deck.DeckBuilder
 import com.chateaucombo.deck.model.*
+import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.tableau.model.CartePositionee
@@ -19,7 +20,9 @@ import org.junit.jupiter.params.provider.CsvSource
 class JoueurRepositoryTest {
     private val tableauRepository = TableauRepository()
 
-    private val joueurRepository = JoueurRepository(tableauRepository)
+    private val deckRepository = DeckRepository()
+
+    private val joueurRepository = JoueurRepository(tableauRepository, deckRepository)
 
     private val deckBuilder = DeckBuilder()
 
@@ -35,7 +38,7 @@ class JoueurRepositoryTest {
         fun `doit choisir une carte parmi les cartes du deck disponible`() {
             val joueur = Joueur(id = 1, or = 15)
             val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.ecuyer(), deckBuilder.epiciere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -46,7 +49,7 @@ class JoueurRepositoryTest {
         fun `doit choisir une carte qu'il peut acheter`() {
             val joueur = Joueur(id = 1, or = 0)
             val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
             val cartesAchetables = listOf(deckBuilder.cure(), deckBuilder.fermiere())
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
@@ -58,7 +61,7 @@ class JoueurRepositoryTest {
         fun `doit choisir une carte face verso s'il n'a pas assez d'or pour acheter une carte disponible`() {
             val joueur = Joueur(id = 1, or = 0)
             val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
             val cartesVersos: List<Carte> = cartesDisponibles.map { it.toCarteVerso() }
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
@@ -73,7 +76,7 @@ class JoueurRepositoryTest {
             val orInitial = 10
             val joueur = Joueur(id = 1, or = orInitial)
             val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -86,7 +89,7 @@ class JoueurRepositoryTest {
             val cleInitial = 2
             val joueur = Joueur(id = 1, or = orInitial, cle = cleInitial)
             val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -99,7 +102,7 @@ class JoueurRepositoryTest {
         fun `doit retirer la carte choisie des cartes disponibles du deck`() {
             val joueur = Joueur(id = 1, or = 15)
             val cartesDisponibles = listOf(deckBuilder.mercenaire(), deckBuilder.milicien(), deckBuilder.horlogere())
-            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles.toMutableList())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles)
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -457,6 +460,23 @@ class JoueurRepositoryTest {
                 assertThat(deplace).isFalse()
                 assertThat(joueur.tableau.carteAvecPosition(positionInitiale)?.carte).isEqualTo(villageois)
             }
+        }
+    }
+
+    @Nested
+    inner class RafraichirLeDeck {
+        @Test
+        fun `doit utiliser une cle pour rafraichir le deck`() {
+            val cleInitiale = 2
+            val joueur = Joueur(id = 1, cle = cleInitiale)
+            val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
+            val nouvellesCartesDisponibles = listOf(deckBuilder.fermiere(), deckBuilder.milicien(), deckBuilder.mendiante())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles, nouvellesCartesDisponibles)
+
+            joueurRepository.rafraichitLeDeck(joueur, deck)
+
+            assertThat(joueur.cle).isEqualTo(cleInitiale - 1)
+            assertThat(deck.cartesDisponibles).isEqualTo(nouvellesCartesDisponibles)
         }
     }
 }

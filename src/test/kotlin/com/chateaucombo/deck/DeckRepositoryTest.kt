@@ -151,4 +151,34 @@ class DeckRepositoryTest {
 
     }
 
+    @Nested
+    inner class RafraichirLeDeck {
+        @Test
+        fun `doit defausser les cartes disponibles et remplir les cartes disponibles`() {
+            val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
+            val nouvellesCartesDisponibles = listOf(deckBuilder.fermiere(), deckBuilder.milicien(), deckBuilder.mendiante())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles, nouvellesCartesDisponibles)
+
+            repository.rafraichitLeDeck(deck)
+
+            assertThat(deck.cartesDisponibles).isEqualTo(nouvellesCartesDisponibles)
+            assertThat(deck.defausse).containsAll(cartesDisponibles)
+        }
+
+        @Test
+        fun `doit remettre les cartes de la defausse dans le deck s'il n'y a plus de cartes dans le deck`() {
+            val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
+            val nouvellesCartesDisponibles = listOf(deckBuilder.fermiere())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(cartesDisponibles, nouvellesCartesDisponibles)
+
+            repository.rafraichitLeDeck(deck)
+
+            assertThat(deck.cartesDisponibles).hasSize(3)
+            assertThat(deck.cartesDisponibles.first()).isEqualTo(deckBuilder.fermiere())
+            assertThat(cartesDisponibles).contains(deck.cartesDisponibles[1])
+            assertThat(cartesDisponibles).contains(deck.cartesDisponibles[2])
+            assertThat(deck.defausse).isEmpty()
+        }
+    }
+
 }

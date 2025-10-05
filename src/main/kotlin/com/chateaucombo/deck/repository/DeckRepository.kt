@@ -34,8 +34,24 @@ class DeckRepository {
 
     private fun remplitTroisCartesDisponibles(deck: Deck) {
         (1..(3 - deck.cartesDisponibles.size)).forEach { _ ->
+            if (deck.cartes.isEmpty()) {
+                remplitLeDeckAvecLaDefausse(deck)
+            }
             deck.cartesDisponibles += deck.cartes.first()
             deck.cartes.removeFirst()
         }
+    }
+
+    private fun remplitLeDeckAvecLaDefausse(deck: Deck) {
+        val cartesDefaussees = deck.defausse
+        cartesDefaussees.shuffle()
+        cartesDefaussees.forEach { carte -> deck.cartes.addLast(carte) }
+        deck.defausse.clear()
+    }
+
+    fun rafraichitLeDeck(deck: Deck) {
+        deck.cartesDisponibles.forEach { carte -> deck.defausse.addFirst(carte) }
+        deck.cartesDisponibles.clear()
+        remplitLesCartesDisponibles(deck)
     }
 }

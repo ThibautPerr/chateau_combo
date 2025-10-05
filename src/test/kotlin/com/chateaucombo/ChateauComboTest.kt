@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class ChateauComboTest {
-    private val joueurRepository = spyk(JoueurRepository(TableauRepository()))
+    private val joueurRepository = spyk(JoueurRepository(TableauRepository(), DeckRepository()))
 
     private val deckRepository = DeckRepository()
 

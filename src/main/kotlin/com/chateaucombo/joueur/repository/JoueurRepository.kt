@@ -3,13 +3,15 @@ package com.chateaucombo.joueur.repository
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.model.Deck
+import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.repository.TableauRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 class JoueurRepository(
-    private val tableauRepository: TableauRepository
+    private val tableauRepository: TableauRepository,
+    private val deckRepository: DeckRepository
 ) {
     private val logger = KotlinLogging.logger { }
 
@@ -66,5 +68,10 @@ class JoueurRepository(
 
     fun choisitUnePosition(joueur: Joueur): Position =
         tableauRepository.choisitUnePosition(joueur.tableau)
+
+    fun rafraichitLeDeck(joueur: Joueur, deck: Deck) {
+        deckRepository.rafraichitLeDeck(deck)
+        joueur.cle --
+    }
 
 }

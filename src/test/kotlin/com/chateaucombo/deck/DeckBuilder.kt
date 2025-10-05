@@ -29,10 +29,13 @@ class DeckBuilder {
             )
         )
 
-    fun deckAvecTroisCartesDispos(cartesDisponibles: MutableList<Carte>) =
+    fun deckAvecTroisCartesDispos(
+        cartesDisponibles: List<Carte>,
+        cartes: List<Carte> = listOf(fermiere(), milicien(), mendiante())
+    ) =
         Deck(
-            cartesDisponibles = cartesDisponibles,
-            cartes = mutableListOf(fermiere())
+            cartesDisponibles = cartesDisponibles.toMutableList(),
+            cartes = cartes.toMutableList()
         )
 
     fun cure(): Carte = Villageois(
@@ -65,7 +68,7 @@ class DeckBuilder {
         blasons = listOf(MILITAIRE)
     )
 
-    private fun mendiante(): Carte = Villageois(
+    fun mendiante(): Carte = Villageois(
         nom = "Mendiante",
         cout = 0,
         blasons = listOf(PAYSAN)
