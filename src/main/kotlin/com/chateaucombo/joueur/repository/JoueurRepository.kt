@@ -74,4 +74,10 @@ class JoueurRepository(
         joueur.cle --
     }
 
+    fun changeLeDeckActuel(joueur: Joueur, deckActuel: Deck, prochainDeckActuel: Deck) {
+        deckActuel.estLeDeckActuel = false
+        prochainDeckActuel.estLeDeckActuel = true
+        joueur.cle --
+    }
+
 }

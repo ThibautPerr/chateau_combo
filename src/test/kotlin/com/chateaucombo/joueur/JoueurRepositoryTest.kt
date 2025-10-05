@@ -464,9 +464,9 @@ class JoueurRepositoryTest {
     }
 
     @Nested
-    inner class RafraichirLeDeck {
+    inner class RafraichitLeDeck {
         @Test
-        fun `doit utiliser une cle pour rafraichir le deck`() {
+        fun `doit rafraichir le deck en echange d'une cle`() {
             val cleInitiale = 2
             val joueur = Joueur(id = 1, cle = cleInitiale)
             val cartesDisponibles = listOf(deckBuilder.cure(), deckBuilder.fermiere(), deckBuilder.horlogere())
@@ -477,6 +477,23 @@ class JoueurRepositoryTest {
 
             assertThat(joueur.cle).isEqualTo(cleInitiale - 1)
             assertThat(deck.cartesDisponibles).isEqualTo(nouvellesCartesDisponibles)
+        }
+    }
+
+    @Nested
+    inner class ChangeLeDeckActuel {
+        @Test
+        fun `doit changer le deck actuel en echange d'une cle`() {
+            val cleInitiale = 2
+            val joueur = Joueur(id = 1, cle = cleInitiale)
+            val deckActuel = deckBuilder.deckAvecDesCartes(estLeDeckActuel = true)
+            val prochainDeckActuel = deckBuilder.deckAvecDesCartes(estLeDeckActuel = false)
+
+            joueurRepository.changeLeDeckActuel(joueur, deckActuel, prochainDeckActuel)
+
+            assertThat(joueur.cle).isEqualTo(cleInitiale - 1)
+            assertThat(deckActuel.estLeDeckActuel).isFalse()
+            assertThat(prochainDeckActuel.estLeDeckActuel).isTrue()
         }
     }
 }
