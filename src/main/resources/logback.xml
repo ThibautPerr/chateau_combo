@@ -5,18 +5,7 @@
         </encoder>
     </appender>
 
-    <!-- File appender -->
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <!-- Change path as needed -->
-        <file>target/test-logs/test.log</file>
-        <append>false</append> <!-- overwrite on each run, set true if you want accumulation -->
-        <encoder>
-            <pattern>%msg%n</pattern>
-        </encoder>
-    </appender>
-
     <root level="info">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
     </root>
 </configuration>

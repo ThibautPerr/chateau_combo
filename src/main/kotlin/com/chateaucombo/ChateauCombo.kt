@@ -3,6 +3,9 @@ package com.chateaucombo
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.repository.DeckRepository
+import com.chateaucombo.effet.model.EffetContext
+import com.chateaucombo.effet.model.EffetSeparateur.ET
+import com.chateaucombo.effet.model.EffetSeparateur.OU
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.tableau.model.Position
@@ -20,31 +23,25 @@ class ChateauCombo(
     fun play(joueurs: List<Joueur>, fichierCartes: File) {
         logger.info { "Début de la partie" }
         val decks = setupLesDecks(fichierCartes)
+        decks.logCartesDisponibles()
         for (i in 1..9) {
             logger.info { "\n------------ TOUR $i ------------\n" }
             joueurs.forEach { joueur ->
-                logger.info { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" }
+                logger.debug { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" }
                 joueur.utiliseUneCle(decks)
 
                 val currentDeck = decks.first { it.estLeDeckActuel }
-                joueur.placeUneCarte(currentDeck)
+                val carte = joueur.placeUneCarte(currentDeck)
+                carte.appliqueLesEffets(joueur, joueurs, decks)
                 currentDeck.remplitLesCartesDisponibles()
 
-                logger.info {
-                    "\nCartes disponibles : \n" +
-                            "${
-                                decks.joinToString("\n") { deck ->
-                                    deck.cartesDisponibles.joinToString(
-                                        prefix = "  ",
-                                        separator = ", "
-                                    ) { it.nom }
-                                }
-                            }\n"
-                }
+                decks.logCartesDisponibles()
             }
             logger.info { "\n------------ FIN DU TOUR $i ------------\n" }
+            joueurs.forEach { joueur -> logger.info { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" } }
             logLesTableaux(joueurs)
         }
+        logger.info { "\n------------ FIN DE LA PARTIE ------------\n" }
     }
 
     private fun setupLesDecks(fichier: File): List<Deck> {
@@ -87,11 +84,12 @@ class ChateauCombo(
 
     private fun List<Deck>.prochainDeckActuel() = this.first { it.estLeDeckActuel.not() }
 
-    private fun Joueur.placeUneCarte(currentDeck: Deck) {
+    private fun Joueur.placeUneCarte(currentDeck: Deck): Carte {
         val carte = this.choisitUneCarte(currentDeck)
         val position = this.choisitUnePosition()
         this.placeUneCarte(carte, position)
         logger.info { "Le joueur ${this.id} a placé la carte ${carte.nom} à la position ${position.name}" }
+        return carte
     }
 
     private fun Joueur.choisitUneCarte(deckChatelains: Deck) =
@@ -102,6 +100,20 @@ class ChateauCombo(
     private fun Joueur.placeUneCarte(carte: Carte, position: Position) {
         val cartePositionee = joueurRepository.placeUneCarte(this, carte, position)
         if (!cartePositionee) error("Problème lors du placement de la carte $carte à la position $position pour le joueur ${this.id} avec le tableau ${this.tableau}")
+    }
+
+    private fun Carte.appliqueLesEffets(joueur: Joueur, joueurs: List<Joueur>, decks: List<Deck>) {
+        val context = EffetContext(
+            joueurActuel = joueur,
+            joueurs = joueurs,
+            carte = this,
+            decks = decks
+        )
+        when (this.effets.separateur) {
+            ET, null -> this.effets.effets.forEach { it.apply(context) }
+            OU -> this.effets.effets.random().apply(context)
+        }
+
     }
 
     private fun logLesTableaux(joueurs: List<Joueur>) {
@@ -117,12 +129,26 @@ class ChateauCombo(
                     joueur.tableau.carteALaPosition(position).center()
                 }
             }
-            logger.info { "Joueur ${joueur.id} : \n$tableau" }
+            logger.info { "\nJoueur ${joueur.id} : \n$tableau" }
         }
     }
 
     private fun Tableau.carteALaPosition(position: Position): String =
         this.cartesPositionees.firstOrNull { it.position == position }?.carte?.nom ?: "   ____   "
+
+    private fun List<Deck>.logCartesDisponibles() {
+        logger.debug {
+            "\nCartes disponibles : \n" +
+                    "${
+                        this.joinToString("\n") { deck ->
+                            deck.cartesDisponibles.joinToString(
+                                prefix = "Deck ${deck.nom} : ",
+                                separator = ", "
+                            ) { it.nom }
+                        }
+                    }\n"
+        }
+    }
 
     private fun String.center(width: Int = 40): String =
         when (this.length >= width) {

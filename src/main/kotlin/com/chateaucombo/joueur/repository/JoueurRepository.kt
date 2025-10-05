@@ -7,19 +7,15 @@ import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.repository.TableauRepository
-import io.github.oshai.kotlinlogging.KotlinLogging
 
 class JoueurRepository(
     private val tableauRepository: TableauRepository,
     private val deckRepository: DeckRepository
 ) {
-    private val logger = KotlinLogging.logger { }
-
     fun choisitUneCarte(joueur: Joueur, deck: Deck): Carte {
         val cartesDisponibles = deck.cartesDisponibles
         val cartesAchetables = cartesDisponibles.filter { carte -> joueur.or >= carte.cout }
         val carteChoisie = choisitUneCarte(cartesAchetables, cartesDisponibles)
-        logger.info { "Le joueur ${joueur.id} a choisi la carte ${carteChoisie.nom}" }
         joueur.metAJourOr(carteChoisie)
         joueur.metAJourCle(carteChoisie)
         deck.retireLaCarte(carteChoisie)

@@ -3,6 +3,7 @@ package com.chateaucombo.joueur
 import com.chateaucombo.deck.DeckBuilder
 import com.chateaucombo.deck.model.*
 import com.chateaucombo.deck.repository.DeckRepository
+import com.chateaucombo.effet.model.Effets
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.tableau.model.CartePositionee
@@ -29,7 +30,8 @@ class JoueurRepositoryTest {
     private fun villageois() = Villageois(
         nom = "Curé",
         cout = 0,
-        blasons = listOf(Blason.RELIGIEUX)
+        blasons = listOf(Blason.RELIGIEUX),
+        effets = Effets()
     )
 
     @Nested
@@ -199,7 +201,8 @@ class JoueurRepositoryTest {
             val chatelain = Chatelain(
                 nom = "Aumônier",
                 cout = 5,
-                blasons = listOf(Blason.RELIGIEUX)
+                blasons = listOf(Blason.RELIGIEUX),
+                effets = Effets()
             )
 
             joueurRepository.placeUneCarte(joueur, chatelain, position)

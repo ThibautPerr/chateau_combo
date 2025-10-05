@@ -1,5 +1,6 @@
 package com.chateaucombo.deck.model
 
+import com.chateaucombo.effet.model.Effets
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 
@@ -16,4 +17,5 @@ sealed class Carte {
     abstract val cout: Int
     abstract val nom: String
     abstract val blasons: List<Blason>
+    abstract val effets: Effets
 }

@@ -4,6 +4,7 @@ import com.chateaucombo.deck.model.Blason.*
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
+import com.chateaucombo.effet.model.Effets
 
 class DeckBuilder {
 
@@ -44,48 +45,56 @@ class DeckBuilder {
     fun cure(): Carte = Villageois(
         nom = "Curé",
         cout = 0,
-        blasons = listOf(RELIGIEUX)
+        blasons = listOf(RELIGIEUX),
+        effets = Effets()
     )
 
     fun ecuyer(): Carte = Villageois(
         nom = "Écuyer",
         cout = 0,
-        blasons = listOf(MILITAIRE)
+        blasons = listOf(MILITAIRE),
+        effets = Effets()
     )
 
     fun epiciere(): Carte = Villageois(
         nom = "Épicière",
         cout = 0,
-        blasons = listOf(ARTISAN)
+        blasons = listOf(ARTISAN),
+        effets = Effets()
     )
 
     fun fermiere(): Carte = Villageois(
         nom = "Fermière",
         cout = 0,
-        blasons = listOf(PAYSAN)
+        blasons = listOf(PAYSAN),
+        effets = Effets()
     )
 
     fun milicien(): Carte = Villageois(
         nom = "Milicien",
         cout = 2,
-        blasons = listOf(MILITAIRE)
+        blasons = listOf(MILITAIRE),
+        effets = Effets()
     )
 
     fun mendiante(): Carte = Villageois(
         nom = "Mendiante",
         cout = 0,
-        blasons = listOf(PAYSAN)
+        blasons = listOf(PAYSAN),
+        effets = Effets()
     )
 
     fun horlogere(): Carte = Villageois(
         nom = "Horlogère",
         cout = 3,
-        blasons = listOf(ARTISAN)
+        blasons = listOf(ARTISAN),
+        effets = Effets()
     )
 
     fun mercenaire(): Carte = Villageois(
         nom = "Mercenaire",
         cout = 6,
-        blasons = listOf(PAYSAN, MILITAIRE)
+        blasons = listOf(PAYSAN, MILITAIRE),
+        effets = Effets()
     )
 }

@@ -58,7 +58,8 @@ class DeckRepositoryTest {
                 "type": "CHATELAIN",
                 "nom": "Alchimiste",
                 "cout": 6,
-                "blasons": ["ERUDIT"]
+                "blasons": ["ERUDIT"],
+                "effets": {}
               }
             ]
         """.trimIndent()
@@ -92,7 +93,8 @@ class DeckRepositoryTest {
                 "blasons": [
                   "MILITAIRE",
                   "ERUDIT"
-                ]
+                ],
+                "effets": {}
               }
             ]
         """.trimIndent()

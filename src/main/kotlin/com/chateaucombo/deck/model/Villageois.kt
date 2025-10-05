@@ -1,7 +1,10 @@
 package com.chateaucombo.deck.model
 
-data class Villageois (
+import com.chateaucombo.effet.model.Effets
+
+data class Villageois(
     override val cout: Int,
     override val nom: String,
     override val blasons: List<Blason>,
-): Carte()
+    override val effets: Effets,
+) : Carte()

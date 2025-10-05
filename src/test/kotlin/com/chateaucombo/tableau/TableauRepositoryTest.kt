@@ -5,6 +5,7 @@ import com.chateaucombo.deck.model.Blason
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Villageois
+import com.chateaucombo.effet.model.Effets
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Position.*
@@ -44,7 +45,8 @@ class TableauRepositoryTest {
             val chatelain = Chatelain(
                 nom = "Aumônier",
                 cout = 5,
-                blasons = listOf(Blason.RELIGIEUX)
+                blasons = listOf(Blason.RELIGIEUX),
+                effets = Effets()
             )
 
             repository.ajouteCarte(tableau, chatelain, position)
@@ -111,7 +113,8 @@ class TableauRepositoryTest {
     private fun villageois() = Villageois(
         nom = "Curé",
         cout = 0,
-        blasons = listOf(Blason.RELIGIEUX)
+        blasons = listOf(Blason.RELIGIEUX),
+        effets = Effets()
     )
 
     @Nested
