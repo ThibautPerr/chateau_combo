@@ -5,5 +5,11 @@
   "blasons": [
     "MILITAIRE"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteClePourChaqueBlason",
+        "blason": "MILITAIRE"
+      }
+    ]}
 }

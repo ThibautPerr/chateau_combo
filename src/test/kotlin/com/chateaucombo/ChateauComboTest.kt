@@ -89,7 +89,7 @@ class ChateauComboTest {
     @Disabled
     @Test
     fun `should play multiple games`() {
-        for (i in 1..10) {
+        for (i in 1..20) {
             val joueurs = quatreJoueurs()
 
             play(joueurs)

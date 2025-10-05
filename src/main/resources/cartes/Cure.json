@@ -5,5 +5,11 @@
   "blasons": [
     "RELIGIEUX"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrParVillageois"
+      }
+    ]
+  }
 }

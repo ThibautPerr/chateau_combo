@@ -6,5 +6,12 @@
     "ERUDIT",
     "ARTISAN"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCleParCarteAvecNbBlason",
+        "nbBlason": 2
+      }
+    ]
+  }
 }

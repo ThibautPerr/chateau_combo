@@ -5,5 +5,12 @@
   "blasons": [
     "RELIGIEUX"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCleParCarteAvecNbBlason",
+        "nbBlason": 1
+      }
+    ]
+  }
 }

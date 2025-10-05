@@ -5,5 +5,13 @@
   "blasons": [
     "ARTISAN"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrParCarteAvecLeCout",
+        "orParCarte": 1,
+        "cout": "4"
+      }
+    ]
+  }
 }

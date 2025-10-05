@@ -11,7 +11,11 @@
         "type": "AjouteOrPourChaqueBlason",
         "orParBlason": 1,
         "blason": "PAYSAN"
+      },
+      {
+        "type": "AjouteCleParVillageois"
       }
-    ]
+    ],
+    "separateur": "ET"
   }
 }

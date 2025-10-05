@@ -5,5 +5,11 @@
   "blasons": [
     "PAYSAN"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCleParVillageois"
+      }
+    ]
+  }
 }

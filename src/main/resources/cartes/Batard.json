@@ -6,5 +6,11 @@
     "PAYSAN",
     "NOBLE"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteClePourChaqueBlason",
+        "blason": "NOBLE"
+      }
+    ]}
 }
