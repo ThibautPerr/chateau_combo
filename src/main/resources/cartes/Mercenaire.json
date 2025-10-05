@@ -1,0 +1,10 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Mercenaire",
+  "cout": 6,
+  "blasons": [
+    "PAYSAN",
+    "MILITAIRE"
+  ],
+  "effets": {}
+}

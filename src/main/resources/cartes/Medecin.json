@@ -1,0 +1,24 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Médecin",
+  "cout": 5,
+  "blasons": [
+    "PAYSAN",
+    "ERUDIT"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "ERUDIT"
+      },
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "PAYSAN"
+      }
+    ],
+    "separateur": "ET"
+  }
+}

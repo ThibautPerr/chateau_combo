@@ -1,0 +1,15 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Chevaleresse",
+  "cout": 5,
+  "blasons": [
+    "MILITAIRE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrParChatelain"
+      }
+    ]
+  }
+}

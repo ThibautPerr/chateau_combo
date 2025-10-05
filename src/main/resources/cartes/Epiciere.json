@@ -1,0 +1,17 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Épicière",
+  "cout": 0,
+  "blasons": [
+    "ARTISAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 2,
+        "blason": "ARTISAN"
+      }
+    ]
+  }
+}

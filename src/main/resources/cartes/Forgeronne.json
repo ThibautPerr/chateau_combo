@@ -1,0 +1,17 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Forgeronne",
+  "cout": 5,
+  "blasons": [
+    "ARTISAN",
+    "MILITAIRE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCle",
+        "cle": 2
+      }
+    ]
+  }
+}

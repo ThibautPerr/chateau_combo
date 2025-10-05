@@ -1,0 +1,17 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Voyageuse",
+  "cout": 0,
+  "blasons": [
+    "PAYSAN"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrParCarteAvecLeCout",
+        "orParCarte": 3,
+        "cout": "0"
+      }
+    ]
+  }
+}

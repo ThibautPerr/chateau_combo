@@ -1,0 +1,10 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Capitaine",
+  "cout": 5,
+  "blasons": [
+    "MILITAIRE",
+    "MILITAIRE"
+  ],
+  "effets": {}
+}

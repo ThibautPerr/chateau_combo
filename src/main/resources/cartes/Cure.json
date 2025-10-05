@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Curé",
+  "cout": 0,
+  "blasons": [
+    "RELIGIEUX"
+  ],
+  "effets": {}
+}

@@ -1,0 +1,17 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Scribe",
+  "cout": 4,
+  "blasons": [
+    "RELIGIEUX"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "RELIGIEUX"
+      }
+    ]
+  }
+}

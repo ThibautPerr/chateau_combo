@@ -1,0 +1,16 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Juge",
+  "cout": 4,
+  "blasons": [
+    "ERUDIT"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCle",
+        "cle": 2
+      }
+    ]
+  }
+}

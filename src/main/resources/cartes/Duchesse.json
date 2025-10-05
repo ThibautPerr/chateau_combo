@@ -1,0 +1,17 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Duchesse",
+  "cout": 5,
+  "blasons": [
+    "NOBLE",
+    "NOBLE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCle",
+        "cle": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Générale",
+  "cout": 7,
+  "blasons": [
+    "MILITAIRE"
+  ],
+  "effets": {}
+}

@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Bourreau",
+  "cout": 0,
+  "blasons": [
+    "MILITAIRE"
+  ],
+  "effets": {}
+}

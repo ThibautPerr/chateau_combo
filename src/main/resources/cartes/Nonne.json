@@ -1,0 +1,15 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Nonne",
+  "cout": 3,
+  "blasons": [
+    "RELIGIEUX"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrParChatelain"
+      }
+    ]
+  }
+}

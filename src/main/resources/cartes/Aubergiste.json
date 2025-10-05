@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Aubergiste",
+  "cout": 0,
+  "blasons": [
+    "ARTISAN"
+  ],
+  "effets": {}
+}

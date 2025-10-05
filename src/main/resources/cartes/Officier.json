@@ -1,0 +1,23 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Officier",
+  "cout": 5,
+  "blasons": [
+    "MILITAIRE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "NOBLE"
+      },
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "MILITAIRE"
+      }
+    ],
+    "separateur": "ET"
+  }
+}

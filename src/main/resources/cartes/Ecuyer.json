@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Écuyer",
+  "cout": 0,
+  "blasons": [
+    "MILITAIRE"
+  ],
+  "effets": {}
+}

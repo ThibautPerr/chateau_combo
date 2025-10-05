@@ -1,0 +1,10 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Moine",
+  "cout": 4,
+  "blasons": [
+    "RELIGIEUX",
+    "PAYSAN"
+  ],
+  "effets": {}
+}

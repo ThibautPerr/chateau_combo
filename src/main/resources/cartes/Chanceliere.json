@@ -1,0 +1,10 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Chancelière",
+  "cout": 6,
+  "blasons": [
+    "NOBLE",
+    "ERUDIT"
+  ],
+  "effets": {}
+}

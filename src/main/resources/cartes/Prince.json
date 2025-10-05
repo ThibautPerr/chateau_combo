@@ -1,0 +1,17 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Prince",
+  "cout": 6,
+  "blasons": [
+    "NOBLE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "NOBLE"
+      }
+    ]
+  }
+}

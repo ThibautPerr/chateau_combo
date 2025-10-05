@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Fermière",
+  "cout": 0,
+  "blasons": [
+    "PAYSAN"
+  ],
+  "effets": {}
+}

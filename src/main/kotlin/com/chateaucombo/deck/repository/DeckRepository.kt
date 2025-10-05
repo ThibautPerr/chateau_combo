@@ -6,18 +6,26 @@ import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.extension
+import kotlin.io.path.isRegularFile
+import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.readText
 
 class DeckRepository {
 
     private val mapper = jacksonObjectMapper()
 
-    fun creeDeuxDecksChatelainsEtVillageoisDepuis(file: File): Pair<Deck, Deck> {
-        val cartes = mapper.readValue<List<Carte>>(file)
+    fun creeDeuxDecksChatelainsEtVillageoisDepuis(repertoire: Path): Pair<Deck, Deck> {
+        val cartes = repertoire.deserialiseEnCartes()
         val deckChatelains = Deck(nom = "Chatelains", cartes = cartes.recupereLesChatelains().toMutableList(), estLeDeckActuel = false)
         val deckVillageois = Deck(nom = "Villageois", cartes = cartes.recupereLesVillageois().toMutableList(), estLeDeckActuel = true)
         return deckChatelains to deckVillageois
     }
+
+    private fun Path.deserialiseEnCartes() =
+        this.listDirectoryEntries().filter { it.isRegularFile() && it.extension == "json" }
+            .map { file -> mapper.readValue<Carte>(file.readText()) }
 
     private fun List<Carte>.recupereLesChatelains() = this.filterIsInstance<Chatelain>()
 

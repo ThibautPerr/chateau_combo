@@ -1,0 +1,10 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Templier",
+  "cout": 5,
+  "blasons": [
+    "MILITAIRE",
+    "RELIGIEUX"
+  ],
+  "effets": {}
+}

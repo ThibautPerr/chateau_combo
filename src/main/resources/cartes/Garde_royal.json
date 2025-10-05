@@ -1,0 +1,17 @@
+{
+  "type": "CHATELAIN",
+  "nom": "Garde royal",
+  "cout": 4,
+  "blasons": [
+    "MILITAIRE",
+    "NOBLE"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteClePourTousLesJoueurs",
+        "cle": 1
+      }
+    ]
+  }
+}

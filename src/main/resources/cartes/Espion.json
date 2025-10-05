@@ -1,0 +1,18 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Espion",
+  "cout": 4,
+  "blasons": [
+    "MILITAIRE",
+    "ERUDIT"
+  ],
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourChaqueBlason",
+        "orParBlason": 1,
+        "blason": "ERUDIT"
+      }
+    ]
+  }
+}

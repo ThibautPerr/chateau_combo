@@ -1,0 +1,9 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Révolutionnaire",
+  "cout": 4,
+  "blasons": [
+    "PAYSAN"
+  ],
+  "effets": {}
+}

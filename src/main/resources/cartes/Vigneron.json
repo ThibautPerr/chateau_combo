@@ -1,0 +1,10 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Vigneron",
+  "cout": 2,
+  "blasons": [
+    "PAYSAN",
+    "ERUDIT"
+  ],
+  "effets": {}
+}

@@ -1,0 +1,10 @@
+{
+  "type": "VILLAGEOIS",
+  "nom": "Miraculée",
+  "cout": 2,
+  "blasons": [
+    "RELIGIEUX",
+    "RELIGIEUX"
+  ],
+  "effets": {}
+}
