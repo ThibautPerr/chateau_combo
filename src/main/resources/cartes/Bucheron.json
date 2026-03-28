@@ -11,5 +11,9 @@
         "type": "AjouteOrParCartePositionee"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsSiColonneDroite",
+    "points": 5
   }
 }

@@ -1612,6 +1612,114 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsSiColonneGaucheEffet {
+        @Test
+        fun `doit ajouter les points si la carte est dans la colonne gauche`() {
+            val carte = villageois(effetScore = PointsSiColonneGauche(points = 6))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUGAUCHE)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `doit ajouter les points meme si la carte n'est pas au centre du rang`() {
+            val carte = villageois(effetScore = PointsSiColonneGauche(points = 6))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = HAUTGAUCHE)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `ne doit pas ajouter de points si la carte n'est pas dans la colonne gauche`() {
+            val carte = villageois(effetScore = PointsSiColonneGauche(points = 6))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
+    inner class PointsSiColonneMilieuEffet {
+        @Test
+        fun `doit ajouter les points si la carte est dans la colonne milieu`() {
+            val carte = villageois(effetScore = PointsSiColonneMilieu(points = 6))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `doit ajouter les points meme si la carte n'est pas au centre du rang`() {
+            val carte = villageois(effetScore = PointsSiColonneMilieu(points = 6))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = HAUTMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `ne doit pas ajouter de points si la carte n'est pas dans la colonne milieu`() {
+            val carte = villageois(effetScore = PointsSiColonneMilieu(points = 6))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUGAUCHE)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
+    inner class PointsSiColonneDroiteEffet {
+        @Test
+        fun `doit ajouter les points si la carte est dans la colonne droite`() {
+            val carte = villageois(effetScore = PointsSiColonneDroite(points = 5))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUDROITE)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(5)
+        }
+
+        @Test
+        fun `doit ajouter les points meme si la carte n'est pas au centre du rang`() {
+            val carte = villageois(effetScore = PointsSiColonneDroite(points = 5))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = HAUTDROITE)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(5)
+        }
+
+        @Test
+        fun `ne doit pas ajouter de points si la carte n'est pas dans la colonne droite`() {
+            val carte = villageois(effetScore = PointsSiColonneDroite(points = 5))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
     inner class PointsSiRangInferieurEffet {
         @Test
         fun `doit ajouter les points si la carte est dans le rang inferieur`() {

@@ -112,6 +112,9 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `PointsSiRangSuperieur` | `points: Int` — scores `points` if the card is in the top vertical row |
 | `PointsSiRangMilieu` | `points: Int` — scores `points` if the card is in the middle vertical row |
 | `PointsSiRangInferieur` | `points: Int` — scores `points` if the card is in the bottom vertical row |
+| `PointsSiColonneGauche` | `points: Int` — scores `points` if the card is in the left column |
+| `PointsSiColonneMilieu` | `points: Int` — scores `points` if the card is in the middle column |
+| `PointsSiColonneDroite` | `points: Int` — scores `points` if the card is in the right column |
 
 **`BourseScore`** is NOT an `EffetScore` — it is a plain `data class(val taille: Int)` stored in `Carte.bourse`. It holds a mutable `orDepose: Int = 0` (body property, invisible to data class equality). Scoring for bourses is handled entirely by `ScoreRepository` (see Scoring section below), not through the `effetScore` mechanism.
 

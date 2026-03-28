@@ -8,5 +8,9 @@
   ],
   "effets": {
     "effetsPassifs": [{"type": "ReduceCoutVillageois"}]
+  },
+  "effetScore": {
+    "type": "PointsSiColonneDroite",
+    "points": 8
   }
 }

@@ -19,5 +19,9 @@
       }
     ],
     "separateur": "ET"
+  },
+  "effetScore": {
+    "type": "PointsSiColonneMilieu",
+    "points": 6
   }
 }
