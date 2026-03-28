@@ -127,6 +127,42 @@ class TableauRepositoryTest {
         }
 
 
+        @Test
+        fun `doit deplacer toutes les cartes lors d'un deplacement avec plusieurs cartes`() {
+            val carte1 = villageois()
+            val carte2 = villageois()
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte1, HAUTMILIEU),
+                    CartePositionee(carte2, MILIEUMILIEU),
+                )
+            )
+
+            val deplace = repository.deplaceAGauche(tableau)
+
+            assertThat(deplace).isTrue()
+            assertThat(tableau.carteAvecPosition(HAUTGAUCHE)?.carte).isEqualTo(carte1)
+            assertThat(tableau.carteAvecPosition(MILIEUGAUCHE)?.carte).isEqualTo(carte2)
+        }
+
+        @Test
+        fun `doit empecher le deplacement si une seule carte est bloquee`() {
+            val carteBloquee = villageois()
+            val carteMobile = villageois()
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carteBloquee, HAUTGAUCHE),
+                    CartePositionee(carteMobile, MILIEUMILIEU),
+                )
+            )
+
+            val deplace = repository.deplaceAGauche(tableau)
+
+            assertThat(deplace).isFalse()
+            assertThat(tableau.carteAvecPosition(HAUTGAUCHE)?.carte).isEqualTo(carteBloquee)
+            assertThat(tableau.carteAvecPosition(MILIEUMILIEU)?.carte).isEqualTo(carteMobile)
+        }
+
         @Nested
         inner class Gauche {
 
@@ -379,6 +415,31 @@ class TableauRepositoryTest {
                     CartePositionee(deckBuilder.cure(), MILIEUDROITE),
                 )
             )
+
+        @RepeatedTest(20)
+        fun `doit renvoyer uniquement les deux positions adjacentes d'un coin`() {
+            val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(deckBuilder.cure(), HAUTGAUCHE)))
+            val positionsAutorisees = listOf(HAUTMILIEU, MILIEUGAUCHE)
+
+            val positionChoisie = repository.choisitUnePosition(tableau)
+
+            assertThat(positionsAutorisees).contains(positionChoisie)
+        }
+
+        @RepeatedTest(20)
+        fun `doit exclure les positions adjacentes deja occupees`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(deckBuilder.cure(), MILIEUMILIEU),
+                    CartePositionee(deckBuilder.cure(), HAUTMILIEU),
+                )
+            )
+            val positionsAutorisees = listOf(HAUTGAUCHE, HAUTDROITE, MILIEUGAUCHE, MILIEUDROITE, BASMILIEU)
+
+            val positionChoisie = repository.choisitUnePosition(tableau)
+
+            assertThat(positionsAutorisees).contains(positionChoisie)
+        }
 
     }
 }
