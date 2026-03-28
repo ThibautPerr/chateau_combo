@@ -6,5 +6,6 @@ data class Joueur(
     val id: Int,
     var or: Int = 15,
     var cle: Int = 2,
-    val tableau: Tableau = Tableau()
+    val tableau: Tableau = Tableau(),
+    var score: Int = 0
 )

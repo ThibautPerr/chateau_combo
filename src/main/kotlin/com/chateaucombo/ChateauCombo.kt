@@ -8,6 +8,7 @@ import com.chateaucombo.effet.model.EffetSeparateur.ET
 import com.chateaucombo.effet.model.EffetSeparateur.OU
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
+import com.chateaucombo.score.ScoreRepository
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Position.*
 import com.chateaucombo.tableau.model.Tableau
@@ -17,6 +18,7 @@ import java.nio.file.Path
 class ChateauCombo(
     private val joueurRepository: JoueurRepository,
     private val deckRepository: DeckRepository,
+    private val scoreRepository: ScoreRepository = ScoreRepository(),
 ) {
     private val logger = KotlinLogging.logger { }
 
@@ -41,6 +43,7 @@ class ChateauCombo(
             joueurs.forEach { joueur -> logger.info { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" } }
             logLesTableaux(joueurs)
         }
+        compteLeScore(joueurs)
         logger.info { "\n------------ FIN DE LA PARTIE ------------\n" }
     }
 
@@ -114,6 +117,11 @@ class ChateauCombo(
             OU -> this.effets.effets.random().apply(context)
         }
 
+    }
+
+    private fun compteLeScore(joueurs: List<Joueur>) {
+        scoreRepository.compteLeScore(joueurs)
+        joueurs.forEach { joueur -> logger.info { "Joueur ${joueur.id} : ${joueur.score} points" } }
     }
 
     private fun logLesTableaux(joueurs: List<Joueur>) {

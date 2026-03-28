@@ -94,6 +94,13 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrEnDefaussantUnChatelain` | _(none)_ |
 | `AjouteCleEnDefaussantUnVillageois` | _(none)_ |
 
+**Score effects** (`effetScore` field on `Carte` — evaluated once at end of game via `ScoreRepository.compteLeScore`; defaults to `EffetScoreVide` (0 pts)):
+
+| type | extra fields |
+|---|---|
+| `EffetScoreVide` | _(none)_ — 0 points |
+| `AjoutePoints` | `points: Int` |
+
 **Passive effects** (`effetsPassifs` field — applied at purchase time, not on placement):
 
 | type | effect |
