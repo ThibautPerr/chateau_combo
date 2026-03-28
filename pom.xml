@@ -10,15 +10,19 @@
     <name>Kotlin Maven Demo</name>
 
     <properties>
-        <kotlin.version>1.9.25</kotlin.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <kotlin.version>2.3.0</kotlin.version>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <junit.jupiter.version>5.10.2</junit.jupiter.version>
-        <mockk.version>1.13.13</mockk.version>
+        <junit.jupiter.version>6.0.3</junit.jupiter.version>
+        <mockk.version>1.14.7</mockk.version>
+        <assertj.version>3.27.7</assertj.version>
 
-        <kotlin-logging.version>7.0.3</kotlin-logging.version>
+        <kotlin-logging.version>8.0.01</kotlin-logging.version>
+        <logback.version>1.5.32</logback.version>
+        <jackson.version>2.21.2</jackson.version>
+        <surefire.version>3.5.5</surefire.version>
     </properties>
 
     <dependencies>
@@ -39,7 +43,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -71,21 +75,21 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.13</version>
+            <version>${logback.version}</version>
         </dependency>
 
         <!-- JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.17.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Module Kotlin (indispensable pour bien gérer data class et nullables) -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
-            <version>2.17.2</version>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 
@@ -99,6 +103,9 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
+                <configuration>
+                    <jvmTarget>25</jvmTarget>
+                </configuration>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -121,7 +128,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <version>${surefire.version}</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <argLine>--add-opens=java.base/java.lang=ALL-UNNAMED -Dnet.bytebuddy.experimental=true</argLine>
