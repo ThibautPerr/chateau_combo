@@ -61,12 +61,15 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
   "blasons": ["NOBLE" | "MILITAIRE" | "RELIGIEUX" | "ERUDIT" | "ARTISAN" | "PAYSAN"],
   "effets": {
     "effets": [ /* list of effect objects — omitted or empty array if no effects */ ],
+    "effetsPassifs": [ /* list of passive effect objects — omitted if none */ ],
     "separateur": "ET" | "OU"   /* only present when there are multiple effects */
-  }
+  },
+  "effetScore": { "type": "...", /* fields */ },  /* omitted if no score effect */
+  "bourse": { "taille": 5 }                       /* omitted if the card is not a bourse */
 }
 ```
 
-`blasons` can contain duplicates (e.g. two `"ARTISAN"` entries). `effets` can be an empty object `{}` when the card has no effects.
+`blasons` can contain duplicates (e.g. two `"ARTISAN"` entries). `effets` can be an empty object `{}` when the card has no effects. `effetScore` defaults to `EffetScoreVide` when absent. `bourse` is a plain object (not polymorphic) used by `ScoreRepository` to deposit gold at end of game.
 
 **Effect object shapes** (discriminated by `"type"`):
 
@@ -99,14 +102,17 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `RemplitBourses` | `nb: Int` — fills the `nb` largest `BourseScore` cards on the board to capacity (sets `orDepose = taille`) |
 | `AjouteOrDansBourses` | `or: Int` — adds up to `or` gold to every non-full bourse (capped at each bourse's remaining capacity) |
 
-**Score effects** (`effetScore` field on `Carte` — evaluated once at end of game via `ScoreRepository.compteLeScore`; defaults to `EffetScoreVide` (0 pts)):
+**Score effects** (`effetScore` field on `Carte` — evaluated once at end of game via `ScoreRepository.compteLeScore`; defaults to `EffetScoreVide` (0 pts)); receive a `ScoreContext(joueurActuel, joueurs, cartePositionee)` — note: no `decks` field unlike `EffetContext`):
 
 | type | extra fields |
 |---|---|
 | `EffetScoreVide` | _(none)_ — 0 points |
 | `AjoutePoints` | `points: Int` |
-| `BourseScore` | `taille: Int` — holds mutable `orDepose: Int = 0` (body property, invisible to data class equality); `score()` always returns 0; final score is computed separately as `orDepose * 2` per bourse after `remplitLesBourses` runs |
 | `PointsParOrDepose` | _(none)_ — scores the sum of `orDepose` across all `BourseScore` cards on the player's board |
+| `PointsSiRangSuperieur` | `points: Int` — scores `points` if the card is in the top vertical row |
+| `PointsSiRangMilieu` | `points: Int` — scores `points` if the card is in the middle vertical row |
+
+**`BourseScore`** is NOT an `EffetScore` — it is a plain `data class(val taille: Int)` stored in `Carte.bourse`. It holds a mutable `orDepose: Int = 0` (body property, invisible to data class equality). Scoring for bourses is handled entirely by `ScoreRepository` (see Scoring section below), not through the `effetScore` mechanism.
 
 **Passive effects** (`effetsPassifs` field — applied at purchase time, not on placement):
 
@@ -137,7 +143,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 
 `ScoreRepository.compteLeScore` runs at end of game per player in three steps:
 1. `remplitLesBourses` — fills each `BourseScore` card with gold from `joueur.or` (in board order, capped at remaining capacity).
-2. `updateScoreWithEffects` — sums `effetScore.score(context)` for every card (note: `BourseScore.score()` returns 0 here).
+2. `updateScoreWithEffects` — sums `effetScore.score(context)` for every card. Cards without an explicit `effetScore` use `EffetScoreVide` (0 pts). Bourse cards are not involved here.
 3. `updateScoreWithBourses` — adds `orDepose * 2` per `BourseScore` card to the player's score.
 
 ### Testing stack
