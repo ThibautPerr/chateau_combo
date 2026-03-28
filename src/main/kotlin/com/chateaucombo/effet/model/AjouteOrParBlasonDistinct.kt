@@ -1,7 +1,9 @@
 package com.chateaucombo.effet.model
 
+import com.fasterxml.jackson.annotation.JsonTypeName
 import io.github.oshai.kotlinlogging.KotlinLogging
 
+@JsonTypeName("AjouteOrParBlasonDistinct")
 class AjouteOrParBlasonDistinct : Effet {
     private val logger = KotlinLogging.logger { }
 

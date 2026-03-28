@@ -1,8 +1,10 @@
 package com.chateaucombo.effet.model
 
+import com.fasterxml.jackson.annotation.JsonTypeName
 import com.chateaucombo.deck.model.Chatelain
 import io.github.oshai.kotlinlogging.KotlinLogging
 
+@JsonTypeName("AjouteCleParChatelain")
 class AjouteCleParChatelain : Effet {
     private val logger = KotlinLogging.logger { }
 

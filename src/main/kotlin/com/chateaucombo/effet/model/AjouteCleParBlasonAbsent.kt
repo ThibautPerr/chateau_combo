@@ -1,8 +1,10 @@
 package com.chateaucombo.effet.model
 
+import com.fasterxml.jackson.annotation.JsonTypeName
 import com.chateaucombo.deck.model.Blason
 import io.github.oshai.kotlinlogging.KotlinLogging
 
+@JsonTypeName("AjouteCleParBlasonAbsent")
 class AjouteCleParBlasonAbsent : Effet {
     private val logger = KotlinLogging.logger { }
 

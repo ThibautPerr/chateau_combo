@@ -4,7 +4,8 @@ import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
-import tools.jackson.module.kotlin.jacksonObjectMapper
+import com.chateaucombo.effet.model.*
+import tools.jackson.module.kotlin.jacksonMapperBuilder
 import tools.jackson.module.kotlin.readValue
 import java.nio.file.Path
 import kotlin.io.path.extension
@@ -14,12 +15,51 @@ import kotlin.io.path.readText
 
 class DeckRepository {
 
-    private val mapper = jacksonObjectMapper()
+    private val mapper = jacksonMapperBuilder()
+        .registerSubtypes(
+            Chatelain::class.java,
+            Villageois::class.java,
+            AjouteCle::class.java,
+            AjouteCleParBlasonAbsent::class.java,
+            AjouteCleParBlasonDansTableauVoisin::class.java,
+            AjouteCleParChatelainDansTableauVoisin::class.java,
+            AjouteCleParBlasonDistinct::class.java,
+            AjouteCleParCarteAvecNbBlason::class.java,
+            AjouteCleParChatelain::class.java,
+            AjouteCleParVillageois::class.java,
+            AjouteClePourChaqueBlason::class.java,
+            AjouteClePourTousLesAdversaires::class.java,
+            AjouteClePourTousLesJoueurs::class.java,
+            AjouteCleEnDefaussantUnVillageois::class.java,
+            AjouteCleParCarteBourse::class.java,
+            AjouteOrParBlasonDistinct::class.java,
+            AjouteOrParBlasonDansTableauVoisin::class.java,
+            AjouteOrParCarteAvecLeCout::class.java,
+            AjouteOrParCartePositionee::class.java,
+            AjouteOrParEmplacementVide::class.java,
+            AjouteOrParChatelain::class.java,
+            AjouteOrParVillageois::class.java,
+            AjouteOrPourChaqueBlason::class.java,
+            AjouteOrPourTousLesAdversaires::class.java,
+            AjouteOrEnDefaussantUnVillageois::class.java,
+            AjouteOrEnDefaussantUnChatelain::class.java,
+            AjouteOrDansBourses::class.java,
+            RemplitBourses::class.java,
+            ReduceCoutVillageois::class.java,
+            ReduceCoutChatelain::class.java,
+            EffetScoreVide::class.java,
+            AjoutePoints::class.java,
+            PointsParOrDepose::class.java,
+            PointsSiRangSuperieur::class.java,
+        )
+        .build()
 
     fun creeDeuxDecksChatelainsEtVillageoisDepuis(repertoire: Path): Pair<Deck, Deck> {
         val cartes = repertoire.deserialiseEnCartes()
-        val deckChatelains = Deck(nom = "Chatelains", cartes = cartes.recupereLesChatelains().toMutableList(), estLeDeckActuel = false)
-        val deckVillageois = Deck(nom = "Villageois", cartes = cartes.recupereLesVillageois().toMutableList(), estLeDeckActuel = true)
+        val deckChatelains =
+            Deck(nom = "Chatelains", cartes = cartes.recupereLesChatelains().toMutableList(), estLeDeckActuel = false)
+        val deckVillageois =
+            Deck(nom = "Villageois", cartes = cartes.recupereLesVillageois().toMutableList(), estLeDeckActuel = true)
         return deckChatelains to deckVillageois
     }
 

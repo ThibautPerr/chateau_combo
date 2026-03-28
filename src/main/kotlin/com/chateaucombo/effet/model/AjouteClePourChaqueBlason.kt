@@ -1,9 +1,11 @@
 package com.chateaucombo.effet.model
 
+import com.fasterxml.jackson.annotation.JsonTypeName
 import com.chateaucombo.deck.model.Blason
 import com.chateaucombo.tableau.model.CartePositionee
 import io.github.oshai.kotlinlogging.KotlinLogging
 
+@JsonTypeName("AjouteClePourChaqueBlason")
 data class AjouteClePourChaqueBlason(val blason: Blason) : Effet {
     private val logger = KotlinLogging.logger { }
 

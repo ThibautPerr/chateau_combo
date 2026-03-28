@@ -1,8 +1,10 @@
 package com.chateaucombo.effet.model
 
+import com.fasterxml.jackson.annotation.JsonTypeName
 import com.chateaucombo.tableau.model.Position
 import io.github.oshai.kotlinlogging.KotlinLogging
 
+@JsonTypeName("AjouteOrParEmplacementVide")
 class AjouteOrParEmplacementVide : Effet {
     private val logger = KotlinLogging.logger { }
 

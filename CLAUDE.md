@@ -55,7 +55,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 
 ```json
 {
-  "type": "CHATELAIN" | "VILLAGEOIS",
+  "type": "Chatelain" | "Villageois",
   "nom": "Nom de la carte",
   "cout": 0–7,
   "blasons": ["NOBLE" | "MILITAIRE" | "RELIGIEUX" | "ERUDIT" | "ARTISAN" | "PAYSAN"],

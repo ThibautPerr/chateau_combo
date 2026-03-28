@@ -60,7 +60,7 @@ class DeckRepositoryTest {
         private fun alchimisteJson() =
             """
             {
-                "type": "CHATELAIN",
+                "type": "Chatelain",
                 "nom": "Alchimiste",
                 "cout": 6,
                 "blasons": ["ERUDIT"],
@@ -93,7 +93,7 @@ class DeckRepositoryTest {
             """
             {
                 "nom": "Espion",
-                "type": "VILLAGEOIS",
+                "type": "Villageois",
                 "cout": 4,
                 "blasons": [
                     "MILITAIRE",
