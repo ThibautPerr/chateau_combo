@@ -12,5 +12,10 @@
         "or": 2
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParCarteAvecCoutMinimum",
+    "points": 5,
+    "coutMinimum": 5
   }
 }
