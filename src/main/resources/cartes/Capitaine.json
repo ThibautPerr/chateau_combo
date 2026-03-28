@@ -6,5 +6,7 @@
     "MILITAIRE",
     "MILITAIRE"
   ],
-  "effets": {}
+  "effets": {
+    "effetsPassifs": [{"type": "ReduceCoutVillageois"}]
+  }
 }

@@ -5,5 +5,7 @@
   "blasons": [
     "ARTISAN"
   ],
-  "effets": {}
+  "effets": {
+    "effetsPassifs": [{"type": "ReduceCoutVillageois"}]
+  }
 }

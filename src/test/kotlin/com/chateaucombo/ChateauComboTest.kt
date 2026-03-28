@@ -86,10 +86,9 @@ class ChateauComboTest {
 
     private fun quatreJoueurs() = List(4) { Joueur(id = it) }
 
-    @Disabled
     @Test
     fun `should play multiple games`() {
-        for (i in 1..20) {
+        (1..20).forEach { i ->
             val joueurs = quatreJoueurs()
 
             play(joueurs)

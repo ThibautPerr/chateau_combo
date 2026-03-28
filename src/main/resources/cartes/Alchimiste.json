@@ -5,5 +5,7 @@
   "blasons": [
     "ERUDIT"
   ],
-  "effets": {}
+  "effets": {
+    "effetsPassifs": [{"type": "ReduceCoutVillageois"}]
+  }
 }

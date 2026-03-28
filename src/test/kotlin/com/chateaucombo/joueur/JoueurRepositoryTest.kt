@@ -4,6 +4,7 @@ import com.chateaucombo.deck.DeckBuilder
 import com.chateaucombo.deck.model.*
 import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.model.ReduceCoutVillageois
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.tableau.model.CartePositionee
@@ -480,6 +481,78 @@ class JoueurRepositoryTest {
 
             assertThat(joueur.cle).isEqualTo(cleInitiale - 1)
             assertThat(deck.cartesDisponibles).isEqualTo(nouvellesCartesDisponibles)
+        }
+    }
+
+    @Nested
+    inner class ReducCoutVillageoisPassif {
+        private fun carteAvecPassif() = Chatelain(
+            cout = 0, nom = "carte", blasons = emptyList(),
+            effets = Effets(effetsPassifs = listOf(ReduceCoutVillageois()))
+        )
+
+        private fun tableauAvecPassif(nbPassifs: Int = 1) = Tableau(
+            cartesPositionees = (1..nbPassifs).mapTo(mutableListOf()) {
+                CartePositionee(carteAvecPassif(), Position.entries[it - 1])
+            }
+        )
+
+        @Test
+        fun `doit permettre d'acheter un villageois avec une reduction de cout`() {
+            val villageois = deckBuilder.horlogere() // cout = 3
+            val joueur = Joueur(id = 1, or = 2, tableau = tableauAvecPassif())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(listOf(villageois))
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(carteChoisie).isEqualTo(villageois) // effective cost 3-1=2, player has 2
+            assertThat(joueur.or).isEqualTo(0)
+        }
+
+        @Test
+        fun `doit deduire le cout effectif apres reduction`() {
+            val villageois = deckBuilder.horlogere() // cout = 3
+            val joueur = Joueur(id = 1, or = 5, tableau = tableauAvecPassif())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(listOf(villageois))
+
+            joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(joueur.or).isEqualTo(3) // 5 - (3-1)
+        }
+
+        @Test
+        fun `ne doit pas reduire le cout d'un chatelain`() {
+            val chatelain = Chatelain(cout = 3, nom = "Noble", blasons = emptyList(), effets = Effets())
+            val joueur = Joueur(id = 1, or = 2, tableau = tableauAvecPassif())
+            val deck = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(chatelain), estLeDeckActuel = false)
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(carteChoisie).isInstanceOf(CarteVerso::class.java)
+        }
+
+        @Test
+        fun `le cout effectif ne peut pas etre negatif`() {
+            val villageois = deckBuilder.fermiere() // cout = 0
+            val joueur = Joueur(id = 1, or = 0, tableau = tableauAvecPassif())
+            val deck = deckBuilder.deckAvecTroisCartesDispos(listOf(villageois))
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(carteChoisie).isEqualTo(villageois)
+            assertThat(joueur.or).isEqualTo(0)
+        }
+
+        @Test
+        fun `plusieurs reductions se cumulent`() {
+            val villageois = deckBuilder.horlogere() // cout = 3
+            val joueur = Joueur(id = 1, or = 1, tableau = tableauAvecPassif(nbPassifs = 2))
+            val deck = deckBuilder.deckAvecTroisCartesDispos(listOf(villageois))
+
+            val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
+
+            assertThat(carteChoisie).isEqualTo(villageois) // cout effectif : 3-2=1
+            assertThat(joueur.or).isEqualTo(0)
         }
     }
 

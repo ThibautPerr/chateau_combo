@@ -22,7 +22,7 @@ mvn clean compile
 
 - Domain code (variable names, method names, class names, comments) is written in **French**.
 - Git commit messages are written in **English**.
-- Every new feature must be covered by tests. Effect tests live in `src/test/kotlin/com/chateaucombo/effet/EffetTest.kt`, one `@Nested` inner class per effect type.
+- Every new feature must be covered by tests. Effect tests live in `src/test/kotlin/com/chateaucombo/effet/EffetTest.kt`, one `@Nested` inner class per effect type. Passive effects that modify purchase behaviour are tested in `src/test/kotlin/com/chateaucombo/joueur/JoueurRepositoryTest.kt`.
 - **Always run the full test suite before committing.** Use `JAVA_HOME=/home/thibaut-perrouin/.jdks/ms-25.0.2 /home/thibaut-perrouin/.m2/wrapper/dists/apache-maven-3.9.14-bin/1cb7fhup6b5n3bed6kckbrnspv/apache-maven-3.9.14/bin/mvn test` and fix all failures before staging a commit.
 
 ## Architecture
@@ -93,6 +93,12 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrEnDefaussantUnVillageois` | _(none)_ |
 | `AjouteOrEnDefaussantUnChatelain` | _(none)_ |
 | `AjouteCleEnDefaussantUnVillageois` | _(none)_ |
+
+**Passive effects** (`effetsPassifs` field — applied at purchase time, not on placement):
+
+| type | effect |
+|---|---|
+| `ReduceCoutVillageois` | buying a villageois costs 1 less gold (min 0); stacks |
 
 ### Core game flow
 
