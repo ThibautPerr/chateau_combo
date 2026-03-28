@@ -13,5 +13,10 @@
         "blason": "ARTISAN"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangee",
+    "points": 3,
+    "blason": "ARTISAN"
   }
 }

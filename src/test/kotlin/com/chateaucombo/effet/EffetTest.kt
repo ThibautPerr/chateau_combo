@@ -1614,6 +1614,60 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParBlasonDansLaRangeeEffet {
+        @Test
+        fun `doit compter les blasons dans la meme rangee`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, NOBLE)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = HAUTDROITE),
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = MILIEUGAUCHE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParBlasonDansLaRangee(points = 3, blason = NOBLE))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = HAUTMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(9)
+        }
+
+        @Test
+        fun `ne doit pas compter les blasons des autres rangees`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = MILIEUGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = BASMILIEU),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParBlasonDansLaRangee(points = 3, blason = NOBLE))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = HAUTMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+
+        @Test
+        fun `doit retourner zero si le blason est absent de la rangee`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT)), position = HAUTGAUCHE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParBlasonDansLaRangee(points = 3, blason = NOBLE))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = HAUTMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
     inner class PointsParCarteAvecCoutExactEffet {
         @Test
         fun `doit donner des points par carte dont le cout correspond exactement`() {

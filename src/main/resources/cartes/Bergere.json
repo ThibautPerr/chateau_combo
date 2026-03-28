@@ -11,5 +11,10 @@
         "type": "AjouteOrParEmplacementVide"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangee",
+    "points": 3,
+    "blason": "PAYSAN"
   }
 }

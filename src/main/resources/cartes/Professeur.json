@@ -11,5 +11,10 @@
         "type": "AjouteOrParBlasonDistinct"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangee",
+    "points": 3,
+    "blason": "ERUDIT"
   }
 }

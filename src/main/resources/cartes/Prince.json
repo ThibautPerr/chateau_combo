@@ -13,5 +13,10 @@
         "blason": "NOBLE"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangee",
+    "points": 4,
+    "blason": "NOBLE"
   }
 }

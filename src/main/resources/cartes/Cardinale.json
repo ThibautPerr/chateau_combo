@@ -11,5 +11,10 @@
         "type": "AjouteCleParChatelain"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangee",
+    "points": 3,
+    "blason": "RELIGIEUX"
   }
 }
