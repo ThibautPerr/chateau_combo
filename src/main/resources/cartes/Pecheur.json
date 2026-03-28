@@ -8,5 +8,9 @@
   ],
   "effets": {
     "effetsPassifs": [{"type": "ReduceCoutChatelain"}]
+  },
+  "effetScore": {
+    "type": "PointsSiCoin",
+    "points": 4
   }
 }
