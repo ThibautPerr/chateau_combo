@@ -1614,6 +1614,43 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParCarteAvecNbBlasonMinimumEffet {
+        @Test
+        fun `doit donner des points par carte ayant au moins le nombre de blasons requis`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(ARTISAN, MILITAIRE)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, NOBLE)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT)), position = HAUTDROITE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParCarteAvecNbBlasonMinimum(points = 2, nbBlasonMinimum = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(4)
+        }
+
+        @Test
+        fun `doit retourner zero si aucune carte n'a suffisamment de blasons`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT)), position = HAUTGAUCHE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParCarteAvecNbBlasonMinimum(points = 2, nbBlasonMinimum = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
     inner class PointsSiCarteVersoPresenteEffet {
         @Test
         fun `doit ajouter les points si au moins une carte verso est dans le tableau`() {

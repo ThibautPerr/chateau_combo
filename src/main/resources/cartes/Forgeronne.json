@@ -18,5 +18,10 @@
       }
     ],
     "separateur": "OU"
+  },
+  "effetScore": {
+    "type": "PointsParCarteAvecNbBlasonMinimum",
+    "points": 2,
+    "nbBlasonMinimum": 2
   }
 }
