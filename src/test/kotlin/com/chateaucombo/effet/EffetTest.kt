@@ -1556,4 +1556,37 @@ class EffetTest {
             assertThat(bourse.orDepose).isEqualTo(3)
         }
     }
+
+    @Nested
+    inner class AjouteCleParCarteBourseEffet {
+        @Test
+        fun `doit ajouter une cle par carte avec bourse dans le tableau`() {
+            val cleInitiale = 2
+            val joueur = Joueur(id = 1, cle = cleInitiale, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 5)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 3)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(), position = HAUTDROITE),
+                )
+            ))
+            val carte = villageois(effets = Effets(effets = listOf(AjouteCleParCarteBourse())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.cle).isEqualTo(cleInitiale + 2)
+        }
+
+        @Test
+        fun `ne doit pas ajouter de cle si aucune carte avec bourse n'est dans le tableau`() {
+            val cleInitiale = 2
+            val joueur = Joueur(id = 1, cle = cleInitiale)
+            val carte = villageois(effets = Effets(effets = listOf(AjouteCleParCarteBourse())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.cle).isEqualTo(cleInitiale)
+        }
+    }
 }

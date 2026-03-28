@@ -6,6 +6,8 @@
     "RELIGIEUX",
     "RELIGIEUX"
   ],
-  "effets": {},
+  "effets": {
+    "effets": [{"type": "AjouteCleParCarteBourse"}]
+  },
   "effetScore": {"type": "BourseScore", "taille": 4}
 }
