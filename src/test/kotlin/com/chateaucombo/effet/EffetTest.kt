@@ -1,8 +1,7 @@
 package com.chateaucombo.effet
 
 import com.chateaucombo.deck.model.Blason
-import com.chateaucombo.deck.model.Blason.ERUDIT
-import com.chateaucombo.deck.model.Blason.RELIGIEUX
+import com.chateaucombo.deck.model.Blason.*
 import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Villageois
@@ -57,6 +56,58 @@ class EffetTest {
             carte.effets.effets.first().apply(context)
 
             assertThat(joueur.cle).isEqualTo(cleInitiale + cle)
+        }
+    }
+
+    @Nested
+    inner class AjouteCleParBlasonDistinctEffet {
+        @Test
+        fun `doit ajouter autant de cles que de types de blasons distincts sur le tableau`() {
+            val cleInitiale = 2
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE, NOBLE)), position = Position.HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(RELIGIEUX)), position = Position.HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = Position.HAUTDROITE),
+                )
+            )
+            val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDistinct())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.cle).isEqualTo(cleInitiale + 3) // MILITAIRE, NOBLE, RELIGIEUX
+        }
+
+        @Test
+        fun `ne doit compter les blasons en double qu'une seule fois`() {
+            val cleInitiale = 2
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE, MILITAIRE)), position = Position.HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE)), position = Position.HAUTMILIEU),
+                )
+            )
+            val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDistinct())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.cle).isEqualTo(cleInitiale + 1) // only MILITAIRE
+        }
+
+        @Test
+        fun `ne doit pas ajouter de cles si le tableau est vide`() {
+            val cleInitiale = 2
+            val joueur = Joueur(id = 1, cle = cleInitiale)
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDistinct())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.cle).isEqualTo(cleInitiale)
         }
     }
 
