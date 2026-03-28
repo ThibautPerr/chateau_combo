@@ -92,6 +92,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrPourTousLesAdversaires` | `or: Int` |
 | `AjouteOrEnDefaussantUnVillageois` | _(none)_ |
 | `AjouteOrEnDefaussantUnChatelain` | _(none)_ |
+| `AjouteCleEnDefaussantUnVillageois` | _(none)_ |
 
 ### Core game flow
 

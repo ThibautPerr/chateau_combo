@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = AjouteOrPourTousLesAdversaires::class, name = "AjouteOrPourTousLesAdversaires"),
     JsonSubTypes.Type(value = AjouteOrEnDefaussantUnVillageois::class, name = "AjouteOrEnDefaussantUnVillageois"),
     JsonSubTypes.Type(value = AjouteOrEnDefaussantUnChatelain::class, name = "AjouteOrEnDefaussantUnChatelain"),
+    JsonSubTypes.Type(value = AjouteCleEnDefaussantUnVillageois::class, name = "AjouteCleEnDefaussantUnVillageois"),
 )
 interface Effet {
     fun apply(context: EffetContext)
