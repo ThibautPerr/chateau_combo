@@ -5,5 +5,11 @@
   "blasons": [
     "ERUDIT"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrParBlasonDistinct"
+      }
+    ]
+  }
 }

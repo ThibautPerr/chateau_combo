@@ -6,5 +6,11 @@
     "PAYSAN",
     "MILITAIRE"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrParBlasonDistinct"
+      }
+    ]
+  }
 }
