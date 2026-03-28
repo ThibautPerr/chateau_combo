@@ -80,6 +80,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrParChatelain` | _(none)_ |
 | `AjouteOrParVillageois` | _(none)_ |
 | `AjouteOrParCarteAvecLeCout` | `orParCarte: Int`, `cout: String` |
+| `AjouteOrParCartePositionee` | _(none)_ |
 | `AjouteOrPourChaqueBlason` | `orParBlason: Int`, `blason: String` |
 | `AjouteOrPourTousLesAdversaires` | `or: Int` |
 

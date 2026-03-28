@@ -112,6 +112,40 @@ class EffetTest {
     }
 
     @Nested
+    inner class AjouteOrParCartePositioneeEffet {
+        @Test
+        fun `doit ajouter autant d'or que de cartes positionnees sur le tableau`() {
+            val orInitial = 2
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(), position = Position.HAUTGAUCHE),
+                    CartePositionee(carte = villageois(), position = Position.HAUTMILIEU),
+                    CartePositionee(carte = chatelain(), position = Position.HAUTDROITE),
+                )
+            )
+            val joueur = Joueur(id = 1, or = orInitial, tableau = tableau)
+            val carte = villageois(effets = Effets(effets = listOf(AjouteOrParCartePositionee())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.or).isEqualTo(orInitial + 3)
+        }
+
+        @Test
+        fun `ne doit pas ajouter d'or si le tableau est vide`() {
+            val orInitial = 2
+            val joueur = Joueur(id = 1, or = orInitial)
+            val carte = villageois(effets = Effets(effets = listOf(AjouteOrParCartePositionee())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.or).isEqualTo(orInitial)
+        }
+    }
+
+    @Nested
     inner class AjouteOrPourTousLesAdversairesEffet {
         @Test
         fun `doit ajouter de l'or a tous les adversaires`() {
