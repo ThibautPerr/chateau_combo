@@ -11,5 +11,10 @@
         "type": "AjouteCleParVillageois"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsSiBlasonAbsent",
+    "points": 9,
+    "blason": "NOBLE"
   }
 }

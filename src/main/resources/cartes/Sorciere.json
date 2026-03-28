@@ -18,5 +18,10 @@
       }
     ],
     "separateur": "ET"
+  },
+  "effetScore": {
+    "type": "PointsSiBlasonAbsent",
+    "points": 9,
+    "blason": "RELIGIEUX"
   }
 }

@@ -59,6 +59,7 @@ class DeckRepository {
             PointsSiColonneDroite::class.java,
             PointsSiBord::class.java,
             PointsSiCoin::class.java,
+            PointsSiBlasonAbsent::class.java,
         )
         .build()
 

@@ -11,5 +11,10 @@
         "type": "AjouteOrParEmplacementVide"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsSiBlasonAbsent",
+    "points": 10,
+    "blason": "ARTISAN"
   }
 }

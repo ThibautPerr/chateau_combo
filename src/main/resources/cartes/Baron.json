@@ -7,5 +7,10 @@
   ],
   "effets": {
     "effetsPassifs": [{"type": "ReduceCoutVillageois"}, {"type": "ReduceCoutChatelain"}]
+  },
+  "effetScore": {
+    "type": "PointsSiBlasonAbsent",
+    "points": 10,
+    "blason": "PAYSAN"
   }
 }

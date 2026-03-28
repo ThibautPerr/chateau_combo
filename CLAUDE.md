@@ -117,6 +117,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `PointsSiColonneDroite` | `points: Int` — scores `points` if the card is in the right column |
 | `PointsSiBord` | `points: Int` — scores `points` if the card is in an outer-middle position (HAUTMILIEU, MILIEUGAUCHE, MILIEUDROITE, BASMILIEU) |
 | `PointsSiCoin` | `points: Int` — scores `points` if the card is in a corner position (HAUTGAUCHE, HAUTDROITE, BASGAUCHE, BASDROITE) |
+| `PointsSiBlasonAbsent` | `points: Int`, `blason: Blason` — scores `points` if no card on the player's board has the given blason |
 
 **`BourseScore`** is NOT an `EffetScore` — it is a plain `data class(val taille: Int)` stored in `Carte.bourse`. It holds a mutable `orDepose: Int = 0` (body property, invisible to data class equality). Scoring for bourses is handled entirely by `ScoreRepository` (see Scoring section below), not through the `effetScore` mechanism.
 

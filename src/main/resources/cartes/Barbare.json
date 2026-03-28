@@ -17,5 +17,10 @@
       }
     ],
     "separateur": "OU"
+  },
+  "effetScore": {
+    "type": "PointsSiBlasonAbsent",
+    "points": 10,
+    "blason": "ERUDIT"
   }
 }
