@@ -2,8 +2,11 @@ package com.chateaucombo.score
 
 import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 class ScoreRepository {
+    private val logger = KotlinLogging.logger { }
+
     fun compteLeScore(joueurs: List<Joueur>) {
         joueurs.forEach { joueur ->
             joueur.remplitLesBourses()
@@ -26,13 +29,21 @@ class ScoreRepository {
     private fun Joueur.updateScoreWithEffects(joueurs: List<Joueur>) {
         this.score = this.tableau.cartesPositionees.sumOf { cartePositionee ->
             val context = ScoreContext(joueurActuel = this, joueurs = joueurs, cartePositionee = cartePositionee)
-            cartePositionee.carte.effetScore.score(context)
+            val points = cartePositionee.carte.effetScore.score(context)
+            if (points != 0)
+                logger.info { "Joueur ${this.id} : ${cartePositionee.carte.nom} rapporte $points point(s)" }
+            points
         }
     }
 
     private fun Joueur.updateScoreWithBourses() {
         this.score += this.tableau.cartesPositionees
-            .mapNotNull { it.carte.bourse }
-            .sumOf { bourse -> bourse.orDepose * 2 }
+            .filter { it.carte.bourse != null }
+            .sumOf { cartePositionee ->
+                val points = cartePositionee.carte.bourse!!.orDepose * 2
+                if (points != 0)
+                    logger.info { "Joueur ${this.id} : ${cartePositionee.carte.nom} (bourse) rapporte $points point(s)" }
+                points
+            }
     }
 }
