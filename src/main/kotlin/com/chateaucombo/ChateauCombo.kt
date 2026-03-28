@@ -44,7 +44,9 @@ class ChateauCombo(
             joueurs.forEach { joueur -> logger.info { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" } }
             logLesTableaux(joueurs)
         }
-        compteLeScore(joueurs)
+        logger.info { "\n------------ COMPTAGE DES POINTS ------------\n" }
+        scoreRepository.compteLesScores(joueurs)
+        logLeVainqueur(joueurs)
         logger.info { "\n------------ FIN DE LA PARTIE ------------\n" }
     }
 
@@ -119,9 +121,17 @@ class ChateauCombo(
         }
     }
 
-    private fun compteLeScore(joueurs: List<Joueur>) {
-        scoreRepository.compteLeScore(joueurs)
-        joueurs.forEach { joueur -> logger.info { "Joueur ${joueur.id} : ${joueur.score} points" } }
+    private fun logLeVainqueur(joueurs: List<Joueur>) {
+        val classement = joueurs.sortedByDescending { it.score }
+        classement.forEachIndexed { index, joueur ->
+            logger.info { "${index + 1}. Joueur ${joueur.id} — ${joueur.score} points" }
+        }
+        val scoreMax = classement.first().score
+        val vainqueurs = classement.filter { it.score == scoreMax }
+        if (vainqueurs.size == 1)
+            logger.info { "Le joueur ${vainqueurs.first().id} remporte la partie avec $scoreMax points !" }
+        else
+            logger.info { "Égalité entre les joueurs ${vainqueurs.joinToString { it.id.toString() }} avec $scoreMax points !" }
     }
 
     private fun logLesTableaux(joueurs: List<Joueur>) {

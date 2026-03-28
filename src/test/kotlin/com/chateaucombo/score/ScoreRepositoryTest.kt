@@ -7,7 +7,6 @@ import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.Effets
 import com.chateaucombo.effet.model.PointsParOrDepose
 import com.chateaucombo.effet.model.PointsSiRangSuperieur
-import com.chateaucombo.tableau.model.Position.BASGAUCHE
 import com.chateaucombo.tableau.model.Position.MILIEUMILIEU
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
@@ -30,7 +29,7 @@ class ScoreRepositoryTest {
         val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
         val joueur = Joueur(id = 1, tableau = tableau)
 
-        scoreRepository.compteLeScore(listOf(joueur))
+        scoreRepository.compteLesScores(listOf(joueur))
 
         assertThat(joueur.score).isEqualTo(5)
     }
@@ -45,7 +44,7 @@ class ScoreRepositoryTest {
         )
         val joueur = Joueur(id = 1, tableau = tableau)
 
-        scoreRepository.compteLeScore(listOf(joueur))
+        scoreRepository.compteLesScores(listOf(joueur))
 
         assertThat(joueur.score).isEqualTo(10)
     }
@@ -60,7 +59,7 @@ class ScoreRepositoryTest {
         )
         val joueur = Joueur(id = 1, tableau = tableau)
 
-        scoreRepository.compteLeScore(listOf(joueur))
+        scoreRepository.compteLesScores(listOf(joueur))
 
         assertThat(joueur.score).isEqualTo(5)
     }
@@ -81,7 +80,7 @@ class ScoreRepositoryTest {
         val joueur1 = Joueur(id = 1, tableau = tableauJoueur1)
         val joueur2 = Joueur(id = 2, tableau = tableauJoueur2)
 
-        scoreRepository.compteLeScore(listOf(joueur1, joueur2))
+        scoreRepository.compteLesScores(listOf(joueur1, joueur2))
 
         assertThat(joueur1.score).isEqualTo(5)
         assertThat(joueur2.score).isEqualTo(10)
@@ -91,7 +90,7 @@ class ScoreRepositoryTest {
     fun `le score est zero si le tableau est vide`() {
         val joueur = Joueur(id = 1)
 
-        scoreRepository.compteLeScore(listOf(joueur))
+        scoreRepository.compteLesScores(listOf(joueur))
 
         assertThat(joueur.score).isEqualTo(0)
     }
@@ -104,7 +103,7 @@ class ScoreRepositoryTest {
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
             val joueur = Joueur(id = 1, or = 3, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(6)
         }
@@ -115,7 +114,7 @@ class ScoreRepositoryTest {
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
             val joueur = Joueur(id = 1, or = 10, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(10)
         }
@@ -130,7 +129,7 @@ class ScoreRepositoryTest {
             )
             val joueur = Joueur(id = 1, or = 5, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(10)
         }
@@ -145,7 +144,7 @@ class ScoreRepositoryTest {
             )
             val joueur = Joueur(id = 1, or = 20, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(14)
         }
@@ -160,7 +159,7 @@ class ScoreRepositoryTest {
             )
             val joueur = Joueur(id = 1, or = 4, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(11)
         }
@@ -174,7 +173,7 @@ class ScoreRepositoryTest {
             )
             val joueur = Joueur(id = 1, or = 10, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(0)
         }
@@ -185,7 +184,7 @@ class ScoreRepositoryTest {
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE)))
             val joueur = Joueur(id = 1, or = 2, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(10)
         }
@@ -196,7 +195,7 @@ class ScoreRepositoryTest {
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE)))
             val joueur = Joueur(id = 1, or = 10, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(8)
         }
@@ -215,7 +214,7 @@ class ScoreRepositoryTest {
             )
             val joueur = Joueur(id = 1, or = 3, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(6 + 3)
         }
@@ -232,7 +231,7 @@ class ScoreRepositoryTest {
             )
             val joueur = Joueur(id = 1, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(5)
         }
@@ -246,7 +245,7 @@ class ScoreRepositoryTest {
             )
             val joueur = Joueur(id = 1, tableau = tableau)
 
-            scoreRepository.compteLeScore(listOf(joueur))
+            scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(0)
         }

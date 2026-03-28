@@ -7,7 +7,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 class ScoreRepository {
     private val logger = KotlinLogging.logger { }
 
-    fun compteLeScore(joueurs: List<Joueur>) {
+    fun compteLesScores(joueurs: List<Joueur>) {
         joueurs.forEach { joueur ->
             joueur.remplitLesBourses()
             joueur.updateScoreWithEffects(joueurs)
@@ -30,8 +30,7 @@ class ScoreRepository {
         this.score = this.tableau.cartesPositionees.sumOf { cartePositionee ->
             val context = ScoreContext(joueurActuel = this, joueurs = joueurs, cartePositionee = cartePositionee)
             val points = cartePositionee.carte.effetScore.score(context)
-            if (points != 0)
-                logger.info { "Joueur ${this.id} : ${cartePositionee.carte.nom} rapporte $points point(s)" }
+            logger.debug { "Joueur ${this.id} : ${cartePositionee.carte.nom} rapporte $points point(s)" }
             points
         }
     }
@@ -42,7 +41,7 @@ class ScoreRepository {
             .sumOf { cartePositionee ->
                 val points = cartePositionee.carte.bourse!!.orDepose * 2
                 if (points != 0)
-                    logger.info { "Joueur ${this.id} : ${cartePositionee.carte.nom} (bourse) rapporte $points point(s)" }
+                    logger.debug { "Joueur ${this.id} : ${cartePositionee.carte.nom} (bourse) rapporte $points point(s)" }
                 points
             }
     }
