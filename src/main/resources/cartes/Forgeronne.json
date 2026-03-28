@@ -11,7 +11,12 @@
       {
         "type": "AjouteCle",
         "cle": 2
+      },
+      {
+        "type": "AjouteOrParBlasonDansTableauVoisin",
+        "blason": "NOBLE"
       }
-    ]
+    ],
+    "separateur": "OU"
   }
 }

@@ -81,6 +81,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrParChatelain` | _(none)_ |
 | `AjouteOrParVillageois` | _(none)_ |
 | `AjouteOrParBlasonDistinct` | _(none)_ |
+| `AjouteOrParBlasonDansTableauVoisin` | `blason: Blason` |
 | `AjouteOrParCarteAvecLeCout` | `orParCarte: Int`, `cout: String` |
 | `AjouteOrParCartePositionee` | _(none)_ |
 | `AjouteOrParEmplacementVide` | _(none)_ |

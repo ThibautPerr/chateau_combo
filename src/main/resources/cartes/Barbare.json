@@ -10,7 +10,12 @@
       {
         "type": "AjouteCle",
         "cle": 2
+      },
+      {
+        "type": "AjouteOrParBlasonDansTableauVoisin",
+        "blason": "ERUDIT"
       }
-    ]
+    ],
+    "separateur": "OU"
   }
 }

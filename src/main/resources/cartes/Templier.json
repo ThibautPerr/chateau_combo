@@ -11,7 +11,12 @@
       {
         "type": "AjouteClePourChaqueBlason",
         "blason": "MILITAIRE"
+      },
+      {
+        "type": "AjouteOrParBlasonDansTableauVoisin",
+        "blason": "RELIGIEUX"
       }
-    ]
+    ],
+    "separateur": "ET"
   }
 }

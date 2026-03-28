@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = AjouteClePourTousLesAdversaires::class, name = "AjouteClePourTousLesAdversaires"),
     JsonSubTypes.Type(value = AjouteClePourTousLesJoueurs::class, name = "AjouteClePourTousLesJoueurs"),
     JsonSubTypes.Type(value = AjouteOrParBlasonDistinct::class, name = "AjouteOrParBlasonDistinct"),
+    JsonSubTypes.Type(value = AjouteOrParBlasonDansTableauVoisin::class, name = "AjouteOrParBlasonDansTableauVoisin"),
     JsonSubTypes.Type(value = AjouteOrParCarteAvecLeCout::class, name = "AjouteOrParCarteAvecLeCout"),
     JsonSubTypes.Type(value = AjouteOrParCartePositionee::class, name = "AjouteOrParCartePositionee"),
     JsonSubTypes.Type(value = AjouteOrParEmplacementVide::class, name = "AjouteOrParEmplacementVide"),
