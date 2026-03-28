@@ -114,7 +114,7 @@ class ChateauCombo(
             decks = decks
         )
         when (this.carte.effets.separateur) {
-            ET, null -> this.carte.effets.effets.forEach { it.apply(context) }
+            ET -> this.carte.effets.effets.forEach { it.apply(context) }
             OU -> this.carte.effets.effets.random().apply(context)
         }
     }
