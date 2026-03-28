@@ -7,7 +7,7 @@ data class AjouteOrDansBourses(val or: Int) : Effet {
 
     override fun apply(context: EffetContext) {
         val orDeposeTotal = context.joueurActuel.tableau.cartesPositionees
-            .mapNotNull { cartePositionee -> cartePositionee.carte.effetScore as? BourseScore }
+            .mapNotNull { cartePositionee -> cartePositionee.carte.bourse }
             .filter { bourseScore -> bourseScore.orDepose < bourseScore.taille }
             .sumOf { bourse ->
                 val orAjoute = minOf(or, bourse.taille - bourse.orDepose)

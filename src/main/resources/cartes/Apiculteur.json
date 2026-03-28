@@ -8,5 +8,5 @@
   "effets": {
     "effets": [{"type": "AjouteOrDansBourses", "or": 2}]
   },
-  "effetScore": {"type": "BourseScore", "taille": 9}
+  "bourse": {"taille": 9}
 }

@@ -7,7 +7,7 @@ class AjouteCleParCarteBourse : Effet {
 
     override fun apply(context: EffetContext) {
         val cle = context.joueurActuel.tableau.cartesPositionees
-            .count { cartePositionee -> cartePositionee.carte.effetScore is BourseScore }
+            .count { cartePositionee -> cartePositionee.carte.bourse != null }
         logger.info { "Ajout de $cle clés au joueur ${context.joueurActuel.id}" }
         context.joueurActuel.cle += cle
     }

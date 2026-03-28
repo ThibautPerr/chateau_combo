@@ -22,8 +22,8 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 
 class ScoreTest {
-    private fun villageois(effetScore: EffetScore = EffetScoreVide) =
-        Villageois(cout = 0, nom = "carte", blasons = emptyList(), effets = Effets(), effetScore = effetScore)
+    private fun villageois(effetScore: EffetScore = EffetScoreVide, bourse: BourseScore? = null) =
+        Villageois(cout = 0, nom = "carte", blasons = emptyList(), effets = Effets(), effetScore = effetScore, bourse = bourse)
 
     @Nested
     inner class AjoutePointsEffet {
@@ -60,8 +60,8 @@ class ScoreTest {
             val bourse2 = BourseScore(taille = 8).also { it.orDepose = 6 }
             val joueur = Joueur(id = 1, tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(effetScore = bourse1), position = HAUTGAUCHE),
-                    CartePositionee(carte = villageois(effetScore = bourse2), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(bourse = bourse1), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(bourse = bourse2), position = HAUTMILIEU),
                 )
             ))
             val carte = villageois(effetScore = PointsParOrDepose())
@@ -78,19 +78,6 @@ class ScoreTest {
             val context = ScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             val score = PointsParOrDepose().score(context)
-
-            assertThat(score).isEqualTo(0)
-        }
-    }
-
-    @Nested
-    inner class BourseScoreEffet {
-        @Test
-        fun `doit retourner zero points car le calcul est fait par ScoreRepository`() {
-            val carte = villageois(effetScore = BourseScore(taille = 5))
-            val context = ScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
-
-            val score = BourseScore(taille = 5).score(context)
 
             assertThat(score).isEqualTo(0)
         }

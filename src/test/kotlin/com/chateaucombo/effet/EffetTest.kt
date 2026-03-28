@@ -24,14 +24,16 @@ class EffetTest {
         cout: Int = 0,
         blasons: List<Blason> = emptyList(),
         effets: Effets = Effets(),
-        effetScore: EffetScore = EffetScoreVide
+        effetScore: EffetScore = EffetScoreVide,
+        bourse: BourseScore? = null
     ) =
         Villageois(
             cout = cout,
             nom = "carte",
             blasons = blasons,
             effets = effets,
-            effetScore = effetScore
+            effetScore = effetScore,
+            bourse = bourse
         )
 
     private fun chatelain(effets: Effets = Effets()) =
@@ -1446,7 +1448,7 @@ class EffetTest {
         fun `doit deposer l'or dans la bourse sans modifier l'or du joueur`() {
             val bourse = BourseScore(taille = 5)
             val joueur = Joueur(id = 1, or = 3, tableau = Tableau(
-                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
             val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
@@ -1464,9 +1466,9 @@ class EffetTest {
             val bourse3 = BourseScore(taille = 3)
             val joueur = Joueur(id = 1, tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(effetScore = bourse4), position = HAUTGAUCHE),
-                    CartePositionee(carte = villageois(effetScore = bourse6), position = HAUTMILIEU),
-                    CartePositionee(carte = villageois(effetScore = bourse3), position = HAUTDROITE),
+                    CartePositionee(carte = villageois(bourse = bourse4), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(bourse = bourse6), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(bourse = bourse3), position = HAUTDROITE),
                 )
             ))
             val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
@@ -1497,7 +1499,7 @@ class EffetTest {
         fun `doit ajouter deux ors dans chaque bourse ayant de la place`() {
             val bourse = BourseScore(taille = 5)
             val joueur = Joueur(id = 1, tableau = Tableau(
-                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
             val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
@@ -1513,8 +1515,8 @@ class EffetTest {
             val bourse2 = BourseScore(taille = 3)
             val joueur = Joueur(id = 1, tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(effetScore = bourse1), position = HAUTGAUCHE),
-                    CartePositionee(carte = villageois(effetScore = bourse2), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(bourse = bourse1), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(bourse = bourse2), position = HAUTMILIEU),
                 )
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
@@ -1531,7 +1533,7 @@ class EffetTest {
             val bourse = BourseScore(taille = 3)
             bourse.orDepose = 2
             val joueur = Joueur(id = 1, tableau = Tableau(
-                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
             val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
@@ -1546,7 +1548,7 @@ class EffetTest {
             val bourse = BourseScore(taille = 3)
             bourse.orDepose = 3
             val joueur = Joueur(id = 1, tableau = Tableau(
-                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
             val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
@@ -1564,8 +1566,8 @@ class EffetTest {
             val cleInitiale = 2
             val joueur = Joueur(id = 1, cle = cleInitiale, tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 5)), position = HAUTGAUCHE),
-                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 3)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(bourse = BourseScore(taille = 5)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(bourse = BourseScore(taille = 3)), position = HAUTMILIEU),
                     CartePositionee(carte = villageois(), position = HAUTDROITE),
                 )
             ))

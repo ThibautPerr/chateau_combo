@@ -8,5 +8,5 @@
   "effets": {
     "effetsPassifs": [{"type": "ReduceCoutVillageois"}]
   },
-  "effetScore": {"type": "BourseScore", "taille": 5}
+  "bourse": {"taille": 5}
 }

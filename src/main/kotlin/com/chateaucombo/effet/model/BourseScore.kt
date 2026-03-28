@@ -1,6 +1,5 @@
 package com.chateaucombo.effet.model
 
-data class BourseScore(val taille: Int) : EffetScore {
+data class BourseScore(val taille: Int) {
     var orDepose: Int = 0
-    override fun score(context: ScoreContext): Int = 0
 }

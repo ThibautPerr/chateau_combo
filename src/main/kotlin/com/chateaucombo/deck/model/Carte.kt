@@ -1,5 +1,6 @@
 package com.chateaucombo.deck.model
 
+import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.EffetScore
 import com.chateaucombo.effet.model.Effets
 import com.fasterxml.jackson.annotation.JsonSubTypes
@@ -20,4 +21,5 @@ sealed class Carte {
     abstract val blasons: List<Blason>
     abstract val effets: Effets
     abstract val effetScore: EffetScore
+    abstract val bourse: BourseScore?
 }

@@ -9,5 +9,5 @@
   "effets": {
     "effets": [{"type": "AjouteCleParCarteBourse"}]
   },
-  "effetScore": {"type": "BourseScore", "taille": 4}
+  "bourse": {"taille": 4}
 }

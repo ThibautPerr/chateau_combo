@@ -1,6 +1,5 @@
 package com.chateaucombo.score
 
-import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
 
@@ -15,7 +14,7 @@ class ScoreRepository {
 
     private fun Joueur.remplitLesBourses() {
         val bourses = this.tableau.cartesPositionees
-            .mapNotNull { it.carte.effetScore as? BourseScore }
+            .mapNotNull { it.carte.bourse }
         var orRestant = this.or
         bourses.forEach { bourse ->
             val orMis = minOf(orRestant, bourse.taille - bourse.orDepose)
@@ -33,7 +32,7 @@ class ScoreRepository {
 
     private fun Joueur.updateScoreWithBourses() {
         this.score += this.tableau.cartesPositionees
-            .mapNotNull { it.carte.effetScore as? BourseScore }
+            .mapNotNull { it.carte.bourse }
             .sumOf { bourse -> bourse.orDepose * 2 }
     }
 }

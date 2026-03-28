@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 @JsonSubTypes(
     JsonSubTypes.Type(value = EffetScoreVide::class, name = "EffetScoreVide"),
     JsonSubTypes.Type(value = AjoutePoints::class, name = "AjoutePoints"),
-    JsonSubTypes.Type(value = BourseScore::class, name = "BourseScore"),
     JsonSubTypes.Type(value = PointsParOrDepose::class, name = "PointsParOrDepose"),
     JsonSubTypes.Type(value = PointsSiRangSuperieur::class, name = "PointsSiRangSuperieur"),
 )

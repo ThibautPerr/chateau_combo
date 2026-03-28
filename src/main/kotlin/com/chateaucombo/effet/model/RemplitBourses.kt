@@ -7,7 +7,7 @@ class RemplitBourses(val nb: Int) : Effet {
 
     override fun apply(context: EffetContext) {
         val bourses = context.joueurActuel.tableau.cartesPositionees
-            .mapNotNull { it.carte.effetScore as? BourseScore }
+            .mapNotNull { it.carte.bourse }
             .sortedByDescending { it.taille }
             .take(nb)
         val orDepose = bourses.sumOf { bourse ->
