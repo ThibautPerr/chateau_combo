@@ -2,6 +2,7 @@ package com.chateaucombo.score
 
 import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.effet.model.AjoutePoints
+import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.EffetScore
 import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.Effets
@@ -41,6 +42,20 @@ class ScoreTest {
             val context = ScoreContext(joueurActuel = joueur, carte = carte)
 
             val score = EffetScoreVide.score(context)
+
+            assertThat(score).isEqualTo(0)
+        }
+    }
+
+    @Nested
+    inner class BourseScoreEffet {
+        @Test
+        fun `doit retourner zero points car le calcul est fait par ScoreRepository`() {
+            val joueur = Joueur(id = 1)
+            val carte = villageois(effetScore = BourseScore(taille = 5))
+            val context = ScoreContext(joueurActuel = joueur, carte = carte)
+
+            val score = BourseScore(taille = 5).score(context)
 
             assertThat(score).isEqualTo(0)
         }

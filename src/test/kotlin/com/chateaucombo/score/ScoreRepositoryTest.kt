@@ -2,6 +2,7 @@ package com.chateaucombo.score
 
 import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.effet.model.AjoutePoints
+import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.Effets
 import com.chateaucombo.joueur.model.Joueur
@@ -10,6 +11,7 @@ import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
 import com.chateaucombo.tableau.model.Position.HAUTMILIEU
 import com.chateaucombo.tableau.model.Tableau
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ScoreRepositoryTest {
@@ -88,5 +90,89 @@ class ScoreRepositoryTest {
         scoreRepository.compteLeScore(listOf(joueur))
 
         assertThat(joueur.score).isEqualTo(0)
+    }
+
+    @Nested
+    inner class BourseScoreEffet {
+        @Test
+        fun `doit mettre les ors dans la bourse et valoir deux points par or quand or inferieur a la taille`() {
+            val carte = villageois(effetScore = BourseScore(taille = 5))
+            val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
+            val joueur = Joueur(id = 1, or = 3, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(6)
+        }
+
+        @Test
+        fun `doit remplir la bourse au maximum quand or superieur a la taille`() {
+            val carte = villageois(effetScore = BourseScore(taille = 5))
+            val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
+            val joueur = Joueur(id = 1, or = 10, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(10)
+        }
+
+        @Test
+        fun `doit additionner la capacite de plusieurs bourses`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 3)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 4)), position = HAUTMILIEU),
+                )
+            )
+            val joueur = Joueur(id = 1, or = 5, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(10)
+        }
+
+        @Test
+        fun `doit remplir toutes les bourses quand or depasse la capacite totale`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 3)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 4)), position = HAUTMILIEU),
+                )
+            )
+            val joueur = Joueur(id = 1, or = 20, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(14)
+        }
+
+        @Test
+        fun `doit combiner bourse et effets de score par carte`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 5)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = AjoutePoints(3)), position = HAUTMILIEU),
+                )
+            )
+            val joueur = Joueur(id = 1, or = 4, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(11)
+        }
+
+        @Test
+        fun `doit retourner zero si pas de bourse dans le tableau`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                )
+            )
+            val joueur = Joueur(id = 1, or = 10, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(0)
+        }
     }
 }

@@ -6,5 +6,6 @@
     "ARTISAN",
     "ARTISAN"
   ],
-  "effets": {}
+  "effets": {},
+  "effetScore": {"type": "BourseScore", "taille": 4}
 }

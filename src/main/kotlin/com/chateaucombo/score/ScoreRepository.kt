@@ -1,5 +1,6 @@
 package com.chateaucombo.score
 
+import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
 
@@ -10,6 +11,10 @@ class ScoreRepository {
                 val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, carte = cartePositionee.carte)
                 cartePositionee.carte.effetScore.score(context)
             }
+            val capaciteTotaleBourse = joueur.tableau.cartesPositionees
+                .mapNotNull { (it.carte.effetScore as? BourseScore)?.taille }
+                .sum()
+            joueur.score += minOf(joueur.or, capaciteTotaleBourse) * 2
         }
     }
 }

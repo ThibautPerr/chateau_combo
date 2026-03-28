@@ -12,5 +12,6 @@
         "type": "AjouteOrEnDefaussantUnVillageois"
       }
     ]
-  }
+  },
+  "effetScore": {"type": "BourseScore", "taille": 8}
 }

@@ -11,5 +11,6 @@
         "type": "AjouteOrParVillageois"
       }
     ]
-  }
+  },
+  "effetScore": {"type": "BourseScore", "taille": 5}
 }

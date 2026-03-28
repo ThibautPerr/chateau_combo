@@ -13,5 +13,6 @@
         "blason": "RELIGIEUX"
       }
     ]
-  }
+  },
+  "effetScore": {"type": "BourseScore", "taille": 7}
 }

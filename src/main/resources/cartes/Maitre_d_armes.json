@@ -14,5 +14,6 @@
         "blason": "MILITAIRE"
       }
     ]
-  }
+  },
+  "effetScore": {"type": "BourseScore", "taille": 4}
 }

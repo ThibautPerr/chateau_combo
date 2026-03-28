@@ -100,6 +100,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 |---|---|
 | `EffetScoreVide` | _(none)_ — 0 points |
 | `AjoutePoints` | `points: Int` |
+| `BourseScore` | `taille: Int` — always returns 0 from `score()`; `ScoreRepository` sums all `taille` values on the board to get total bourse capacity, then adds `min(or, capacity) * 2` to the player score |
 
 **Passive effects** (`effetsPassifs` field — applied at purchase time, not on placement):
 
