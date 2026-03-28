@@ -35,16 +35,18 @@ Kotlin + Maven board game simulator for **Château Combo** (a card placement gam
 com.chateaucombo/
 ├── ChateauCombo.kt        # Main game orchestrator (9-turn loop)
 ├── deck/
-│   ├── model/             # Carte, Deck, Blason, Chatelain, Villageois
+│   ├── model/             # Carte, Deck, Blason, Chatelain, Villageois, CarteVerso
 │   └── repository/        # DeckRepository – load JSON, shuffle, draw cards
 ├── joueur/
-│   ├── model/             # Joueur – player state (gold/or, keys/clé, tableau ref)
+│   ├── model/             # Joueur – player state (gold/or, keys/clé, tableau ref, score)
 │   └── repository/        # JoueurRepository – card selection, resource updates
 ├── tableau/
-│   ├── model/             # Tableau, Position (3x3 enum), CartePositionee
+│   ├── model/             # Tableau, Position (3x3 enum), PositionHorizontale, PositionVerticale, CartePositionee
 │   └── repository/        # TableauRepository – grid placement, adjacency
+├── score/
+│   └── ScoreRepository.kt # End-of-game scoring (fills bourses then calls score effects)
 └── effet/
-    └── model/             # Effet interface, EffetContext, concrete effect impls
+    └── model/             # Effet interface, EffetContext, EffetScore, EffetPassif, concrete impls
 ```
 
 Card definitions live in `src/main/resources/cartes/` as JSON files (one file per card).
@@ -78,6 +80,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteCleParChatelain` | _(none)_ |
 | `AjouteCleParVillageois` | _(none)_ |
 | `AjouteCleParCarteAvecNbBlason` | `nbBlason: Int` |
+| `AjouteCleParCarteBourse` | _(none)_ — 1 clé per `BourseScore` card already on the board |
 | `AjouteClePourChaqueBlason` | `blason: String`, `cleParBlason: Int` |
 | `AjouteClePourTousLesJoueurs` | `cle: Int` |
 | `AjouteClePourTousLesAdversaires` | `cle: Int` |
@@ -94,7 +97,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrEnDefaussantUnChatelain` | _(none)_ |
 | `AjouteCleEnDefaussantUnVillageois` | _(none)_ |
 | `RemplitBourses` | `nb: Int` — fills the `nb` largest `BourseScore` cards on the board to capacity (sets `orDepose = taille`) |
-| `AjouteOrDansBourses` | `or: Int` — adds `or` gold to every non-full bourse (capped at each bourse's remaining capacity) |
+| `AjouteOrDansBourses` | `or: Int` — adds up to `or` gold to every non-full bourse (capped at each bourse's remaining capacity) |
 
 **Score effects** (`effetScore` field on `Carte` — evaluated once at end of game via `ScoreRepository.compteLeScore`; defaults to `EffetScoreVide` (0 pts)):
 
@@ -102,7 +105,8 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 |---|---|
 | `EffetScoreVide` | _(none)_ — 0 points |
 | `AjoutePoints` | `points: Int` |
-| `BourseScore` | `taille: Int` — always returns 0 from `score()`; holds mutable `orDepose: Int = 0` (body property, invisible to data class equality); `ScoreRepository` fills remaining capacity from `joueur.or` and scores `(orDepose + orMis) * 2` per bourse |
+| `BourseScore` | `taille: Int` — holds mutable `orDepose: Int = 0` (body property, invisible to data class equality); `score()` always returns 0; final score is computed separately as `orDepose * 2` per bourse after `remplitLesBourses` runs |
+| `PointsParOrDepose` | _(none)_ — scores the sum of `orDepose` across all `BourseScore` cards on the player's board |
 
 **Passive effects** (`effetsPassifs` field — applied at purchase time, not on placement):
 
@@ -128,6 +132,13 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 ### Board (Tableau)
 
 `Position` is a 3×3 enum that knows its adjacent positions. The first card always goes to center; subsequent cards go to an adjacent empty position (chosen randomly by default). Cards can shift within the grid when adjacency constraints apply.
+
+### Scoring
+
+`ScoreRepository.compteLeScore` runs at end of game per player in three steps:
+1. `remplitLesBourses` — fills each `BourseScore` card with gold from `joueur.or` (in board order, capped at remaining capacity).
+2. `updateScoreWithEffects` — sums `effetScore.score(context)` for every card (note: `BourseScore.score()` returns 0 here).
+3. `updateScoreWithBourses` — adds `orDepose * 2` per `BourseScore` card to the player's score.
 
 ### Testing stack
 
