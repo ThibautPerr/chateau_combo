@@ -6,5 +6,11 @@
     "RELIGIEUX",
     "ERUDIT"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrEnDefaussantUnVillageois"
+      }
+    ]
+  }
 }
