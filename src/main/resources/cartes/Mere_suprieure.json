@@ -6,6 +6,7 @@
     "RELIGIEUX",
     "RELIGIEUX"
   ],
+  "effetScore": {"type": "PointsSiRangSuperieur", "points": 5},
   "effets": {
     "effets": [
       {

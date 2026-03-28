@@ -6,6 +6,7 @@
     "NOBLE",
     "NOBLE"
   ],
+  "effetScore": {"type": "PointsSiRangSuperieur", "points": 8},
   "effets": {
     "effets": [
       {

@@ -26,7 +26,7 @@ class ScoreRepository {
 
     private fun Joueur.updateScoreWithEffects(joueurs: List<Joueur>) {
         this.score = this.tableau.cartesPositionees.sumOf { cartePositionee ->
-            val context = ScoreContext(joueurActuel = this, joueurs = joueurs, carte = cartePositionee.carte)
+            val context = ScoreContext(joueurActuel = this, joueurs = joueurs, cartePositionee = cartePositionee)
             cartePositionee.carte.effetScore.score(context)
         }
     }

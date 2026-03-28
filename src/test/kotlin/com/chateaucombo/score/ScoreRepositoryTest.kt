@@ -6,6 +6,9 @@ import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.Effets
 import com.chateaucombo.effet.model.PointsParOrDepose
+import com.chateaucombo.effet.model.PointsSiRangSuperieur
+import com.chateaucombo.tableau.model.Position.BASGAUCHE
+import com.chateaucombo.tableau.model.Position.MILIEUMILIEU
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
@@ -215,6 +218,37 @@ class ScoreRepositoryTest {
             scoreRepository.compteLeScore(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(6 + 3)
+        }
+    }
+
+    @Nested
+    inner class PointsSiRangSuperieurEffet {
+        @Test
+        fun `doit rapporter des points si la carte est dans le rang superieur`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = PointsSiRangSuperieur(points = 5)), position = HAUTGAUCHE),
+                )
+            )
+            val joueur = Joueur(id = 1, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(5)
+        }
+
+        @Test
+        fun `ne doit pas rapporter de points si la carte n'est pas dans le rang superieur`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = PointsSiRangSuperieur(points = 5)), position = MILIEUMILIEU),
+                )
+            )
+            val joueur = Joueur(id = 1, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(0)
         }
     }
 }
