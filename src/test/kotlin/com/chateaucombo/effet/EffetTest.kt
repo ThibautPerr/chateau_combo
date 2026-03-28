@@ -8,7 +8,7 @@ import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.effet.model.*
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
-import com.chateaucombo.tableau.model.Position
+import com.chateaucombo.tableau.model.Position.*
 import com.chateaucombo.tableau.model.Tableau
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
@@ -66,9 +66,9 @@ class EffetTest {
             val cleInitiale = 2
             val tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE, NOBLE)), position = Position.HAUTGAUCHE),
-                    CartePositionee(carte = villageois(blasons = listOf(RELIGIEUX)), position = Position.HAUTMILIEU),
-                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = Position.HAUTDROITE),
+                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE, NOBLE)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(RELIGIEUX)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = HAUTDROITE),
                 )
             )
             val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
@@ -85,8 +85,8 @@ class EffetTest {
             val cleInitiale = 2
             val tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE, MILITAIRE)), position = Position.HAUTGAUCHE),
-                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE)), position = Position.HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE, MILITAIRE)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(MILITAIRE)), position = HAUTMILIEU),
                 )
             )
             val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
@@ -112,15 +112,49 @@ class EffetTest {
     }
 
     @Nested
+    inner class AjouteOrParEmplacementVideEffet {
+        @Test
+        fun `doit ajouter autant d'or que d'emplacements vides sur le tableau`() {
+            val orInitial = 2
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                    CartePositionee(carte = chatelain(), position = HAUTDROITE),
+                )
+            )
+            val joueur = Joueur(id = 1, or = orInitial, tableau = tableau)
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParEmplacementVide())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.or).isEqualTo(orInitial + 6) // 9 - 3 = 6 emplacements vides
+        }
+
+        @Test
+        fun `doit ajouter neuf or si le tableau est vide`() {
+            val orInitial = 2
+            val joueur = Joueur(id = 1, or = orInitial)
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParEmplacementVide())))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.or).isEqualTo(orInitial + 9)
+        }
+    }
+
+    @Nested
     inner class AjouteOrParCartePositioneeEffet {
         @Test
         fun `doit ajouter autant d'or que de cartes positionnees sur le tableau`() {
             val orInitial = 2
             val tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(), position = Position.HAUTGAUCHE),
-                    CartePositionee(carte = villageois(), position = Position.HAUTMILIEU),
-                    CartePositionee(carte = chatelain(), position = Position.HAUTDROITE),
+                    CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                    CartePositionee(carte = chatelain(), position = HAUTDROITE),
                 )
             )
             val joueur = Joueur(id = 1, or = orInitial, tableau = tableau)
@@ -255,9 +289,9 @@ class EffetTest {
 
         private fun tableauAvecTroisChatelains() = Tableau(
             cartesPositionees = mutableListOf(
-                CartePositionee(carte = chatelain(), position = Position.HAUTGAUCHE),
-                CartePositionee(carte = chatelain(), position = Position.HAUTMILIEU),
-                CartePositionee(carte = chatelain(), position = Position.HAUTDROITE),
+                CartePositionee(carte = chatelain(), position = HAUTGAUCHE),
+                CartePositionee(carte = chatelain(), position = HAUTMILIEU),
+                CartePositionee(carte = chatelain(), position = HAUTDROITE),
             )
         )
 
@@ -265,7 +299,7 @@ class EffetTest {
         fun `ne doit pas compter les chatelains face verso`() {
             val orInitial = 2
             val tableauAvecTroisChatelains = tableauAvecTroisChatelains()
-            val carteVerso = CartePositionee(carte = chatelainVerso(), position = Position.HAUTGAUCHE)
+            val carteVerso = CartePositionee(carte = chatelainVerso(), position = HAUTGAUCHE)
             tableauAvecTroisChatelains.cartesPositionees.add(carteVerso)
             val joueur = Joueur(id = 1, or = orInitial, tableau = tableauAvecTroisChatelains)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParChatelain())))
@@ -306,9 +340,9 @@ class EffetTest {
 
         private fun tableauAvecTroisVillageois() = Tableau(
             cartesPositionees = mutableListOf(
-                CartePositionee(carte = villageois(), position = Position.HAUTGAUCHE),
-                CartePositionee(carte = villageois(), position = Position.HAUTMILIEU),
-                CartePositionee(carte = villageois(), position = Position.HAUTDROITE),
+                CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                CartePositionee(carte = villageois(), position = HAUTDROITE),
             )
         )
 
@@ -316,7 +350,7 @@ class EffetTest {
         fun `ne doit pas compter les villageois face verso`() {
             val orInitial = 2
             val tableauAvecTroisChatelains = tableauAvecTroisVillageois()
-            val carteVerso = CartePositionee(carte = villageoisVerso(), position = Position.HAUTGAUCHE)
+            val carteVerso = CartePositionee(carte = villageoisVerso(), position = HAUTGAUCHE)
             tableauAvecTroisChatelains.cartesPositionees.add(carteVerso)
             val joueur = Joueur(id = 1, or = orInitial, tableau = tableauAvecTroisChatelains)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParVillageois())))
@@ -387,9 +421,9 @@ class EffetTest {
         private fun tableauAvecTroisCartesAvecLeBlason(blason: Blason): Tableau =
             Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = Position.HAUTGAUCHE),
-                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = Position.HAUTMILIEU),
-                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = Position.HAUTDROITE),
+                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = HAUTDROITE),
                 )
             )
 
@@ -441,15 +475,15 @@ class EffetTest {
                 cartesPositionees = mutableListOf(
                     CartePositionee(
                         carte = villageois(blasons = listOf(blason, blason)),
-                        position = Position.HAUTGAUCHE
+                        position = HAUTGAUCHE
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(blason, blason)),
-                        position = Position.HAUTMILIEU
+                        position = HAUTMILIEU
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(blason, blason)),
-                        position = Position.HAUTDROITE
+                        position = HAUTDROITE
                     ),
                 )
             )
@@ -488,19 +522,19 @@ class EffetTest {
                 cartesPositionees = mutableListOf(
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX)),
-                        position = Position.HAUTGAUCHE
+                        position = HAUTGAUCHE
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX)),
-                        position = Position.HAUTMILIEU
+                        position = HAUTMILIEU
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX)),
-                        position = Position.HAUTDROITE
+                        position = HAUTDROITE
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX, ERUDIT)),
-                        position = Position.MILIEUGAUCHE
+                        position = MILIEUGAUCHE
                     ),
                 )
             )
@@ -534,19 +568,19 @@ class EffetTest {
                 cartesPositionees = mutableListOf(
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX, ERUDIT)),
-                        position = Position.HAUTGAUCHE
+                        position = HAUTGAUCHE
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX, ERUDIT)),
-                        position = Position.HAUTMILIEU
+                        position = HAUTMILIEU
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX, ERUDIT)),
-                        position = Position.HAUTDROITE
+                        position = HAUTDROITE
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(RELIGIEUX)),
-                        position = Position.MILIEUGAUCHE
+                        position = MILIEUGAUCHE
                     ),
                 )
             )
@@ -589,19 +623,19 @@ class EffetTest {
                 cartesPositionees = mutableListOf(
                     CartePositionee(
                         carte = villageois(cout = cout),
-                        position = Position.HAUTGAUCHE
+                        position = HAUTGAUCHE
                     ),
                     CartePositionee(
                         carte = villageois(cout = cout),
-                        position = Position.HAUTMILIEU
+                        position = HAUTMILIEU
                     ),
                     CartePositionee(
                         carte = villageois(cout = cout),
-                        position = Position.HAUTDROITE
+                        position = HAUTDROITE
                     ),
                     CartePositionee(
                         carte = villageois(cout = -1),
-                        position = Position.MILIEUGAUCHE
+                        position = MILIEUGAUCHE
                     ),
                 )
             )
@@ -648,9 +682,9 @@ class EffetTest {
         private fun tableauAvecTroisCartesAvecLeBlason(blason: Blason): Tableau =
             Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = Position.HAUTGAUCHE),
-                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = Position.HAUTMILIEU),
-                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = Position.HAUTDROITE),
+                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(blason)), position = HAUTDROITE),
                 )
             )
 
@@ -693,15 +727,15 @@ class EffetTest {
                 cartesPositionees = mutableListOf(
                     CartePositionee(
                         carte = villageois(blasons = listOf(blason, blason)),
-                        position = Position.HAUTGAUCHE
+                        position = HAUTGAUCHE
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(blason, blason)),
-                        position = Position.HAUTMILIEU
+                        position = HAUTMILIEU
                     ),
                     CartePositionee(
                         carte = villageois(blasons = listOf(blason, blason)),
-                        position = Position.HAUTDROITE
+                        position = HAUTDROITE
                     ),
                 )
             )
@@ -730,9 +764,9 @@ class EffetTest {
 
         private fun tableauAvecTroisChatelains() = Tableau(
             cartesPositionees = mutableListOf(
-                CartePositionee(carte = chatelain(), position = Position.HAUTGAUCHE),
-                CartePositionee(carte = chatelain(), position = Position.HAUTMILIEU),
-                CartePositionee(carte = chatelain(), position = Position.HAUTDROITE),
+                CartePositionee(carte = chatelain(), position = HAUTGAUCHE),
+                CartePositionee(carte = chatelain(), position = HAUTMILIEU),
+                CartePositionee(carte = chatelain(), position = HAUTDROITE),
             )
         )
 
@@ -740,7 +774,7 @@ class EffetTest {
         fun `ne doit pas compter les chatelains face verso`() {
             val cleInitial = 2
             val tableauAvecTroisChatelains = tableauAvecTroisChatelains()
-            val carteVerso = CartePositionee(carte = chatelainVerso(), position = Position.HAUTGAUCHE)
+            val carteVerso = CartePositionee(carte = chatelainVerso(), position = HAUTGAUCHE)
             tableauAvecTroisChatelains.cartesPositionees.add(carteVerso)
             val joueur = Joueur(id = 1, cle = cleInitial, tableau = tableauAvecTroisChatelains)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParChatelain())))
@@ -781,9 +815,9 @@ class EffetTest {
 
         private fun tableauAvecTroisVillageois() = Tableau(
             cartesPositionees = mutableListOf(
-                CartePositionee(carte = villageois(), position = Position.HAUTGAUCHE),
-                CartePositionee(carte = villageois(), position = Position.HAUTMILIEU),
-                CartePositionee(carte = villageois(), position = Position.HAUTDROITE),
+                CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                CartePositionee(carte = villageois(), position = HAUTDROITE),
             )
         )
 
@@ -791,7 +825,7 @@ class EffetTest {
         fun `ne doit pas compter les villageois face verso`() {
             val cleInitial = 2
             val tableauAvecTroisChatelains = tableauAvecTroisVillageois()
-            val carteVerso = CartePositionee(carte = villageoisVerso(), position = Position.HAUTGAUCHE)
+            val carteVerso = CartePositionee(carte = villageoisVerso(), position = HAUTGAUCHE)
             tableauAvecTroisChatelains.cartesPositionees.add(carteVerso)
             val joueur = Joueur(id = 1, cle = cleInitial, tableau = tableauAvecTroisChatelains)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParVillageois())))
