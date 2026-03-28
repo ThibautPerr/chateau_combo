@@ -502,12 +502,29 @@ class EffetTest {
 
             assertThat(joueurs.first().or).isEqualTo(orInitial)
         }
+
+        @Test
+        fun `doit ne rien faire s'il n'y a pas d'adversaires`() {
+            val orInitial = 2
+            val joueurActuel = Joueur(id = 0, or = orInitial)
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrPourTousLesAdversaires(2))))
+            val context = EffetContext(
+                joueurActuel = joueurActuel,
+                joueurs = listOf(joueurActuel),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
+                decks = emptyList()
+            )
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueurActuel.or).isEqualTo(orInitial)
+        }
     }
 
     @Nested
     inner class AjouteClePourTousLesAdversairesEffet {
         @Test
-        fun `doit ajouter une cle a tous les joueurs`() {
+        fun `doit ajouter une cle a tous les adversaires mais pas au joueur actuel`() {
             val cleInitiale = 2
             val joueurs = List(4) { Joueur(id = it, cle = cleInitiale) }
             val carte = villageois(effets = Effets(effets = listOf(AjouteClePourTousLesAdversaires(1))))
@@ -526,6 +543,23 @@ class EffetTest {
                 .forEach { joueur ->
                     assertThat(joueur.cle).isEqualTo(cleInitiale + 1)
                 }
+        }
+
+        @Test
+        fun `doit ne rien faire s'il n'y a pas d'adversaires`() {
+            val cleInitiale = 2
+            val joueurActuel = Joueur(id = 0, cle = cleInitiale)
+            val carte = villageois(effets = Effets(effets = listOf(AjouteClePourTousLesAdversaires(1))))
+            val context = EffetContext(
+                joueurActuel = joueurActuel,
+                joueurs = listOf(joueurActuel),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
+                decks = emptyList()
+            )
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueurActuel.cle).isEqualTo(cleInitiale)
         }
     }
 
@@ -548,6 +582,23 @@ class EffetTest {
             joueurs.forEach { joueur ->
                 assertThat(joueur.cle).isEqualTo(cleInitiale + 1)
             }
+        }
+
+        @Test
+        fun `doit ajouter une cle au joueur actuel contrairement a AjouteClePourTousLesAdversaires`() {
+            val cleInitiale = 2
+            val joueurActuel = Joueur(id = 0, cle = cleInitiale)
+            val carte = villageois(effets = Effets(effets = listOf(AjouteClePourTousLesJoueurs(1))))
+            val context = EffetContext(
+                joueurActuel = joueurActuel,
+                joueurs = listOf(joueurActuel),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
+                decks = emptyList()
+            )
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueurActuel.cle).isEqualTo(cleInitiale + 1)
         }
     }
 
