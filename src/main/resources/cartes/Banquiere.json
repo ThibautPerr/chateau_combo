@@ -10,7 +10,12 @@
       {
         "type": "AjouteCle",
         "cle": 3
+      },
+      {
+        "type": "AjouteOrDansBourses",
+        "or": 2
       }
-    ]
+    ],
+    "separateur": "OU"
   }
 }

@@ -1444,27 +1444,29 @@ class EffetTest {
     inner class RemplitBoursesEffet {
         @Test
         fun `doit deposer l'or dans la bourse sans modifier l'or du joueur`() {
-            val orInitial = 3
-            val carteBourse = villageois(effets = Effets(), effetScore = BourseScore(taille = 5))
-            val joueur = Joueur(id = 1, or = orInitial, tableau = Tableau(
-                cartesPositionees = mutableListOf(CartePositionee(carte = carteBourse, position = HAUTGAUCHE))
+            val bourse = BourseScore(taille = 5)
+            val joueur = Joueur(id = 1, or = 3, tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
             val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
 
             carte.effets.effets.first().apply(context)
 
-            assertThat(joueur.orBourses).isEqualTo(5)
-            assertThat(joueur.or).isEqualTo(orInitial)
+            assertThat(bourse.orDepose).isEqualTo(5)
+            assertThat(joueur.or).isEqualTo(3)
         }
 
         @Test
         fun `doit remplir au maximum deux bourses en choisissant les plus grandes`() {
+            val bourse4 = BourseScore(taille = 4)
+            val bourse6 = BourseScore(taille = 6)
+            val bourse3 = BourseScore(taille = 3)
             val joueur = Joueur(id = 1, tableau = Tableau(
                 cartesPositionees = mutableListOf(
-                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 4)), position = HAUTGAUCHE),
-                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 6)), position = HAUTMILIEU),
-                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 3)), position = HAUTDROITE),
+                    CartePositionee(carte = villageois(effetScore = bourse4), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = bourse6), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(effetScore = bourse3), position = HAUTDROITE),
                 )
             ))
             val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
@@ -1472,7 +1474,9 @@ class EffetTest {
 
             carte.effets.effets.first().apply(context)
 
-            assertThat(joueur.orBourses).isEqualTo(6 + 4)
+            assertThat(bourse6.orDepose).isEqualTo(6)
+            assertThat(bourse4.orDepose).isEqualTo(4)
+            assertThat(bourse3.orDepose).isEqualTo(0)
         }
 
         @Test
@@ -1483,7 +1487,73 @@ class EffetTest {
 
             carte.effets.effets.first().apply(context)
 
-            assertThat(joueur.orBourses).isEqualTo(0)
+            assertThat(joueur.or).isEqualTo(15)
+        }
+    }
+
+    @Nested
+    inner class AjouteOrDansBoursesEffet {
+        @Test
+        fun `doit ajouter deux ors dans chaque bourse ayant de la place`() {
+            val bourse = BourseScore(taille = 5)
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
+            ))
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(bourse.orDepose).isEqualTo(2)
+        }
+
+        @Test
+        fun `doit ajouter dans chaque bourse ayant de la place`() {
+            val bourse1 = BourseScore(taille = 5)
+            val bourse2 = BourseScore(taille = 3)
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = bourse1), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = bourse2), position = HAUTMILIEU),
+                )
+            ))
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(bourse1.orDepose).isEqualTo(2)
+            assertThat(bourse2.orDepose).isEqualTo(2)
+        }
+
+        @Test
+        fun `ne doit pas depasser la taille de la bourse`() {
+            val bourse = BourseScore(taille = 3)
+            bourse.orDepose = 2
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
+            ))
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(bourse.orDepose).isEqualTo(3)
+        }
+
+        @Test
+        fun `ne doit pas ajouter d'or dans une bourse deja pleine`() {
+            val bourse = BourseScore(taille = 3)
+            bourse.orDepose = 3
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
+            ))
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(bourse.orDepose).isEqualTo(3)
         }
     }
 }

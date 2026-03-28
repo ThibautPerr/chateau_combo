@@ -6,12 +6,15 @@ class RemplitBourses(val nb: Int) : Effet {
     private val logger = KotlinLogging.logger { }
 
     override fun apply(context: EffetContext) {
-        val orGagne = context.joueurActuel.tableau.cartesPositionees
-            .mapNotNull { (it.carte.effetScore as? BourseScore)?.taille }
-            .sortedDescending()
+        val bourses = context.joueurActuel.tableau.cartesPositionees
+            .mapNotNull { it.carte.effetScore as? BourseScore }
+            .sortedByDescending { it.taille }
             .take(nb)
-            .sum()
-        logger.info { "Joueur ${context.joueurActuel.id} remplit ses bourses et dépose $orGagne or" }
-        context.joueurActuel.orBourses += orGagne
+        val orDepose = bourses.sumOf { bourse ->
+            val orAjoute = bourse.taille - bourse.orDepose
+            bourse.orDepose = bourse.taille
+            orAjoute
+        }
+        logger.info { "Joueur ${context.joueurActuel.id} remplit ses bourses et dépose $orDepose or" }
     }
 }

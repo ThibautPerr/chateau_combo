@@ -93,6 +93,8 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrEnDefaussantUnVillageois` | _(none)_ |
 | `AjouteOrEnDefaussantUnChatelain` | _(none)_ |
 | `AjouteCleEnDefaussantUnVillageois` | _(none)_ |
+| `RemplitBourses` | `nb: Int` — fills the `nb` largest `BourseScore` cards on the board to capacity (sets `orDepose = taille`) |
+| `AjouteOrDansBourses` | `or: Int` — adds `or` gold to every non-full bourse (capped at each bourse's remaining capacity) |
 
 **Score effects** (`effetScore` field on `Carte` — evaluated once at end of game via `ScoreRepository.compteLeScore`; defaults to `EffetScoreVide` (0 pts)):
 
@@ -100,7 +102,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 |---|---|
 | `EffetScoreVide` | _(none)_ — 0 points |
 | `AjoutePoints` | `points: Int` |
-| `BourseScore` | `taille: Int` — always returns 0 from `score()`; `ScoreRepository` sums all `taille` values on the board to get total bourse capacity, then adds `min(or, capacity) * 2` to the player score |
+| `BourseScore` | `taille: Int` — always returns 0 from `score()`; holds mutable `orDepose: Int = 0` (body property, invisible to data class equality); `ScoreRepository` fills remaining capacity from `joueur.or` and scores `(orDepose + orMis) * 2` per bourse |
 
 **Passive effects** (`effetsPassifs` field — applied at purchase time, not on placement):
 
