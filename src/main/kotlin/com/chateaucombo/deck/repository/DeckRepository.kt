@@ -4,8 +4,8 @@ import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import tools.jackson.module.kotlin.jacksonObjectMapper
+import tools.jackson.module.kotlin.readValue
 import java.nio.file.Path
 import kotlin.io.path.extension
 import kotlin.io.path.isRegularFile

@@ -21,7 +21,7 @@
 
         <kotlin-logging.version>8.0.01</kotlin-logging.version>
         <logback.version>1.5.32</logback.version>
-        <jackson.version>2.21.2</jackson.version>
+        <jackson.version>3.1.0</jackson.version>
         <surefire.version>3.5.5</surefire.version>
     </properties>
 
@@ -80,14 +80,14 @@
 
         <!-- JSON -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
         <!-- Module Kotlin (indispensable pour bien gérer data class et nullables) -->
         <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
+            <groupId>tools.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
             <version>${jackson.version}</version>
         </dependency>
