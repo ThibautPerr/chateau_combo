@@ -13,5 +13,9 @@
         "blason": "PAYSAN"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsSiRangInferieur",
+    "points": 7
   }
 }

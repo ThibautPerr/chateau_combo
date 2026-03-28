@@ -12,5 +12,9 @@
         "type": "AjouteCleEnDefaussantUnVillageois"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsSiRangInferieur",
+    "points": 5
   }
 }
