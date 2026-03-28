@@ -67,7 +67,7 @@ class JoueurRepository(
     private fun Joueur.metAJourOr(carteChoisie: Carte, reductionCoutVillageois: Int, reductionCoutChatelain: Int) {
         when (carteChoisie is CarteVerso) {
             true -> this.or += 6
-            false -> this.or -= carteChoisie.coutEffectif(reductionCoutVillageois, reductionCoutChatelain)
+            false -> this.or = maxOf(0, this.or - carteChoisie.coutEffectif(reductionCoutVillageois, reductionCoutChatelain))
         }
     }
 
@@ -93,13 +93,13 @@ class JoueurRepository(
 
     fun rafraichitLeDeck(joueur: Joueur, deck: Deck) {
         deckRepository.rafraichitLeDeck(deck)
-        joueur.cle--
+        joueur.cle = maxOf(0, joueur.cle - 1)
     }
 
     fun changeLeDeckActuel(joueur: Joueur, deckActuel: Deck, prochainDeckActuel: Deck) {
         deckActuel.estLeDeckActuel = false
         prochainDeckActuel.estLeDeckActuel = true
-        joueur.cle--
+        joueur.cle = maxOf(0, joueur.cle - 1)
     }
 
 }
