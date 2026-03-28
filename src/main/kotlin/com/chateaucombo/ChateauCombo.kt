@@ -27,7 +27,7 @@ class ChateauCombo(
         logger.info { "Début de la partie" }
         val decks = setupLesDecks(pathCartes)
         decks.logCartesDisponibles()
-        for (i in 1..9) {
+        for (i in 1..ReglesDuJeu.NOMBRE_DE_TOURS) {
             logger.info { "\n------------ TOUR $i ------------\n" }
             joueurs.forEach { joueur ->
                 logger.debug { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" }

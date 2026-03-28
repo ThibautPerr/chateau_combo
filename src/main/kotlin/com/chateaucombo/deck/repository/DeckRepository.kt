@@ -1,5 +1,6 @@
 package com.chateaucombo.deck.repository
 
+import com.chateaucombo.ReglesDuJeu
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Deck
@@ -76,12 +77,12 @@ class DeckRepository {
     }
 
     fun remplitLesCartesDisponibles(deck: Deck) {
-        if (deck.cartesDisponibles.size < 3)
+        if (deck.cartesDisponibles.size < ReglesDuJeu.CARTES_DISPONIBLES_PAR_DECK)
             remplitTroisCartesDisponibles(deck)
     }
 
     private fun remplitTroisCartesDisponibles(deck: Deck) {
-        (1..(3 - deck.cartesDisponibles.size)).forEach { _ ->
+        (1..(ReglesDuJeu.CARTES_DISPONIBLES_PAR_DECK - deck.cartesDisponibles.size)).forEach { _ ->
             if (deck.cartes.isEmpty()) {
                 remplitLeDeckAvecLaDefausse(deck)
             }

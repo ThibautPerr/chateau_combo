@@ -1,5 +1,6 @@
 package com.chateaucombo.joueur.repository
 
+import com.chateaucombo.ReglesDuJeu
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.model.Deck
@@ -66,14 +67,14 @@ class JoueurRepository(
 
     private fun Joueur.metAJourOr(carteChoisie: Carte, reductionCoutVillageois: Int, reductionCoutChatelain: Int) {
         when (carteChoisie is CarteVerso) {
-            true -> this.or += 6
+            true -> this.or += ReglesDuJeu.OR_CARTE_VERSO
             false -> this.or = maxOf(0, this.or - carteChoisie.coutEffectif(reductionCoutVillageois, reductionCoutChatelain))
         }
     }
 
     private fun Joueur.metAJourCle(carteChoisie: Carte) {
         if (carteChoisie is CarteVerso) {
-            this.cle += 2
+            this.cle += ReglesDuJeu.CLES_CARTE_VERSO
         }
     }
 
