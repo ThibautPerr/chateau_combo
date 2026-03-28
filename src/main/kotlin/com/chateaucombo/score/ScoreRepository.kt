@@ -14,7 +14,7 @@ class ScoreRepository {
             val capaciteTotaleBourse = joueur.tableau.cartesPositionees
                 .mapNotNull { (it.carte.effetScore as? BourseScore)?.taille }
                 .sum()
-            joueur.score += minOf(joueur.or, capaciteTotaleBourse) * 2
+            joueur.score += minOf(joueur.orBourses + joueur.or, capaciteTotaleBourse) * 2
         }
     }
 }

@@ -174,5 +174,27 @@ class ScoreRepositoryTest {
 
             assertThat(joueur.score).isEqualTo(0)
         }
+
+        @Test
+        fun `doit combiner l'or des bourses pre-remplies avec l'or du joueur`() {
+            val carte = villageois(effetScore = BourseScore(taille = 5))
+            val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
+            val joueur = Joueur(id = 1, or = 2, orBourses = 3, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(10)
+        }
+
+        @Test
+        fun `les bourses pre-remplies ne depassent pas la capacite totale`() {
+            val carte = villageois(effetScore = BourseScore(taille = 4))
+            val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
+            val joueur = Joueur(id = 1, or = 10, orBourses = 6, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(8)
+        }
     }
 }

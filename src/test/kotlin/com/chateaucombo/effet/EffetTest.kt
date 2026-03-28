@@ -23,13 +23,15 @@ class EffetTest {
     private fun villageois(
         cout: Int = 0,
         blasons: List<Blason> = emptyList(),
-        effets: Effets = Effets()
+        effets: Effets = Effets(),
+        effetScore: EffetScore = EffetScoreVide
     ) =
         Villageois(
             cout = cout,
             nom = "carte",
             blasons = blasons,
-            effets = effets
+            effets = effets,
+            effetScore = effetScore
         )
 
     private fun chatelain(effets: Effets = Effets()) =
@@ -1435,6 +1437,53 @@ class EffetTest {
             carte.effets.effets.first().apply(context)
 
             assertThat(dernierJoueur.cle).isEqualTo(cleInitiale + 1)
+        }
+    }
+
+    @Nested
+    inner class RemplitBoursesEffet {
+        @Test
+        fun `doit deposer l'or dans la bourse sans modifier l'or du joueur`() {
+            val orInitial = 3
+            val carteBourse = villageois(effets = Effets(), effetScore = BourseScore(taille = 5))
+            val joueur = Joueur(id = 1, or = orInitial, tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carte = carteBourse, position = HAUTGAUCHE))
+            ))
+            val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.orBourses).isEqualTo(5)
+            assertThat(joueur.or).isEqualTo(orInitial)
+        }
+
+        @Test
+        fun `doit remplir au maximum deux bourses en choisissant les plus grandes`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 4)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 6)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(effetScore = BourseScore(taille = 3)), position = HAUTDROITE),
+                )
+            ))
+            val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.orBourses).isEqualTo(6 + 4)
+        }
+
+        @Test
+        fun `ne doit pas modifier les bourses si aucune carte avec bourse n'est dans le tableau`() {
+            val joueur = Joueur(id = 1)
+            val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueur.orBourses).isEqualTo(0)
         }
     }
 }
