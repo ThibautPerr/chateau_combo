@@ -22,6 +22,7 @@ mvn clean compile
 
 - Domain code (variable names, method names, class names, comments) is written in **French**.
 - Git commit messages are written in **English**.
+- Every new feature must be covered by tests. Effect tests live in `src/test/kotlin/com/chateaucombo/effet/EffetTest.kt`, one `@Nested` inner class per effect type.
 
 ## Architecture
 
@@ -79,6 +80,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteOrParVillageois` | _(none)_ |
 | `AjouteOrParCarteAvecLeCout` | `orParCarte: Int`, `cout: String` |
 | `AjouteOrPourChaqueBlason` | `orParBlason: Int`, `blason: String` |
+| `AjouteOrPourTousLesAdversaires` | `or: Int` |
 
 ### Core game flow
 

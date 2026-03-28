@@ -61,6 +61,47 @@ class EffetTest {
     }
 
     @Nested
+    inner class AjouteOrPourTousLesAdversairesEffet {
+        @Test
+        fun `doit ajouter de l'or a tous les adversaires`() {
+            val orInitial = 2
+            val joueurs = List(4) { Joueur(id = it, or = orInitial) }
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrPourTousLesAdversaires(2))))
+            val context = EffetContext(
+                joueurActuel = joueurs.first(),
+                joueurs = joueurs,
+                carte = carte,
+                decks = emptyList()
+            )
+
+            carte.effets.effets.first().apply(context)
+
+            joueurs
+                .filter { it.id != joueurs.first().id }
+                .forEach { joueur ->
+                    assertThat(joueur.or).isEqualTo(orInitial + 2)
+                }
+        }
+
+        @Test
+        fun `ne doit pas ajouter d'or au joueur actuel`() {
+            val orInitial = 2
+            val joueurs = List(4) { Joueur(id = it, or = orInitial) }
+            val carte = chatelain(effets = Effets(effets = listOf(AjouteOrPourTousLesAdversaires(2))))
+            val context = EffetContext(
+                joueurActuel = joueurs.first(),
+                joueurs = joueurs,
+                carte = carte,
+                decks = emptyList()
+            )
+
+            carte.effets.effets.first().apply(context)
+
+            assertThat(joueurs.first().or).isEqualTo(orInitial)
+        }
+    }
+
+    @Nested
     inner class AjouteClePourTousLesAdversairesEffet {
         @Test
         fun `doit ajouter une cle a tous les joueurs`() {

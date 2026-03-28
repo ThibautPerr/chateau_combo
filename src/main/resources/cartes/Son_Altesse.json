@@ -6,5 +6,12 @@
     "NOBLE",
     "RELIGIEUX"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourTousLesAdversaires",
+        "or": 1
+      }
+    ]
+  }
 }

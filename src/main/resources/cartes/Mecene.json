@@ -5,5 +5,12 @@
   "blasons": [
     "ERUDIT"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteOrPourTousLesAdversaires",
+        "or": 2
+      }
+    ]
+  }
 }
