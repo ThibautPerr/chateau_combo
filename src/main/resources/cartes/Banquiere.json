@@ -5,6 +5,7 @@
   "blasons": [
     "ARTISAN"
   ],
+  "effetScore": {"type": "PointsParOrDepose"},
   "effets": {
     "effets": [
       {

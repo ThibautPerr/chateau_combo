@@ -5,6 +5,7 @@ import com.chateaucombo.effet.model.AjoutePoints
 import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.model.PointsParOrDepose
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
@@ -195,6 +196,25 @@ class ScoreRepositoryTest {
             scoreRepository.compteLeScore(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(8)
+        }
+    }
+
+    @Nested
+    inner class PointsParOrDeposeEffet {
+        @Test
+        fun `doit compter l'or total dans les bourses incluant l'or du joueur verse en fin de partie`() {
+            val bourse = BourseScore(taille = 5)
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = PointsParOrDepose()), position = HAUTMILIEU),
+                )
+            )
+            val joueur = Joueur(id = 1, or = 3, tableau = tableau)
+
+            scoreRepository.compteLeScore(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(6 + 3)
         }
     }
 }

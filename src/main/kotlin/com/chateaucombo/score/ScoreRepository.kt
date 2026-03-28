@@ -7,8 +7,20 @@ import com.chateaucombo.joueur.model.Joueur
 class ScoreRepository {
     fun compteLeScore(joueurs: List<Joueur>) {
         joueurs.forEach { joueur ->
+            joueur.remplitLesBourses()
             joueur.updateScoreWithEffects(joueurs)
             joueur.updateScoreWithBourses()
+        }
+    }
+
+    private fun Joueur.remplitLesBourses() {
+        val bourses = this.tableau.cartesPositionees
+            .mapNotNull { it.carte.effetScore as? BourseScore }
+        var orRestant = this.or
+        bourses.forEach { bourse ->
+            val orMis = minOf(orRestant, bourse.taille - bourse.orDepose)
+            orRestant -= orMis
+            bourse.orDepose += orMis
         }
     }
 
@@ -20,13 +32,8 @@ class ScoreRepository {
     }
 
     private fun Joueur.updateScoreWithBourses() {
-        val bourses = this.tableau.cartesPositionees
+        this.score += this.tableau.cartesPositionees
             .mapNotNull { it.carte.effetScore as? BourseScore }
-        var orRestant = this.or
-        this.score += bourses.sumOf { bourse ->
-            val orMis = minOf(orRestant, bourse.taille - bourse.orDepose)
-            orRestant -= orMis
-            (bourse.orDepose + orMis) * 2
-        }
+            .sumOf { bourse -> bourse.orDepose * 2 }
     }
 }

@@ -6,8 +6,13 @@ import com.chateaucombo.effet.model.BourseScore
 import com.chateaucombo.effet.model.EffetScore
 import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.model.PointsParOrDepose
 import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
+import com.chateaucombo.tableau.model.CartePositionee
+import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
+import com.chateaucombo.tableau.model.Position.HAUTMILIEU
+import com.chateaucombo.tableau.model.Tableau
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -42,6 +47,38 @@ class ScoreTest {
             val context = ScoreContext(joueurActuel = joueur, carte = carte)
 
             val score = EffetScoreVide.score(context)
+
+            assertThat(score).isEqualTo(0)
+        }
+    }
+
+    @Nested
+    inner class PointsParOrDeposeEffet {
+        @Test
+        fun `doit retourner le total d'or depose dans les bourses`() {
+            val bourse1 = BourseScore(taille = 5).also { it.orDepose = 3 }
+            val bourse2 = BourseScore(taille = 8).also { it.orDepose = 6 }
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = bourse1), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(effetScore = bourse2), position = HAUTMILIEU),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParOrDepose())
+            val context = ScoreContext(joueurActuel = joueur, carte = carte)
+
+            val score = PointsParOrDepose().score(context)
+
+            assertThat(score).isEqualTo(9)
+        }
+
+        @Test
+        fun `doit retourner zero si aucune bourse sur le tableau`() {
+            val joueur = Joueur(id = 1)
+            val carte = villageois(effetScore = PointsParOrDepose())
+            val context = ScoreContext(joueurActuel = joueur, carte = carte)
+
+            val score = PointsParOrDepose().score(context)
 
             assertThat(score).isEqualTo(0)
         }

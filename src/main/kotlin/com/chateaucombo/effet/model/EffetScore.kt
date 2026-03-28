@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = EffetScoreVide::class, name = "EffetScoreVide"),
     JsonSubTypes.Type(value = AjoutePoints::class, name = "AjoutePoints"),
     JsonSubTypes.Type(value = BourseScore::class, name = "BourseScore"),
+    JsonSubTypes.Type(value = PointsParOrDepose::class, name = "PointsParOrDepose"),
 )
 interface EffetScore {
     fun score(context: ScoreContext): Int
