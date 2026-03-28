@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 )
 @JsonSubTypes(
     JsonSubTypes.Type(value = AjouteCle::class, name = "AjouteCle"),
+    JsonSubTypes.Type(value = AjouteCleParBlasonAbsent::class, name = "AjouteCleParBlasonAbsent"),
     JsonSubTypes.Type(value = AjouteCleParBlasonDistinct::class, name = "AjouteCleParBlasonDistinct"),
     JsonSubTypes.Type(value = AjouteCleParCarteAvecNbBlason::class, name = "AjouteCleParCarteAvecNbBlason"),
     JsonSubTypes.Type(value = AjouteCleParChatelain::class, name = "AjouteCleParChatelain"),

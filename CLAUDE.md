@@ -70,6 +70,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | type | extra fields |
 |---|---|
 | `AjouteCle` | `cle: Int` |
+| `AjouteCleParBlasonAbsent` | _(none)_ |
 | `AjouteCleParBlasonDistinct` | _(none)_ |
 | `AjouteCleParChatelain` | _(none)_ |
 | `AjouteCleParVillageois` | _(none)_ |

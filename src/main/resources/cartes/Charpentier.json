@@ -5,5 +5,11 @@
   "blasons": [
     "ARTISAN"
   ],
-  "effets": {}
+  "effets": {
+    "effets": [
+      {
+        "type": "AjouteCleParBlasonAbsent"
+      }
+    ]
+  }
 }
