@@ -123,6 +123,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `PointsParCarteAvecCoutMinimum` | `points: Int`, `coutMinimum: Int` — scores `points` per card on the board whose printed `cout` is ≥ `coutMinimum` |
 | `PointsSiCarteVersoPresente` | `points: Int` — scores `points` if at least one `CarteVerso` is on the player's board |
 | `PointsParCarteAvecNbBlasonMinimum` | `points: Int`, `nbBlasonMinimum: Int` — scores `points` per card whose total blason count (including duplicates) is ≥ `nbBlasonMinimum` |
+| `PointsParCarteAvecCoutExact` | `points: Int`, `cout: Int` — scores `points` per card on the board whose printed `cout` equals `cout` exactly |
 
 **`BourseScore`** is NOT an `EffetScore` — it is a plain `data class(val taille: Int)` stored in `Carte.bourse`. It holds a mutable `orDepose: Int = 0` (body property, invisible to data class equality). Scoring for bourses is handled entirely by `ScoreRepository` (see Scoring section below), not through the `effetScore` mechanism.
 

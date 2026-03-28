@@ -13,5 +13,10 @@
         "cout": "4"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParCarteAvecCoutExact",
+    "points": 3,
+    "cout": 4
   }
 }

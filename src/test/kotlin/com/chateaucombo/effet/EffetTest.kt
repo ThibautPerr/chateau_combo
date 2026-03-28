@@ -1614,6 +1614,43 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParCarteAvecCoutExactEffet {
+        @Test
+        fun `doit donner des points par carte dont le cout correspond exactement`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(cout = 0), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(cout = 0), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(cout = 3), position = HAUTDROITE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParCarteAvecCoutExact(points = 2, cout = 0))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(4)
+        }
+
+        @Test
+        fun `doit retourner zero si aucune carte n'a le cout exact`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(cout = 3), position = HAUTGAUCHE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParCarteAvecCoutExact(points = 2, cout = 0))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
     inner class PointsParCarteAvecNbBlasonMinimumEffet {
         @Test
         fun `doit donner des points par carte ayant au moins le nombre de blasons requis`() {
