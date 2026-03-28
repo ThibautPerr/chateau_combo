@@ -1614,6 +1614,43 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsSiCarteVersoPresenteEffet {
+        @Test
+        fun `doit ajouter les points si au moins une carte verso est dans le tableau`() {
+            val carteOriginale = villageois()
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = CarteVerso(carteOriginale = carteOriginale), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                )
+            ))
+            val carte = villageois(effetScore = PointsSiCarteVersoPresente(points = 8))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(8)
+        }
+
+        @Test
+        fun `ne doit pas ajouter de points si aucune carte verso n'est dans le tableau`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsSiCarteVersoPresente(points = 8))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
     inner class PointsParCarteAvecCoutMinimumEffet {
         @Test
         fun `doit donner des points par carte dont le cout est superieur ou egal au minimum`() {

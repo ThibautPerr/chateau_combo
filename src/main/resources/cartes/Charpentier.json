@@ -11,5 +11,9 @@
         "type": "AjouteCleParBlasonAbsent"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsSiCarteVersoPresente",
+    "points": 8
   }
 }
