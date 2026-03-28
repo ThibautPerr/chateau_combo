@@ -18,9 +18,14 @@ mvn test -Dtest=ChateauComboTest
 mvn clean compile
 ```
 
+## Conventions
+
+- Domain code (variable names, method names, class names, comments) is written in **French**.
+- Git commit messages are written in **English**.
+
 ## Architecture
 
-Kotlin + Maven board game simulator for **Château Combo** (a card placement game). Java 17, Kotlin 1.9.25.
+Kotlin + Maven board game simulator for **Château Combo** (a card placement game). Java 25, Kotlin 2.3.
 
 ### Package structure
 
@@ -40,7 +45,40 @@ com.chateaucombo/
     └── model/             # Effet interface, EffetContext, concrete effect impls
 ```
 
-Card definitions live in `src/main/resources/cartes/` as JSON files.
+Card definitions live in `src/main/resources/cartes/` as JSON files (one file per card).
+
+### Card JSON structure
+
+```json
+{
+  "type": "CHATELAIN" | "VILLAGEOIS",
+  "nom": "Nom de la carte",
+  "cout": 0–7,
+  "blasons": ["NOBLE" | "MILITAIRE" | "RELIGIEUX" | "ERUDIT" | "ARTISAN" | "PAYSAN"],
+  "effets": {
+    "effets": [ /* list of effect objects — omitted or empty array if no effects */ ],
+    "separateur": "ET" | "OU"   /* only present when there are multiple effects */
+  }
+}
+```
+
+`blasons` can contain duplicates (e.g. two `"ARTISAN"` entries). `effets` can be an empty object `{}` when the card has no effects.
+
+**Effect object shapes** (discriminated by `"type"`):
+
+| type | extra fields |
+|---|---|
+| `AjouteCle` | `cle: Int` |
+| `AjouteCleParChatelain` | _(none)_ |
+| `AjouteCleParVillageois` | _(none)_ |
+| `AjouteCleParCarteAvecNbBlason` | `nbBlason: Int` |
+| `AjouteClePourChaqueBlason` | `blason: String`, `cleParBlason: Int` |
+| `AjouteClePourTousLesJoueurs` | `cle: Int` |
+| `AjouteClePourTousLesAdversaires` | `cle: Int` |
+| `AjouteOrParChatelain` | _(none)_ |
+| `AjouteOrParVillageois` | _(none)_ |
+| `AjouteOrParCarteAvecLeCout` | `orParCarte: Int`, `cout: String` |
+| `AjouteOrPourChaqueBlason` | `orParBlason: Int`, `blason: String` |
 
 ### Core game flow
 
@@ -50,7 +88,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files.
 
 ### Effect system
 
-`Effet` is a sealed polymorphic interface deserialized via Jackson `@JsonTypeInfo`/`@JsonSubTypes`. Concrete implementations follow the naming pattern `Ajoute{Resource}{Scope}` (e.g. `AjouteCleParCarteChatelain`). Multiple effects on a card are combined with a `separateur`: `ET` (all fire in order) or `OU` (one chosen randomly).
+`Effet` is a sealed polymorphic interface deserialized via Jackson `@JsonTypeInfo`/`@JsonSubTypes` (Jackson 3, `tools.jackson` packages). Concrete implementations follow the naming pattern `Ajoute{Resource}{Scope}` (e.g. `AjouteCleParCarteChatelain`). Multiple effects on a card are combined with a `separateur`: `ET` (all fire in order) or `OU` (one chosen randomly).
 
 ### Deck management
 
@@ -62,4 +100,4 @@ Card definitions live in `src/main/resources/cartes/` as JSON files.
 
 ### Testing stack
 
-JUnit Jupiter 5 + AssertJ + MockK. The Surefire plugin is configured with `--add-opens=java.base/java.lang=ALL-UNNAMED` and `-Dnet.bytebuddy.experimental=true` for MockK compatibility — do not remove these JVM args.
+JUnit Jupiter 6 + AssertJ + MockK. The Surefire plugin is configured with `--add-opens=java.base/java.lang=ALL-UNNAMED` and `-Dnet.bytebuddy.experimental=true` for MockK compatibility — do not remove these JVM args.
