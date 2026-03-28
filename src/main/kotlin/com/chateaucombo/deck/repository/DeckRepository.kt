@@ -61,6 +61,7 @@ class DeckRepository {
             PointsSiCoin::class.java,
             PointsSiBlasonAbsent::class.java,
             PointsParCle::class.java,
+            PointsParCarteAvecReductionDeCout::class.java,
         )
         .build()
 
