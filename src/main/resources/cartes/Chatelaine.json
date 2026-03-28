@@ -6,5 +6,7 @@
     "NOBLE",
     "ARTISAN"
   ],
-  "effets": {}
+  "effets": {
+    "effetsPassifs": [{"type": "ReduceCoutChatelain"}]
+  }
 }

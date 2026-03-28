@@ -6,5 +6,7 @@
     "PAYSAN",
     "PAYSAN"
   ],
-  "effets": {}
+  "effets": {
+    "effetsPassifs": [{"type": "ReduceCoutChatelain"}]
+  }
 }

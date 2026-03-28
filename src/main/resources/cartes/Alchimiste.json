@@ -6,6 +6,6 @@
     "ERUDIT"
   ],
   "effets": {
-    "effetsPassifs": [{"type": "ReduceCoutVillageois"}]
+    "effetsPassifs": [{"type": "ReduceCoutVillageois"}, {"type": "ReduceCoutChatelain"}]
   }
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     property = "type"
 )
 @JsonSubTypes(
-    JsonSubTypes.Type(value = ReduceCoutVillageois::class, name = "ReduceCoutVillageois")
+    JsonSubTypes.Type(value = ReduceCoutVillageois::class, name = "ReduceCoutVillageois"),
+    JsonSubTypes.Type(value = ReduceCoutChatelain::class, name = "ReduceCoutChatelain"),
 )
 interface EffetPassif

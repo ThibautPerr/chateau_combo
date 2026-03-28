@@ -99,6 +99,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | type | effect |
 |---|---|
 | `ReduceCoutVillageois` | buying a villageois costs 1 less gold (min 0); stacks |
+| `ReduceCoutChatelain` | buying a chatelain costs 1 less gold (min 0); stacks |
 
 ### Core game flow
 

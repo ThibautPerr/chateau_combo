@@ -3,8 +3,10 @@ package com.chateaucombo.joueur.repository
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.model.Deck
+import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.deck.repository.DeckRepository
+import com.chateaucombo.effet.model.ReduceCoutChatelain
 import com.chateaucombo.effet.model.ReduceCoutVillageois
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.Position
@@ -17,10 +19,11 @@ class JoueurRepository(
     fun choisitUneCarte(joueur: Joueur, deck: Deck): Carte {
         val cartesDisponibles = deck.cartesDisponibles
         val reductionCoutVillageois = joueur.reductionCoutVillageois()
+        val reductionCoutChatelain = joueur.reductionCoutChatelain()
         val cartesAchetables =
-            cartesDisponibles.filter { carte -> joueur.or >= carte.coutEffectif(reductionCoutVillageois) }
+            cartesDisponibles.filter { carte -> joueur.or >= carte.coutEffectif(reductionCoutVillageois, reductionCoutChatelain) }
         val carteChoisie = choisitUneCarte(cartesAchetables, cartesDisponibles)
-        joueur.metAJourOr(carteChoisie, reductionCoutVillageois)
+        joueur.metAJourOr(carteChoisie, reductionCoutVillageois, reductionCoutChatelain)
         joueur.metAJourCle(carteChoisie)
         deck.retireLaCarte(carteChoisie)
         return carteChoisie
@@ -32,9 +35,16 @@ class JoueurRepository(
             .filterIsInstance<ReduceCoutVillageois>()
             .size
 
-    private fun Carte.coutEffectif(reductionVillageois: Int): Int =
+    private fun Joueur.reductionCoutChatelain(): Int =
+        this.tableau.cartesPositionees
+            .flatMap { it.carte.effets.effetsPassifs }
+            .filterIsInstance<ReduceCoutChatelain>()
+            .size
+
+    private fun Carte.coutEffectif(reductionVillageois: Int, reductionChatelain: Int): Int =
         when (this) {
             is Villageois -> maxOf(0, this.cout - reductionVillageois)
+            is Chatelain -> maxOf(0, this.cout - reductionChatelain)
             else -> this.cout
         }
 
@@ -54,10 +64,10 @@ class JoueurRepository(
             }
         }
 
-    private fun Joueur.metAJourOr(carteChoisie: Carte, reductionCoutVillageois: Int) {
+    private fun Joueur.metAJourOr(carteChoisie: Carte, reductionCoutVillageois: Int, reductionCoutChatelain: Int) {
         when (carteChoisie is CarteVerso) {
             true -> this.or += 6
-            false -> this.or -= carteChoisie.coutEffectif(reductionCoutVillageois)
+            false -> this.or -= carteChoisie.coutEffectif(reductionCoutVillageois, reductionCoutChatelain)
         }
     }
 
