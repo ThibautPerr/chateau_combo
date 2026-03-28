@@ -2,6 +2,7 @@ package com.chateaucombo
 
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Deck
+import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.effet.model.EffetContext
 import com.chateaucombo.effet.model.EffetSeparateur.ET
@@ -33,8 +34,8 @@ class ChateauCombo(
                 joueur.utiliseUneCle(decks)
 
                 val currentDeck = decks.first { it.estLeDeckActuel }
-                val carte = joueur.placeUneCarte(currentDeck)
-                carte.appliqueLesEffets(joueur, joueurs, decks)
+                val cartePositionee = joueur.placeUneCarte(currentDeck)
+                cartePositionee.appliqueLesEffets(joueur, joueurs, decks)
                 currentDeck.remplitLesCartesDisponibles()
 
                 decks.logCartesDisponibles()
@@ -87,12 +88,12 @@ class ChateauCombo(
 
     private fun List<Deck>.prochainDeckActuel() = this.first { it.estLeDeckActuel.not() }
 
-    private fun Joueur.placeUneCarte(currentDeck: Deck): Carte {
+    private fun Joueur.placeUneCarte(currentDeck: Deck): CartePositionee {
         val carte = this.choisitUneCarte(currentDeck)
         val position = this.choisitUnePosition()
         this.placeUneCarte(carte, position)
         logger.info { "Le joueur ${this.id} a placé la carte ${carte.nom} à la position ${position.name}" }
-        return carte
+        return CartePositionee(carte = carte, position = position)
     }
 
     private fun Joueur.choisitUneCarte(deckChatelains: Deck) =
@@ -105,18 +106,17 @@ class ChateauCombo(
         if (!cartePositionee) error("Problème lors du placement de la carte $carte à la position $position pour le joueur ${this.id} avec le tableau ${this.tableau}")
     }
 
-    private fun Carte.appliqueLesEffets(joueur: Joueur, joueurs: List<Joueur>, decks: List<Deck>) {
+    private fun CartePositionee.appliqueLesEffets(joueur: Joueur, joueurs: List<Joueur>, decks: List<Deck>) {
         val context = EffetContext(
             joueurActuel = joueur,
             joueurs = joueurs,
-            carte = this,
+            cartePositionee = this,
             decks = decks
         )
-        when (this.effets.separateur) {
-            ET, null -> this.effets.effets.forEach { it.apply(context) }
-            OU -> this.effets.effets.random().apply(context)
+        when (this.carte.effets.separateur) {
+            ET, null -> this.carte.effets.effets.forEach { it.apply(context) }
+            OU -> this.carte.effets.effets.random().apply(context)
         }
-
     }
 
     private fun compteLeScore(joueurs: List<Joueur>) {

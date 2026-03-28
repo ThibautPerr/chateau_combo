@@ -53,7 +53,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -77,7 +77,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDistinct())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -95,7 +95,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDistinct())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -107,7 +107,7 @@ class EffetTest {
             val cleInitiale = 2
             val joueur = Joueur(id = 1, cle = cleInitiale)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDistinct())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -128,7 +128,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParBlasonAbsent())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -146,7 +146,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, cle = cleInitiale, tableau = tableau)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParBlasonAbsent())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -158,7 +158,7 @@ class EffetTest {
             val cleInitiale = 2
             val joueur = Joueur(id = 1, cle = cleInitiale)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParBlasonAbsent())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -180,7 +180,7 @@ class EffetTest {
             val joueurActuel = Joueur(id = 0, cle = cleInitiale)
             val voisin = Joueur(id = 1, tableau = tableauVoisin)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDansTableauVoisin(MILITAIRE))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -198,7 +198,7 @@ class EffetTest {
             val joueurActuel = Joueur(id = 0)
             val voisin = Joueur(id = 1, cle = cleVoisin, tableau = tableauVoisin)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDansTableauVoisin(MILITAIRE))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -210,7 +210,7 @@ class EffetTest {
             val cleInitiale = 2
             val joueurActuel = Joueur(id = 0, cle = cleInitiale)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDansTableauVoisin(MILITAIRE))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -236,7 +236,7 @@ class EffetTest {
             val voisinPauvre = Joueur(id = 0, tableau = tableauPauvre)
             val voisinRiche = Joueur(id = 2, tableau = tableauRiche)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleParBlasonDansTableauVoisin(MILITAIRE))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisinPauvre, joueurActuel, voisinRiche), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisinPauvre, joueurActuel, voisinRiche), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -258,7 +258,7 @@ class EffetTest {
             val joueurActuel = Joueur(id = 0, or = orInitial)
             val voisin = Joueur(id = 1, tableau = tableauVoisin)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDansTableauVoisin(ERUDIT))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -276,7 +276,7 @@ class EffetTest {
             val joueurActuel = Joueur(id = 0)
             val voisin = Joueur(id = 1, or = orVoisin, tableau = tableauVoisin)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDansTableauVoisin(ERUDIT))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel, voisin), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -288,7 +288,7 @@ class EffetTest {
             val orInitial = 2
             val joueurActuel = Joueur(id = 0, or = orInitial)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDansTableauVoisin(ERUDIT))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -307,7 +307,7 @@ class EffetTest {
             val dernierJoueur = Joueur(id = 2, or = orInitial)
             val autreJoueur = Joueur(id = 1)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDansTableauVoisin(ERUDIT))))
-            val context = EffetContext(joueurActuel = dernierJoueur, joueurs = listOf(premierJoueur, autreJoueur, dernierJoueur), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = dernierJoueur, joueurs = listOf(premierJoueur, autreJoueur, dernierJoueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -333,7 +333,7 @@ class EffetTest {
             val voisinPauvre = Joueur(id = 0, tableau = tableauPauvre)
             val voisinRiche = Joueur(id = 2, tableau = tableauRiche)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDansTableauVoisin(ERUDIT))))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisinPauvre, joueurActuel, voisinRiche), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisinPauvre, joueurActuel, voisinRiche), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -355,7 +355,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, or = orInitial, tableau = tableau)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDistinct())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -373,7 +373,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, or = orInitial, tableau = tableau)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDistinct())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -385,7 +385,7 @@ class EffetTest {
             val orInitial = 2
             val joueur = Joueur(id = 1, or = orInitial)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParBlasonDistinct())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -407,7 +407,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, or = orInitial, tableau = tableau)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParEmplacementVide())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -419,7 +419,7 @@ class EffetTest {
             val orInitial = 2
             val joueur = Joueur(id = 1, or = orInitial)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrParEmplacementVide())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -441,7 +441,7 @@ class EffetTest {
             )
             val joueur = Joueur(id = 1, or = orInitial, tableau = tableau)
             val carte = villageois(effets = Effets(effets = listOf(AjouteOrParCartePositionee())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -453,7 +453,7 @@ class EffetTest {
             val orInitial = 2
             val joueur = Joueur(id = 1, or = orInitial)
             val carte = villageois(effets = Effets(effets = listOf(AjouteOrParCartePositionee())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -471,7 +471,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueurs.first(),
                 joueurs = joueurs,
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -492,7 +492,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueurs.first(),
                 joueurs = joueurs,
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -512,7 +512,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueurs.first(),
                 joueurs = joueurs,
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -537,7 +537,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueurs.first(),
                 joueurs = joueurs,
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -560,7 +560,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -588,7 +588,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -611,7 +611,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -639,7 +639,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -691,7 +691,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -743,7 +743,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -790,7 +790,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -836,7 +836,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -891,7 +891,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -952,7 +952,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -995,7 +995,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -1035,7 +1035,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -1063,7 +1063,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -1086,7 +1086,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -1114,7 +1114,7 @@ class EffetTest {
             val context = EffetContext(
                 joueurActuel = joueur,
                 joueurs = emptyList(),
-                carte = carte,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
                 decks = emptyList()
             )
 
@@ -1135,7 +1135,7 @@ class EffetTest {
             val carteDisponible = villageois(cout = 5)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteDisponible), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1148,7 +1148,7 @@ class EffetTest {
             val carteDisponible = villageois(cout = 3)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteDisponible), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1165,7 +1165,7 @@ class EffetTest {
             val carteMedium = villageois(cout = 4)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteCheap, carteExpensive, carteMedium), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1180,7 +1180,7 @@ class EffetTest {
             val joueur = Joueur(id = 1, or = orInitial)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1191,7 +1191,7 @@ class EffetTest {
         fun `doit lever une erreur si le deck villageois est absent`() {
             val joueur = Joueur(id = 1)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             assertThatThrownBy { carte.effets.effets.first().apply(context) }
                 .isInstanceOf(IllegalStateException::class.java)
@@ -1207,7 +1207,7 @@ class EffetTest {
             val carteDisponible = villageois(cout = 5)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteDisponible), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1220,7 +1220,7 @@ class EffetTest {
             val carteDisponible = villageois(cout = 3)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteDisponible), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1237,7 +1237,7 @@ class EffetTest {
             val carteMedium = villageois(cout = 4)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteCheap, carteExpensive, carteMedium), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1252,7 +1252,7 @@ class EffetTest {
             val joueur = Joueur(id = 1, cle = cleInitiale)
             val deckVillageois = Deck(nom = "Villageois", cartes = mutableListOf(), cartesDisponibles = mutableListOf(), estLeDeckActuel = true)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckVillageois))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckVillageois))
 
             carte.effets.effets.first().apply(context)
 
@@ -1263,7 +1263,7 @@ class EffetTest {
         fun `doit lever une erreur si le deck villageois est absent`() {
             val joueur = Joueur(id = 1)
             val carte = chatelain(effets = Effets(effets = listOf(AjouteCleEnDefaussantUnVillageois())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             assertThatThrownBy { carte.effets.effets.first().apply(context) }
                 .isInstanceOf(IllegalStateException::class.java)
@@ -1279,7 +1279,7 @@ class EffetTest {
             val carteDisponible = Chatelain(cout = 5, nom = "carte", blasons = emptyList(), effets = Effets())
             val deckChatelains = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteDisponible), estLeDeckActuel = false)
             val carte = villageois(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnChatelain())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckChatelains))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckChatelains))
 
             carte.effets.effets.first().apply(context)
 
@@ -1292,7 +1292,7 @@ class EffetTest {
             val carteDisponible = Chatelain(cout = 3, nom = "carte", blasons = emptyList(), effets = Effets())
             val deckChatelains = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteDisponible), estLeDeckActuel = false)
             val carte = villageois(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnChatelain())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckChatelains))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckChatelains))
 
             carte.effets.effets.first().apply(context)
 
@@ -1309,7 +1309,7 @@ class EffetTest {
             val carteMedium = Chatelain(cout = 3, nom = "Medium", blasons = emptyList(), effets = Effets())
             val deckChatelains = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(carteCheap, carteExpensive, carteMedium), estLeDeckActuel = false)
             val carte = villageois(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnChatelain())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckChatelains))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckChatelains))
 
             carte.effets.effets.first().apply(context)
 
@@ -1324,7 +1324,7 @@ class EffetTest {
             val joueur = Joueur(id = 1, or = orInitial)
             val deckChatelains = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(), estLeDeckActuel = false)
             val carte = villageois(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnChatelain())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = listOf(deckChatelains))
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = listOf(deckChatelains))
 
             carte.effets.effets.first().apply(context)
 
@@ -1335,7 +1335,7 @@ class EffetTest {
         fun `doit lever une erreur si le deck chatelains est absent`() {
             val joueur = Joueur(id = 1)
             val carte = villageois(effets = Effets(effets = listOf(AjouteOrEnDefaussantUnChatelain())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueur, joueurs = emptyList(), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             assertThatThrownBy { carte.effets.effets.first().apply(context) }
                 .isInstanceOf(IllegalStateException::class.java)
@@ -1357,7 +1357,7 @@ class EffetTest {
             val voisin = Joueur(id = 0, tableau = tableauVoisin)
             val joueurActuel = Joueur(id = 1, cle = cleInitiale)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParChatelainDansTableauVoisin())))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisin, joueurActuel), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisin, joueurActuel), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -1375,7 +1375,7 @@ class EffetTest {
             val voisin = Joueur(id = 0, tableau = tableauVoisin)
             val joueurActuel = Joueur(id = 1, cle = cleInitiale)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParChatelainDansTableauVoisin())))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisin, joueurActuel), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisin, joueurActuel), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -1387,7 +1387,7 @@ class EffetTest {
             val cleInitiale = 2
             val joueurActuel = Joueur(id = 1, cle = cleInitiale)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParChatelainDansTableauVoisin())))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(joueurActuel), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -1413,7 +1413,7 @@ class EffetTest {
             val voisinPauvre = Joueur(id = 0, tableau = tableauPauvre)
             val voisinRiche = Joueur(id = 2, tableau = tableauRiche)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParChatelainDansTableauVoisin())))
-            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisinPauvre, joueurActuel, voisinRiche), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = joueurActuel, joueurs = listOf(voisinPauvre, joueurActuel, voisinRiche), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -1432,7 +1432,7 @@ class EffetTest {
             val dernierJoueur = Joueur(id = 2, cle = cleInitiale)
             val autreJoueur = Joueur(id = 1)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParChatelainDansTableauVoisin())))
-            val context = EffetContext(joueurActuel = dernierJoueur, joueurs = listOf(premierJoueur, autreJoueur, dernierJoueur), carte = carte, decks = emptyList())
+            val context = EffetContext(joueurActuel = dernierJoueur, joueurs = listOf(premierJoueur, autreJoueur, dernierJoueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU), decks = emptyList())
 
             carte.effets.effets.first().apply(context)
 
@@ -1449,7 +1449,7 @@ class EffetTest {
                 cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1470,7 +1470,7 @@ class EffetTest {
                 )
             ))
             val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1483,7 +1483,7 @@ class EffetTest {
         fun `ne doit pas modifier les bourses si aucune carte avec bourse n'est dans le tableau`() {
             val joueur = Joueur(id = 1)
             val carte = chatelain(effets = Effets(effets = listOf(RemplitBourses(nb = 2))))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1500,7 +1500,7 @@ class EffetTest {
                 cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1518,7 +1518,7 @@ class EffetTest {
                 )
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1534,7 +1534,7 @@ class EffetTest {
                 cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1549,7 +1549,7 @@ class EffetTest {
                 cartesPositionees = mutableListOf(CartePositionee(carte = villageois(effetScore = bourse), position = HAUTGAUCHE))
             ))
             val carte = chatelain(effets = Effets(effets = listOf(AjouteOrDansBourses(or = 2))))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1570,7 +1570,7 @@ class EffetTest {
                 )
             ))
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParCarteBourse())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
@@ -1582,7 +1582,7 @@ class EffetTest {
             val cleInitiale = 2
             val joueur = Joueur(id = 1, cle = cleInitiale)
             val carte = villageois(effets = Effets(effets = listOf(AjouteCleParCarteBourse())))
-            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), carte = carte)
+            val context = EffetContext(joueurActuel = joueur, joueurs = listOf(joueur), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             carte.effets.effets.first().apply(context)
 
