@@ -13,5 +13,8 @@
         "blason": "ARTISAN"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParCle"
   }
 }

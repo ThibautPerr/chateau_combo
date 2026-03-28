@@ -18,5 +18,8 @@
       }
     ],
     "separateur": "ET"
+  },
+  "effetScore": {
+    "type": "PointsParCle"
   }
 }

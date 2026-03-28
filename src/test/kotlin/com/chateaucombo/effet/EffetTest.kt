@@ -1614,6 +1614,22 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParCleEffet {
+        @ParameterizedTest
+        @ValueSource(ints = [0, 1, 5, 13])
+        fun `doit donner autant de points que de cles`(cle: Int) {
+            val joueur = Joueur(id = 1, cle = cle)
+            val carte = villageois(effetScore = PointsParCle())
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(cle)
+        }
+    }
+
+    @Nested
     inner class PointsSiBlasonAbsentEffet {
         @Test
         fun `doit ajouter les points si aucune carte du tableau n'a le blason`() {
