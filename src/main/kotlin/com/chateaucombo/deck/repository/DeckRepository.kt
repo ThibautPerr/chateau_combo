@@ -52,6 +52,7 @@ class DeckRepository {
             AjoutePoints::class.java,
             PointsParOrDepose::class.java,
             PointsSiRangSuperieur::class.java,
+            PointsSiRangMilieu::class.java,
         )
         .build()
 

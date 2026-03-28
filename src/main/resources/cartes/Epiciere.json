@@ -13,5 +13,9 @@
         "blason": "ARTISAN"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsSiRangMilieu",
+    "points": 5
   }
 }

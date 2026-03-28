@@ -7,6 +7,7 @@ import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.effet.model.*
+import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.*
@@ -1607,6 +1608,42 @@ class EffetTest {
             carte.effets.effets.first().apply(context)
 
             assertThat(bourse.orDepose).isEqualTo(3)
+        }
+    }
+
+    @Nested
+    inner class PointsSiRangMilieuEffet {
+        @Test
+        fun `doit ajouter les points si la carte est dans le rang milieu vertical`() {
+            val carte = villageois(effetScore = PointsSiRangMilieu(points = 5))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(5)
+        }
+
+        @Test
+        fun `doit ajouter les points meme si la carte n'est pas au centre`() {
+            val carte = villageois(effetScore = PointsSiRangMilieu(points = 5))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUGAUCHE)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(5)
+        }
+
+        @Test
+        fun `ne doit pas ajouter de points si la carte n'est pas dans le rang milieu vertical`() {
+            val carte = villageois(effetScore = PointsSiRangMilieu(points = 5))
+            val context = ScoreContext(
+                joueurActuel = Joueur(id = 1),
+                cartePositionee = CartePositionee(carte = carte, position = HAUTMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
         }
     }
 
