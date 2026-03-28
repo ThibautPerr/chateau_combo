@@ -11,7 +11,12 @@
         "type": "AjouteOrPourChaqueBlason",
         "orParBlason": 1,
         "blason": "PAYSAN"
+      },
+      {
+        "type": "AjouteCleParBlasonDansTableauVoisin",
+        "blason": "RELIGIEUX"
       }
-    ]
+    ],
+    "separateur": "ET"
   }
 }

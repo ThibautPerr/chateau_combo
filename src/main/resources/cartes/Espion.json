@@ -12,7 +12,12 @@
         "type": "AjouteOrPourChaqueBlason",
         "orParBlason": 1,
         "blason": "ERUDIT"
+      },
+      {
+        "type": "AjouteCleParBlasonDansTableauVoisin",
+        "blason": "MILITAIRE"
       }
-    ]
+    ],
+    "separateur": "ET"
   }
 }
