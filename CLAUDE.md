@@ -126,6 +126,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `PointsParCarteAvecCoutExact` | `points: Int`, `cout: Int` — scores `points` per card on the board whose printed `cout` equals `cout` exactly |
 | `PointsParBlasonDansLaRangee` | `points: Int`, `blason: Blason` — scores `points` per occurrence of `blason` across all cards in the same horizontal row as this card (duplicates on one card count separately) |
 | `PointsParBlasonDansLaColonne` | `points: Int`, `blason: Blason` — scores `points` per occurrence of `blason` across all cards in the same vertical column as this card (duplicates on one card count separately) |
+| `PointsParBlasonDansLaRangeeEtLaColonne` | `points: Int`, `blason: Blason` — scores `points` per occurrence of `blason` across all cards in the same row OR column (cross/+ shape); the card itself is counted once even though it belongs to both |
 | `PointsParTripleVillageois` | `points: Int` — scores `points` for every complete group of 3 Villageois cards on the board (`nbVillageois / 3 * points`) |
 | `PointsParBlasonDistinct` | `points: Int` — scores `points` per distinct blason type present across all cards on the board (max 6) |
 | `PointsParChatelain` | `points: Int` — scores `points` per Chatelain card on the board |

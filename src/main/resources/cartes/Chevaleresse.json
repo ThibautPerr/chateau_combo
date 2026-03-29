@@ -11,5 +11,10 @@
         "type": "AjouteOrParChatelain"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangeeEtLaColonne",
+    "points": 3,
+    "blason": "NOBLE"
   }
 }

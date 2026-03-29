@@ -11,5 +11,10 @@
         "type": "AjouteOrParCartePositionee"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangeeEtLaColonne",
+    "points": 2,
+    "blason": "RELIGIEUX"
   }
 }

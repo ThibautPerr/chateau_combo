@@ -13,5 +13,10 @@
         "blason": "RELIGIEUX"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaRangeeEtLaColonne",
+    "points": 3,
+    "blason": "ERUDIT"
   }
 }
