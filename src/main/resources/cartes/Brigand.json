@@ -11,5 +11,9 @@
         "type": "AjouteCleParChatelainDansTableauVoisin"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParTripleVillageois",
+    "points": 7
   }
 }

@@ -1614,6 +1614,25 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParTripleVillageoisEffet {
+        @ParameterizedTest
+        @CsvSource("0, 0", "1, 0", "2, 0", "3, 7", "5, 7", "6, 14", "9, 21")
+        fun `doit donner des points par triple de villageois`(nbVillageois: Int, pointsAttendus: Int) {
+            val cartesPositionees = Position.entries.take(nbVillageois)
+                .map { CartePositionee(carte = villageois(), position = it) }
+                .toMutableList()
+            val joueur = Joueur(id = 1, tableau = Tableau(cartesPositionees = cartesPositionees))
+            val carte = villageois(effetScore = PointsParTripleVillageois(points = 7))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(pointsAttendus)
+        }
+    }
+
+    @Nested
     inner class PointsParBlasonDansLaColonneEffet {
         @Test
         fun `doit compter les blasons dans la meme colonne`() {
