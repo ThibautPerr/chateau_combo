@@ -1614,6 +1614,78 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParChatelainEffet {
+        @ParameterizedTest
+        @CsvSource("0, 0", "1, 2", "3, 6")
+        fun `doit donner des points par chatelain sur le tableau`(nbChatelains: Int, pointsAttendus: Int) {
+            val cartesPositionees = Position.entries.take(nbChatelains)
+                .map { CartePositionee(carte = chatelain(), position = it) }
+                .toMutableList()
+            val joueur = Joueur(id = 1, tableau = Tableau(cartesPositionees = cartesPositionees))
+            val carte = villageois(effetScore = PointsParChatelain(points = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(pointsAttendus)
+        }
+
+        @Test
+        fun `ne doit pas compter les villageois`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = chatelain(), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParChatelain(points = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(2)
+        }
+    }
+
+    @Nested
+    inner class PointsParVillageoisEffet {
+        @ParameterizedTest
+        @CsvSource("0, 0", "1, 1", "3, 3")
+        fun `doit donner des points par villageois sur le tableau`(nbVillageois: Int, pointsAttendus: Int) {
+            val cartesPositionees = Position.entries.take(nbVillageois)
+                .map { CartePositionee(carte = villageois(), position = it) }
+                .toMutableList()
+            val joueur = Joueur(id = 1, tableau = Tableau(cartesPositionees = cartesPositionees))
+            val carte = villageois(effetScore = PointsParVillageois(points = 1))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(pointsAttendus)
+        }
+
+        @Test
+        fun `ne doit pas compter les chatelains`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                    CartePositionee(carte = chatelain(), position = HAUTMILIEU),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParVillageois(points = 1))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(1)
+        }
+    }
+
+    @Nested
     inner class PointsParBlasonDistinctEffet {
         @Test
         fun `doit donner des points par blason distinct sur le tableau`() {

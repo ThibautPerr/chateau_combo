@@ -14,5 +14,9 @@
         "blason": "ERUDIT"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParVillageois",
+    "points": 1
   }
 }

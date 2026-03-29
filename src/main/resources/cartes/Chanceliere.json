@@ -13,5 +13,9 @@
         "blason": "ERUDIT"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParChatelain",
+    "points": 2
   }
 }

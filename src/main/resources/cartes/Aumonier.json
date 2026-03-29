@@ -12,5 +12,9 @@
         "nbBlason": 1
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParVillageois",
+    "points": 2
   }
 }
