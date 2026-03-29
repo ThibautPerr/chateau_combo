@@ -11,5 +11,9 @@
         "type": "AjouteClePourChaqueBlason",
         "blason": "MILITAIRE"
       }
-    ]}
+    ]},
+  "effetScore": {
+    "type": "PointsParBlasonDistinctDansLaColonne",
+    "points": 4
+  }
 }

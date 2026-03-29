@@ -1614,6 +1614,44 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParBlasonDistinctDansLaColonneEffet {
+        @Test
+        fun `doit compter les blasons distincts dans la meme colonne`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, ERUDIT)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT, MILITAIRE)), position = BASMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(PAYSAN)), position = MILIEUGAUCHE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParBlasonDistinctDansLaColonne(points = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `ne doit pas compter les blasons des autres colonnes`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = MILIEUGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT)), position = MILIEUDROITE),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParBlasonDistinctDansLaColonne(points = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
     inner class PointsParChatelainEffet {
         @ParameterizedTest
         @CsvSource("0, 0", "1, 2", "3, 6")

@@ -12,5 +12,9 @@
         "type": "AjouteOrParVillageois"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDistinctDansLaColonne",
+    "points": 2
   }
 }
