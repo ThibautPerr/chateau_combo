@@ -13,5 +13,10 @@
         "cle": 1
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaColonne",
+    "points": 3,
+    "blason": "NOBLE"
   }
 }

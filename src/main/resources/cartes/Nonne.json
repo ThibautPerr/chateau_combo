@@ -11,5 +11,10 @@
         "type": "AjouteOrParChatelain"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaColonne",
+    "points": 3,
+    "blason": "RELIGIEUX"
   }
 }

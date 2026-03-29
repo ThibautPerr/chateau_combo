@@ -7,5 +7,10 @@
   ],
   "effets": {
     "effetsPassifs": [{"type": "ReduceCoutChatelain"}]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaColonne",
+    "points": 3,
+    "blason": "ERUDIT"
   }
 }

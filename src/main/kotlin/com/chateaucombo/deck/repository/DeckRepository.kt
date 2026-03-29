@@ -67,6 +67,7 @@ class DeckRepository {
             PointsParCarteAvecNbBlasonMinimum::class.java,
             PointsParCarteAvecCoutExact::class.java,
             PointsParBlasonDansLaRangee::class.java,
+            PointsParBlasonDansLaColonne::class.java,
         )
         .build()
 

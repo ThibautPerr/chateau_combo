@@ -17,5 +17,10 @@
       }
     ],
     "separateur": "OU"
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDansLaColonne",
+    "points": 3,
+    "blason": "MILITAIRE"
   }
 }

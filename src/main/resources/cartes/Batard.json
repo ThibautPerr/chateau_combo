@@ -12,5 +12,10 @@
         "type": "AjouteClePourChaqueBlason",
         "blason": "NOBLE"
       }
-    ]}
+    ]},
+  "effetScore": {
+    "type": "PointsParBlasonDansLaColonne",
+    "points": 3,
+    "blason": "PAYSAN"
+  }
 }
