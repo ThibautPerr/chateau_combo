@@ -74,6 +74,7 @@ class DeckRepository {
             PointsParVillageois::class.java,
             PointsParBlasonDistinctDansLaColonne::class.java,
             PointsParBlasonDistinctDansLaRangee::class.java,
+            PointsParTripleBlason::class.java,
         )
         .build()
 

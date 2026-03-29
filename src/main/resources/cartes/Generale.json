@@ -11,5 +11,9 @@
         "type": "AjouteCleParBlasonDistinct"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParTripleBlason",
+    "points": 6
   }
 }
