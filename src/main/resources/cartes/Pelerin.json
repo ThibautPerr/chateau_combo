@@ -7,5 +7,9 @@
   ],
   "effets": {
     "effetsPassifs": [{"type": "ReduceCoutVillageois"}]
+  },
+  "effetScore": {
+    "type": "PointsParBlasonDistinctDansLaRangee",
+    "points": 4
   }
 }

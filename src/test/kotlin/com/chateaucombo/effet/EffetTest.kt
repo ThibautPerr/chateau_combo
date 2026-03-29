@@ -1614,40 +1614,98 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParBlasonDistinctDansLaRangeeEffet {
+        @Test
+        fun `doit compter les blasons distincts dans la meme rangee`() {
+            val carte = villageois(blasons = listOf(MILITAIRE), effetScore = PointsParBlasonDistinctDansLaRangee(points = 2))
+            val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, ERUDIT)), position = MILIEUGAUCHE),
+                    cartePositionee,
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT, NOBLE)), position = MILIEUDROITE),
+                    CartePositionee(carte = villageois(blasons = listOf(PAYSAN)), position = HAUTMILIEU),
+                )
+            ))
+            val context = ScoreContext(joueurActuel = joueur, cartePositionee = cartePositionee)
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `ne doit pas compter les blasons des autres rangees`() {
+            val carte = villageois(effetScore = PointsParBlasonDistinctDansLaRangee(points = 2))
+            val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    cartePositionee,
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT)), position = BASMILIEU),
+                )
+            ))
+            val context = ScoreContext(joueurActuel = joueur, cartePositionee = cartePositionee)
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+
+        @Test
+        fun `doit compter les blasons de la carte elle-meme`() {
+            val carte = villageois(blasons = listOf(ARTISAN, PAYSAN), effetScore = PointsParBlasonDistinctDansLaRangee(points = 2))
+            val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(cartePositionee)
+            ))
+            val context = ScoreContext(joueurActuel = joueur, cartePositionee = cartePositionee)
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(4)
+        }
+    }
+
+    @Nested
     inner class PointsParBlasonDistinctDansLaColonneEffet {
         @Test
         fun `doit compter les blasons distincts dans la meme colonne`() {
+            val carte = villageois(blasons = listOf(MILITAIRE), effetScore = PointsParBlasonDistinctDansLaColonne(points = 2))
+            val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
             val joueur = Joueur(id = 1, tableau = Tableau(
                 cartesPositionees = mutableListOf(
                     CartePositionee(carte = villageois(blasons = listOf(NOBLE, ERUDIT)), position = HAUTMILIEU),
-                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT, MILITAIRE)), position = BASMILIEU),
+                    cartePositionee,
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT, NOBLE)), position = BASMILIEU),
                     CartePositionee(carte = villageois(blasons = listOf(PAYSAN)), position = MILIEUGAUCHE),
                 )
             ))
-            val carte = villageois(effetScore = PointsParBlasonDistinctDansLaColonne(points = 2))
-            val context = ScoreContext(
-                joueurActuel = joueur,
-                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
-            )
+            val context = ScoreContext(joueurActuel = joueur, cartePositionee = cartePositionee)
 
             assertThat(carte.effetScore.score(context)).isEqualTo(6)
         }
 
         @Test
         fun `ne doit pas compter les blasons des autres colonnes`() {
+            val carte = villageois(effetScore = PointsParBlasonDistinctDansLaColonne(points = 2))
+            val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
             val joueur = Joueur(id = 1, tableau = Tableau(
                 cartesPositionees = mutableListOf(
+                    cartePositionee,
                     CartePositionee(carte = villageois(blasons = listOf(NOBLE)), position = MILIEUGAUCHE),
                     CartePositionee(carte = villageois(blasons = listOf(ERUDIT)), position = MILIEUDROITE),
                 )
             ))
-            val carte = villageois(effetScore = PointsParBlasonDistinctDansLaColonne(points = 2))
-            val context = ScoreContext(
-                joueurActuel = joueur,
-                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
-            )
+            val context = ScoreContext(joueurActuel = joueur, cartePositionee = cartePositionee)
 
             assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+
+        @Test
+        fun `doit compter les blasons de la carte elle-meme`() {
+            val carte = villageois(blasons = listOf(ARTISAN, PAYSAN), effetScore = PointsParBlasonDistinctDansLaColonne(points = 2))
+            val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(cartePositionee)
+            ))
+            val context = ScoreContext(joueurActuel = joueur, cartePositionee = cartePositionee)
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(4)
         }
     }
 
