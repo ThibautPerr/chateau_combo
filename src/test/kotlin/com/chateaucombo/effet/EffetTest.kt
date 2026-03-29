@@ -39,12 +39,17 @@ class EffetTest {
             bourse = bourse
         )
 
-    private fun chatelain(effets: Effets = Effets()) =
+    private fun chatelain(
+        effets: Effets = Effets(),
+        blasons: List<Blason> = emptyList(),
+        effetScore: EffetScore = EffetScoreVide,
+    ) =
         Chatelain(
             cout = 0,
             nom = "carte",
-            blasons = emptyList(),
-            effets = effets
+            blasons = blasons,
+            effets = effets,
+            effetScore = effetScore,
         )
 
     @Nested
@@ -2558,6 +2563,121 @@ class EffetTest {
             val context = ScoreContext(
                 joueurActuel = Joueur(id = 1),
                 cartePositionee = CartePositionee(carte = carte, position = HAUTMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
+    inner class PointsParBlasonManquantEffet {
+        @Test
+        fun `doit donner des points par blason absent du tableau`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, MILITAIRE)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(RELIGIEUX)), position = HAUTMILIEU),
+                )
+            ))
+            val carte = chatelain(effetScore = PointsParBlasonManquant(points = 6))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            // NOBLE, MILITAIRE, RELIGIEUX présents — ERUDIT, ARTISAN, PAYSAN absents → 3 * 6 = 18
+            assertThat(carte.effetScore.score(context)).isEqualTo(18)
+        }
+
+        @Test
+        fun `doit retourner zero si tous les blasons sont presents`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, MILITAIRE, RELIGIEUX)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT, ARTISAN, PAYSAN)), position = HAUTMILIEU),
+                )
+            ))
+            val carte = chatelain(effetScore = PointsParBlasonManquant(points = 6))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+
+        @Test
+        fun `ne doit pas compter les doublons comme blasons supplementaires`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, NOBLE)), position = HAUTGAUCHE),
+                )
+            ))
+            val carte = chatelain(effetScore = PointsParBlasonManquant(points = 6))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            // Seul NOBLE présent → 5 blasons manquants → 5 * 6 = 30
+            assertThat(carte.effetScore.score(context)).isEqualTo(30)
+        }
+    }
+
+    @Nested
+    inner class PointsParPaireVillageoisChatelainEffet {
+        @Test
+        fun `doit donner des points par paire villageois-chatelain complete`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                    CartePositionee(carte = chatelain(), position = HAUTDROITE),
+                    CartePositionee(carte = chatelain(), position = MILIEUGAUCHE),
+                )
+            ))
+            val carte = chatelain(effetScore = PointsParPaireVillageoisChatelain(points = 3))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            // 2 villageois, 2 chatelains → min(2, 2) * 3 = 6
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `doit etre limite par le type le moins present`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(), position = HAUTMILIEU),
+                    CartePositionee(carte = villageois(), position = HAUTDROITE),
+                    CartePositionee(carte = chatelain(), position = MILIEUGAUCHE),
+                )
+            ))
+            val carte = chatelain(effetScore = PointsParPaireVillageoisChatelain(points = 3))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            // 3 villageois, 1 chatelain → min(3, 1) * 3 = 3
+            assertThat(carte.effetScore.score(context)).isEqualTo(3)
+        }
+
+        @Test
+        fun `doit retourner zero si aucun villageois`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = chatelain(), position = HAUTGAUCHE),
+                    CartePositionee(carte = chatelain(), position = HAUTMILIEU),
+                )
+            ))
+            val carte = chatelain(effetScore = PointsParPaireVillageoisChatelain(points = 3))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
             )
 
             assertThat(carte.effetScore.score(context)).isEqualTo(0)

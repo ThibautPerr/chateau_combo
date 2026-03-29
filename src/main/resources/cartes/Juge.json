@@ -12,5 +12,9 @@
         "cle": 2
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParPaireVillageoisChatelain",
+    "points": 3
   }
 }

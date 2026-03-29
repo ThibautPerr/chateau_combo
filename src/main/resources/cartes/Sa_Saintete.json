@@ -17,5 +17,9 @@
       }
     ],
     "separateur": "ET"
+  },
+  "effetScore": {
+    "type": "PointsParBlasonManquant",
+    "points": 6
   }
 }
