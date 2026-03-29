@@ -12,5 +12,10 @@
         "blason": "NOBLE"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParGroupeDeBlasons",
+    "points": 10,
+    "blasons": ["NOBLE", "ERUDIT", "ARTISAN"]
   }
 }

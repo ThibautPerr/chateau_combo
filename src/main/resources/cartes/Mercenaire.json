@@ -12,5 +12,10 @@
         "type": "AjouteOrParBlasonDistinct"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParGroupeDeBlasons",
+    "points": 7,
+    "blasons": ["RELIGIEUX", "MILITAIRE", "PAYSAN"]
   }
 }

@@ -19,5 +19,10 @@
       }
     ],
     "separateur": "ET"
+  },
+  "effetScore": {
+    "type": "PointsParGroupeDeBlasons",
+    "points": 4,
+    "blasons": ["RELIGIEUX", "ARTISAN"]
   }
 }

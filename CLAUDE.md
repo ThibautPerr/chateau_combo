@@ -133,6 +133,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `PointsParBlasonDistinctDansLaColonne` | `points: Int` — scores `points` per distinct blason type across all cards in the same vertical column as this card (the card itself is included) |
 | `PointsParBlasonDistinctDansLaRangee` | `points: Int` — scores `points` per distinct blason type across all cards in the same horizontal row as this card (the card itself is included) |
 | `PointsParTripleBlason` | `points: Int` — scores `points` for every complete group of 3 occurrences of the same blason across the board (counted independently per blason type) |
+| `PointsParGroupeDeBlasons` | `points: Int`, `blasons: List<Blason>` — scores `points` × min(count(b) for b in blasons): the number of complete sets where each listed blason appears at least that many times |
 
 **`BourseScore`** is NOT an `EffetScore` — it is a plain `data class(val taille: Int)` stored in `Carte.bourse`. It holds a mutable `orDepose: Int = 0` (body property, invisible to data class equality). Scoring for bourses is handled entirely by `ScoreRepository` (see Scoring section below), not through the `effetScore` mechanism.
 
