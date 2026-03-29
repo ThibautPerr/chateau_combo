@@ -1614,6 +1614,38 @@ class EffetTest {
     }
 
     @Nested
+    inner class PointsParBlasonDistinctEffet {
+        @Test
+        fun `doit donner des points par blason distinct sur le tableau`() {
+            val joueur = Joueur(id = 1, tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(blasons = listOf(NOBLE, ERUDIT)), position = HAUTGAUCHE),
+                    CartePositionee(carte = villageois(blasons = listOf(ERUDIT, MILITAIRE)), position = HAUTMILIEU),
+                )
+            ))
+            val carte = villageois(effetScore = PointsParBlasonDistinct(points = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(6)
+        }
+
+        @Test
+        fun `doit retourner zero si le tableau est vide`() {
+            val joueur = Joueur(id = 1)
+            val carte = villageois(effetScore = PointsParBlasonDistinct(points = 2))
+            val context = ScoreContext(
+                joueurActuel = joueur,
+                cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
+            )
+
+            assertThat(carte.effetScore.score(context)).isEqualTo(0)
+        }
+    }
+
+    @Nested
     inner class PointsParTripleVillageoisEffet {
         @ParameterizedTest
         @CsvSource("0, 0", "1, 0", "2, 0", "3, 7", "5, 7", "6, 14", "9, 21")
