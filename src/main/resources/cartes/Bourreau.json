@@ -11,5 +11,9 @@
         "type": "AjouteOrEnDefaussantUnChatelain"
       }
     ]
+  },
+  "effetScore": {
+    "type": "PointsParChatelain",
+    "points": 1
   }
 }
