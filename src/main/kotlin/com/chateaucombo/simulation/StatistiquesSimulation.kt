@@ -22,3 +22,14 @@ data class StatistiquesSimulation(
         val troisiemeQuartile: Double,
     )
 }
+
+data class StatistiquesCarte(
+    val nomCarte: String,
+    val scoreJoueur: StatistiquesSimulation.StatistiquesPoints,
+    val scoreCarte: StatistiquesSimulation.StatistiquesPoints,
+)
+
+data class ResultatSimulation(
+    val joueurs: StatistiquesSimulation,
+    val cartes: List<StatistiquesCarte>,
+)

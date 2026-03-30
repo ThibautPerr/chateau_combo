@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import com.chateaucombo.ChateauCombo
 import com.chateaucombo.deck.repository.DeckRepository
+import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesJoueur
@@ -22,8 +23,10 @@ class Simulation(
         deckRepository = deckRepository,
     )
 
-    fun run(nbParties: Int): StatistiquesSimulation {
+    fun run(nbParties: Int): ResultatSimulation {
         val scoresParJoueur = List(nbJoueurs) { mutableListOf<Int>() }
+        val scoresJoueurParCarte = mutableMapOf<String, MutableList<Int>>()
+        val scoresCarteParCarte = mutableMapOf<String, MutableList<Int>>()
 
         silenceLogs {
             repeat(nbParties) {
@@ -31,24 +34,41 @@ class Simulation(
                 jeu.play(joueurs, pathCartes)
                 joueurs.forEachIndexed { index, joueur ->
                     scoresParJoueur[index].add(joueur.score)
+                    joueur.tableau.cartesPositionees.forEach { cartePositionee ->
+                        val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
+                        val scoreEffet = cartePositionee.carte.effetScore.score(context)
+                        val scoreBourse = cartePositionee.carte.bourse?.orDepose?.times(2) ?: 0
+                        val nom = if (cartePositionee.carte is com.chateaucombo.deck.model.CarteVerso) "Carte Verso" else cartePositionee.carte.nom
+                        scoresJoueurParCarte.getOrPut(nom) { mutableListOf() }.add(joueur.score)
+                        scoresCarteParCarte.getOrPut(nom) { mutableListOf() }.add(scoreEffet + scoreBourse)
+                    }
                 }
             }
         }
 
         val tousLesScores = scoresParJoueur.flatten()
-        return StatistiquesSimulation(
-            nbParties = nbParties,
-            nbJoueurs = nbJoueurs,
-            global = tousLesScores.stats(),
-            parJoueur = scoresParJoueur.mapIndexed { index, scores ->
-                StatistiquesJoueur(
-                    joueurId = index,
-                    moyenne = scores.average(),
-                    premierQuartile = scores.percentile(25.0),
-                    mediane = scores.percentile(50.0),
-                    troisiemeQuartile = scores.percentile(75.0),
+        return ResultatSimulation(
+            joueurs = StatistiquesSimulation(
+                nbParties = nbParties,
+                nbJoueurs = nbJoueurs,
+                global = tousLesScores.stats(),
+                parJoueur = scoresParJoueur.mapIndexed { index, scores ->
+                    StatistiquesJoueur(
+                        joueurId = index,
+                        moyenne = scores.average().round2(),
+                        premierQuartile = scores.percentile(25.0),
+                        mediane = scores.percentile(50.0),
+                        troisiemeQuartile = scores.percentile(75.0),
+                    )
+                },
+            ),
+            cartes = scoresJoueurParCarte.keys.sorted().map { nom ->
+                StatistiquesCarte(
+                    nomCarte = nom,
+                    scoreJoueur = scoresJoueurParCarte[nom]!!.stats(),
+                    scoreCarte = scoresCarteParCarte[nom]!!.stats(),
                 )
-            }
+            },
         )
     }
 
@@ -65,11 +85,13 @@ class Simulation(
 
     private fun List<Int>.stats() =
         StatistiquesPoints(
-            moyenne = average(),
+            moyenne = average().round2(),
             premierQuartile = percentile(25.0),
             mediane = percentile(50.0),
             troisiemeQuartile = percentile(75.0),
         )
+
+    private fun Double.round2() = kotlin.math.round(this * 100) / 100.0
 
     private fun List<Int>.percentile(p: Double): Double {
         val sorted = sorted()
