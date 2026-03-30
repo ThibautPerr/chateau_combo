@@ -132,6 +132,7 @@
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <argLine>--add-opens=java.base/java.lang=ALL-UNNAMED -Dnet.bytebuddy.experimental=true</argLine>
+
                 </configuration>
             </plugin>
         </plugins>
