@@ -5,6 +5,8 @@ import com.chateaucombo.simulation.StatistiquesSimulation
 import tools.jackson.module.kotlin.jacksonMapperBuilder
 import java.io.File
 import java.nio.file.Path
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 fun main(args: Array<String>) {
     val nbParties = args.firstOrNull()?.toIntOrNull() ?: 10000
@@ -13,7 +15,9 @@ fun main(args: Array<String>) {
     val simulation = Simulation()
     val stats = simulation.run(nbParties)
 
-    val outputFile = Path.of("player_scores.json").toFile()
+    val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm"))
+    val statsDir = Path.of("stats").toFile().also { it.mkdirs() }
+    val outputFile = File(statsDir, "player_scores_$timestamp.json")
 
     stats.writeIn(outputFile)
 
