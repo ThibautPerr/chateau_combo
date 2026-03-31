@@ -7,6 +7,7 @@ import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
+import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesJoueur
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesPoints
 import com.chateaucombo.tableau.repository.TableauRepository
@@ -27,6 +28,12 @@ class Simulation(
         val scoresParJoueur = List(nbJoueurs) { mutableListOf<Int>() }
         val scoresJoueurParCarte = mutableMapOf<String, MutableList<Int>>()
         val scoresCarteParCarte = mutableMapOf<String, MutableList<Int>>()
+        val effetsParCarte = mutableMapOf<String, List<String>>()
+        val effetScoreParCarte = mutableMapOf<String, String>()
+        val scoresJoueurParEffet = mutableMapOf<String, MutableList<Int>>()
+        val scoresCarteParEffet = mutableMapOf<String, MutableList<Int>>()
+        val scoresJoueurParEffetScore = mutableMapOf<String, MutableList<Int>>()
+        val scoresCarteParEffetScore = mutableMapOf<String, MutableList<Int>>()
 
         silenceLogs {
             repeat(nbParties) {
@@ -35,18 +42,46 @@ class Simulation(
                 joueurs.forEachIndexed { index, joueur ->
                     scoresParJoueur[index].add(joueur.score)
                     joueur.tableau.cartesPositionees.forEach { cartePositionee ->
+                        val carte = cartePositionee.carte
                         val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
-                        val scoreEffet = cartePositionee.carte.effetScore.score(context)
-                        val scoreBourse = cartePositionee.carte.bourse?.orDepose?.times(2) ?: 0
-                        val nom = if (cartePositionee.carte is com.chateaucombo.deck.model.CarteVerso) "Carte Verso" else cartePositionee.carte.nom
+                        val scoreEffet = carte.effetScore.score(context)
+                        val scoreBourse = carte.bourse?.orDepose?.times(2) ?: 0
+                        val nom = if (carte is com.chateaucombo.deck.model.CarteVerso) "Carte Verso" else carte.nom
+                        val cardScore = scoreEffet + scoreBourse
+
                         scoresJoueurParCarte.getOrPut(nom) { mutableListOf() }.add(joueur.score)
-                        scoresCarteParCarte.getOrPut(nom) { mutableListOf() }.add(scoreEffet + scoreBourse)
+                        scoresCarteParCarte.getOrPut(nom) { mutableListOf() }.add(cardScore)
+
+                        val effetTypes = carte.effets.effets.map { it::class.simpleName!! } +
+                                carte.effets.effetsPassifs.map { it::class.simpleName!! }
+                        val effetScoreType = carte.effetScore::class.simpleName!!
+
+                        effetsParCarte.putIfAbsent(nom, effetTypes)
+                        effetScoreParCarte.putIfAbsent(nom, effetScoreType)
+
+                        for (type in effetTypes) {
+                            scoresJoueurParEffet.getOrPut(type) { mutableListOf() }.add(joueur.score)
+                            scoresCarteParEffet.getOrPut(type) { mutableListOf() }.add(cardScore)
+                        }
+                        if (carte.effetScore !is EffetScoreVide) {
+                            scoresJoueurParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(joueur.score)
+                            scoresCarteParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(cardScore)
+                        }
                     }
                 }
             }
         }
 
         val tousLesScores = scoresParJoueur.flatten()
+        val cartesParEffet = mutableMapOf<String, MutableSet<String>>()
+        val cartesParEffetScore = mutableMapOf<String, MutableSet<String>>()
+        for ((nom, types) in effetsParCarte) {
+            for (type in types) cartesParEffet.getOrPut(type) { mutableSetOf() }.add(nom)
+        }
+        for ((nom, type) in effetScoreParCarte) {
+            if (type != "EffetScoreVide") cartesParEffetScore.getOrPut(type) { mutableSetOf() }.add(nom)
+        }
+
         return ResultatSimulation(
             joueurs = StatistiquesSimulation(
                 nbParties = nbParties,
@@ -65,8 +100,26 @@ class Simulation(
             cartes = scoresJoueurParCarte.keys.sorted().map { nom ->
                 StatistiquesCarte(
                     nomCarte = nom,
+                    effets = effetsParCarte[nom] ?: emptyList(),
+                    effetScore = effetScoreParCarte[nom] ?: "EffetScoreVide",
                     scoreJoueur = scoresJoueurParCarte[nom]!!.stats(),
                     scoreCarte = scoresCarteParCarte[nom]!!.stats(),
+                )
+            },
+            parEffet = scoresJoueurParEffet.keys.sorted().map { type ->
+                StatistiquesEffet(
+                    effet = type,
+                    cartes = cartesParEffet[type]!!.sorted(),
+                    scoreJoueur = scoresJoueurParEffet[type]!!.stats(),
+                    scoreCarte = scoresCarteParEffet[type]!!.stats(),
+                )
+            },
+            parEffetScore = scoresJoueurParEffetScore.keys.sorted().map { type ->
+                StatistiquesEffet(
+                    effet = type,
+                    cartes = cartesParEffetScore[type]!!.sorted(),
+                    scoreJoueur = scoresJoueurParEffetScore[type]!!.stats(),
+                    scoreCarte = scoresCarteParEffetScore[type]!!.stats(),
                 )
             },
         )

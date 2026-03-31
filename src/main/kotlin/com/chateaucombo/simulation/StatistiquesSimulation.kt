@@ -25,6 +25,15 @@ data class StatistiquesSimulation(
 
 data class StatistiquesCarte(
     val nomCarte: String,
+    val effets: List<String>,
+    val effetScore: String,
+    val scoreJoueur: StatistiquesSimulation.StatistiquesPoints,
+    val scoreCarte: StatistiquesSimulation.StatistiquesPoints,
+)
+
+data class StatistiquesEffet(
+    val effet: String,
+    val cartes: List<String>,
     val scoreJoueur: StatistiquesSimulation.StatistiquesPoints,
     val scoreCarte: StatistiquesSimulation.StatistiquesPoints,
 )
@@ -32,4 +41,6 @@ data class StatistiquesCarte(
 data class ResultatSimulation(
     val joueurs: StatistiquesSimulation,
     val cartes: List<StatistiquesCarte>,
+    val parEffet: List<StatistiquesEffet>,
+    val parEffetScore: List<StatistiquesEffet>,
 )

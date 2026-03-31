@@ -98,6 +98,7 @@
         .chart-wrap.tall { height: 1150px; }
         .chart-wrap.medium { height: 280px; }
         .chart-wrap.scatter { height: 480px; }
+        .card-list { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
         .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         @media (max-width: 800px) { .row { grid-template-columns: 1fr; } }
         #loading { text-align: center; padding: 4rem; color: #64748b; font-size: 1.1rem; }
@@ -193,6 +194,32 @@
                     <div class="chart-wrap scatter"><canvas id="chart-spread"></canvas></div>
                 </div>
             </div>
+
+            <div id="effect-sections" style="display: none;">
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h2>Par effet (a la pose)</h2>
+                        <div class="sort-buttons" data-target="effet">
+                            <span>Metrique :</span>
+                            <button class="active" data-key="scoreJoueur">Score joueur</button>
+                            <button data-key="scoreCarte">Score carte</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrap" id="chart-effet-wrap"><canvas id="chart-effet"></canvas></div>
+                </div>
+
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h2>Par effet de score (fin de partie)</h2>
+                        <div class="sort-buttons" data-target="effetScore">
+                            <span>Metrique :</span>
+                            <button class="active" data-key="scoreJoueur">Score joueur</button>
+                            <button data-key="scoreCarte">Score carte</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrap" id="chart-effet-score-wrap"><canvas id="chart-effet-score"></canvas></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -201,8 +228,10 @@ const state = {
     runs: [],
     playerData: null,
     cardData: null,
+    effectData: null,
+    scoreEffectData: null,
     charts: {},
-    sort: { cardScore: 'moyenne', playerImpact: 'moyenne' },
+    sort: { cardScore: 'moyenne', playerImpact: 'moyenne', effet: 'scoreJoueur', effetScore: 'scoreJoueur' },
 };
 
 /* ── Reference-line plugin (dashed vertical line) ── */
@@ -259,7 +288,9 @@ async function init() {
             btn.classList.add('active');
             state.sort[target] = key;
             if (target === 'cardScore') renderCardScoreChart();
-            else renderPlayerImpactChart();
+            else if (target === 'playerImpact') renderPlayerImpactChart();
+            else if (target === 'effet') renderEffetChart();
+            else if (target === 'effetScore') renderEffetScoreChart();
         });
     });
 
@@ -272,12 +303,16 @@ function populateSelector() {
 }
 
 async function loadRun(runId) {
-    const [pRes, cRes] = await Promise.all([
+    const [pRes, cRes, eRes, esRes] = await Promise.all([
         fetch(`${runId}/player_scores.json`),
         fetch(`${runId}/card_scores.json`),
+        fetch(`${runId}/effect_scores.json`).catch(() => null),
+        fetch(`${runId}/score_effect_scores.json`).catch(() => null),
     ]);
     state.playerData = await pRes.json();
     state.cardData = await cRes.json();
+    state.effectData = eRes && eRes.ok ? await eRes.json() : null;
+    state.scoreEffectData = esRes && esRes.ok ? await esRes.json() : null;
     render();
 }
 
@@ -299,6 +334,15 @@ function render() {
     renderPlayerImpactChart();
     renderScatterChart();
     renderSpreadChart();
+
+    const effectSections = document.getElementById('effect-sections');
+    if (state.effectData && state.scoreEffectData) {
+        effectSections.style.display = 'block';
+        renderEffetChart();
+        renderEffetScoreChart();
+    } else {
+        effectSections.style.display = 'none';
+    }
 }
 
 function destroyAll() {
@@ -471,6 +515,110 @@ function renderScatterChart() {
                         label(ctx) {
                             const d = ctx.raw;
                             return `${d.label} — carte: ${d.x}, joueur: ${d.y}`;
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+/* ── Effect chart (on-play effects) ── */
+function renderEffetChart() {
+    if (state.charts.effet) state.charts.effet.destroy();
+    if (!state.effectData) return;
+    const metric = state.sort.effet; // 'scoreJoueur' or 'scoreCarte'
+    const sorted = [...state.effectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
+    const globalAvg = state.playerData.global.moyenne;
+
+    const wrap = document.getElementById('chart-effet-wrap');
+    wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
+
+    state.charts.effet = new Chart(document.getElementById('chart-effet'), {
+        type: 'bar',
+        data: {
+            labels: sorted.map(e => e.effet),
+            datasets: [{
+                label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
+                data: sorted.map(e => e[metric].moyenne),
+                backgroundColor: metric === 'scoreJoueur'
+                    ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
+                    : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
+                borderRadius: 3,
+            }],
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Moyenne', font: { size: 12 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+            },
+            plugins: {
+                legend: { display: false },
+                refLine: metric === 'scoreJoueur' ? { value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}` } : {},
+                tooltip: {
+                    callbacks: {
+                        afterBody(items) {
+                            const e = sorted[items[0].dataIndex];
+                            const sj = e.scoreJoueur, sc = e.scoreCarte;
+                            return [
+                                `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
+                                `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
+                                `Cartes : ${e.cartes.join(', ')}`,
+                            ];
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+/* ── Score effect chart (end-game scoring effects) ── */
+function renderEffetScoreChart() {
+    if (state.charts.effetScore) state.charts.effetScore.destroy();
+    if (!state.scoreEffectData) return;
+    const metric = state.sort.effetScore;
+    const sorted = [...state.scoreEffectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
+    const globalAvg = state.playerData.global.moyenne;
+
+    const wrap = document.getElementById('chart-effet-score-wrap');
+    wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
+
+    state.charts.effetScore = new Chart(document.getElementById('chart-effet-score'), {
+        type: 'bar',
+        data: {
+            labels: sorted.map(e => e.effet),
+            datasets: [{
+                label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
+                data: sorted.map(e => e[metric].moyenne),
+                backgroundColor: metric === 'scoreJoueur'
+                    ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
+                    : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
+                borderRadius: 3,
+            }],
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Moyenne', font: { size: 12 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+            },
+            plugins: {
+                legend: { display: false },
+                refLine: metric === 'scoreJoueur' ? { value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}` } : {},
+                tooltip: {
+                    callbacks: {
+                        afterBody(items) {
+                            const e = sorted[items[0].dataIndex];
+                            const sj = e.scoreJoueur, sc = e.scoreCarte;
+                            return [
+                                `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
+                                `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
+                                `Cartes : ${e.cartes.join(', ')}`,
+                            ];
                         },
                     },
                 },

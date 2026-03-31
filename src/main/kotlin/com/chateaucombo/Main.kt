@@ -24,6 +24,14 @@ fun main(args: Array<String>) {
     resultat.cartes.writeIn(cardFile)
     println("Résultats cartes écrits dans ${cardFile.absolutePath}")
 
+    val effetFile = File(runDir, "effect_scores.json")
+    resultat.parEffet.writeIn(effetFile)
+    println("Résultats par effet écrits dans ${effetFile.absolutePath}")
+
+    val effetScoreFile = File(runDir, "score_effect_scores.json")
+    resultat.parEffetScore.writeIn(effetScoreFile)
+    println("Résultats par effet de score écrits dans ${effetScoreFile.absolutePath}")
+
     val statsDir = File("stats")
     val runs = statsDir.listFiles()
         ?.filter { it.isDirectory }
