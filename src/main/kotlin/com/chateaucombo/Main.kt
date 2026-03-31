@@ -24,6 +24,15 @@ fun main(args: Array<String>) {
     resultat.cartes.writeIn(cardFile)
     println("Résultats cartes écrits dans ${cardFile.absolutePath}")
 
+    val statsDir = File("stats")
+    val runs = statsDir.listFiles()
+        ?.filter { it.isDirectory }
+        ?.map { it.name }
+        ?.sortedDescending()
+        ?: emptyList()
+    mapper.writeValue(File(statsDir, "runs.json"), runs)
+    println("Index des simulations mis à jour (${runs.size} runs)")
+
     val global = resultat.joueurs.global
     println(
         "Global — moyenne: ${"%.1f".format(global.moyenne)}, " +

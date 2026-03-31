@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Château Combo — Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        header h1 { font-size: 1.5rem; font-weight: 600; }
+        .run-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .run-selector label { font-size: 0.9rem; color: #94a3b8; }
+        .run-selector select {
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.375rem;
+            border: 1px solid #475569;
+            font-size: 0.9rem;
+            background: #334155;
+            color: white;
+            cursor: pointer;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .stat-card .label { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-card .value { font-size: 1.6rem; font-weight: 700; color: #1e293b; margin-top: 0.25rem; }
+        .chart-section {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .chart-section h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #334155;
+        }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .chart-header h2 { margin-bottom: 0; }
+        .sort-buttons {
+            display: flex;
+            gap: 0.35rem;
+            align-items: center;
+        }
+        .sort-buttons span { font-size: 0.8rem; color: #64748b; margin-right: 0.25rem; }
+        .sort-buttons button {
+            padding: 0.3rem 0.65rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            background: white;
+            color: #475569;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.15s;
+        }
+        .sort-buttons button.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .sort-buttons button:hover:not(.active) { background: #f1f5f9; }
+        .chart-wrap { position: relative; }
+        .chart-wrap.tall { height: 1150px; }
+        .chart-wrap.medium { height: 280px; }
+        .chart-wrap.scatter { height: 480px; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 800px) { .row { grid-template-columns: 1fr; } }
+        #loading { text-align: center; padding: 4rem; color: #64748b; font-size: 1.1rem; }
+        #error {
+            text-align: center; padding: 3rem; color: #ef4444; display: none;
+            background: white; border-radius: 0.75rem; margin: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        #error code {
+            display: inline-block; margin-top: 0.75rem; padding: 0.5rem 1rem;
+            background: #1e293b; color: #e2e8f0; border-radius: 0.375rem; font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Chateau Combo — Dashboard</h1>
+        <div class="run-selector">
+            <label for="run-select">Simulation :</label>
+            <select id="run-select"></select>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="loading">Chargement des donnees...</div>
+        <div id="error">
+            <p>Impossible de charger les donnees.</p>
+            <p>Lancez un serveur local depuis le dossier <b>stats/</b> :</p>
+            <code>cd stats && python3 -m http.server 8080</code>
+        </div>
+
+        <div id="dashboard" style="display: none;">
+            <div class="summary">
+                <div class="stat-card">
+                    <div class="label">Parties</div>
+                    <div class="value" id="val-parties">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Joueurs</div>
+                    <div class="value" id="val-joueurs">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Score moyen</div>
+                    <div class="value" id="val-moyenne">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Score median</div>
+                    <div class="value" id="val-mediane">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Q1 — Q3</div>
+                    <div class="value" id="val-iqr">-</div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h2>Equilibre entre joueurs</h2>
+                <div class="chart-wrap medium"><canvas id="chart-players"></canvas></div>
+            </div>
+
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h2>Classement par score de la carte</h2>
+                    <div class="sort-buttons" data-target="cardScore">
+                        <span>Trier :</span>
+                        <button class="active" data-key="moyenne">Moyenne</button>
+                        <button data-key="mediane">Mediane</button>
+                        <button data-key="troisiemeQuartile">Q3</button>
+                    </div>
+                </div>
+                <div class="chart-wrap tall"><canvas id="chart-card-score"></canvas></div>
+            </div>
+
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h2>Impact sur le score du joueur</h2>
+                    <div class="sort-buttons" data-target="playerImpact">
+                        <span>Trier :</span>
+                        <button class="active" data-key="moyenne">Moyenne</button>
+                        <button data-key="mediane">Mediane</button>
+                    </div>
+                </div>
+                <div class="chart-wrap tall"><canvas id="chart-player-impact"></canvas></div>
+            </div>
+
+            <div class="row">
+                <div class="chart-section">
+                    <h2>Score carte vs Score joueur</h2>
+                    <div class="chart-wrap scatter"><canvas id="chart-scatter"></canvas></div>
+                </div>
+                <div class="chart-section">
+                    <h2>Dispersion du score des cartes</h2>
+                    <div class="chart-wrap scatter"><canvas id="chart-spread"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+const state = {
+    runs: [],
+    playerData: null,
+    cardData: null,
+    charts: {},
+    sort: { cardScore: 'moyenne', playerImpact: 'moyenne' },
+};
+
+/* ── Reference-line plugin (dashed vertical line) ── */
+const refLinePlugin = {
+    id: 'refLine',
+    afterDraw(chart) {
+        const opts = chart.options.plugins.refLine;
+        if (!opts || opts.value == null) return;
+        const { ctx, chartArea, scales } = chart;
+        const x = scales.x.getPixelForValue(opts.value);
+        if (x < chartArea.left || x > chartArea.right) return;
+        ctx.save();
+        ctx.strokeStyle = opts.color || 'rgba(239, 68, 68, 0.6)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(x, chartArea.top);
+        ctx.lineTo(x, chartArea.bottom);
+        ctx.stroke();
+        /* label */
+        ctx.fillStyle = opts.color || 'rgba(239, 68, 68, 0.8)';
+        ctx.font = '11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(opts.label || '', x, chartArea.top - 6);
+        ctx.restore();
+    }
+};
+Chart.register(refLinePlugin);
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', init);
+
+async function init() {
+    try {
+        const res = await fetch('runs.json');
+        if (!res.ok) throw new Error('runs.json not found');
+        state.runs = await res.json();
+        populateSelector();
+        await loadRun(state.runs[0]);
+    } catch (e) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        console.error(e);
+    }
+
+    /* Sort button clicks */
+    document.querySelectorAll('.sort-buttons').forEach(group => {
+        group.addEventListener('click', e => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            const target = group.dataset.target;
+            const key = btn.dataset.key;
+            group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.sort[target] = key;
+            if (target === 'cardScore') renderCardScoreChart();
+            else renderPlayerImpactChart();
+        });
+    });
+
+    document.getElementById('run-select').addEventListener('change', e => loadRun(e.target.value));
+}
+
+function populateSelector() {
+    const sel = document.getElementById('run-select');
+    sel.innerHTML = state.runs.map(r => `<option value="${r}">${r}</option>`).join('');
+}
+
+async function loadRun(runId) {
+    const [pRes, cRes] = await Promise.all([
+        fetch(`${runId}/player_scores.json`),
+        fetch(`${runId}/card_scores.json`),
+    ]);
+    state.playerData = await pRes.json();
+    state.cardData = await cRes.json();
+    render();
+}
+
+/* ── Render all ── */
+function render() {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+
+    const g = state.playerData.global;
+    document.getElementById('val-parties').textContent = state.playerData.nbParties.toLocaleString();
+    document.getElementById('val-joueurs').textContent = state.playerData.nbJoueurs;
+    document.getElementById('val-moyenne').textContent = g.moyenne.toFixed(1);
+    document.getElementById('val-mediane').textContent = g.mediane.toFixed(1);
+    document.getElementById('val-iqr').textContent = `${g.premierQuartile.toFixed(0)} — ${g.troisiemeQuartile.toFixed(0)}`;
+
+    destroyAll();
+    renderPlayerChart();
+    renderCardScoreChart();
+    renderPlayerImpactChart();
+    renderScatterChart();
+    renderSpreadChart();
+}
+
+function destroyAll() {
+    Object.values(state.charts).forEach(c => c.destroy());
+    state.charts = {};
+}
+
+/* ── Player balance ── */
+function renderPlayerChart() {
+    const pd = state.playerData;
+    const labels = ['Global', ...pd.parJoueur.map(j => `Joueur ${j.joueurId + 1}`)];
+    const allStats = [pd.global, ...pd.parJoueur];
+
+    state.charts.players = new Chart(document.getElementById('chart-players'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                { label: 'Q1', data: allStats.map(s => s.premierQuartile), backgroundColor: '#cbd5e1' },
+                { label: 'Mediane', data: allStats.map(s => s.mediane), backgroundColor: '#f59e0b' },
+                { label: 'Moyenne', data: allStats.map(s => s.moyenne), backgroundColor: '#2563eb' },
+                { label: 'Q3', data: allStats.map(s => s.troisiemeQuartile), backgroundColor: '#10b981' },
+            ],
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: false, grace: '5%', grid: { color: 'rgba(0,0,0,0.04)' } },
+                x: { grid: { display: false } },
+            },
+            plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 16, font: { size: 12 } } },
+                refLine: {},
+            },
+        },
+    });
+}
+
+/* ── Card score ranking ── */
+function renderCardScoreChart() {
+    if (state.charts.cardScore) state.charts.cardScore.destroy();
+    const key = state.sort.cardScore;
+    const sorted = [...state.cardData].sort((a, b) => a.scoreCarte[key] - b.scoreCarte[key]);
+
+    state.charts.cardScore = new Chart(document.getElementById('chart-card-score'), {
+        type: 'bar',
+        data: {
+            labels: sorted.map(c => c.nomCarte),
+            datasets: [{
+                label: 'Score carte',
+                data: sorted.map(c => c.scoreCarte[key]),
+                backgroundColor: sorted.map((_, i) => {
+                    const t = i / (sorted.length - 1);
+                    return `rgba(37, 99, 235, ${0.35 + t * 0.55})`;
+                }),
+                borderRadius: 3,
+            }],
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Points', font: { size: 12 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+            },
+            plugins: {
+                legend: { display: false },
+                refLine: {},
+                tooltip: {
+                    callbacks: {
+                        afterBody(items) {
+                            const card = sorted[items[0].dataIndex];
+                            const s = card.scoreCarte;
+                            return [
+                                `Moyenne : ${s.moyenne}`,
+                                `Mediane : ${s.mediane}`,
+                                `Q1 : ${s.premierQuartile}  |  Q3 : ${s.troisiemeQuartile}`,
+                            ];
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+/* ── Player score impact ── */
+function renderPlayerImpactChart() {
+    if (state.charts.playerImpact) state.charts.playerImpact.destroy();
+    const key = state.sort.playerImpact;
+    const sorted = [...state.cardData].sort((a, b) => a.scoreJoueur[key] - b.scoreJoueur[key]);
+    const globalAvg = state.playerData.global.moyenne;
+
+    state.charts.playerImpact = new Chart(document.getElementById('chart-player-impact'), {
+        type: 'bar',
+        data: {
+            labels: sorted.map(c => c.nomCarte),
+            datasets: [{
+                label: 'Score joueur',
+                data: sorted.map(c => c.scoreJoueur[key]),
+                backgroundColor: sorted.map(c => {
+                    return c.scoreJoueur[key] >= globalAvg
+                        ? 'rgba(16, 185, 129, 0.7)'
+                        : 'rgba(239, 68, 68, 0.5)';
+                }),
+                borderRadius: 3,
+            }],
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Score joueur', font: { size: 12 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+            },
+            plugins: {
+                legend: { display: false },
+                refLine: { value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}` },
+                tooltip: {
+                    callbacks: {
+                        afterBody(items) {
+                            const card = sorted[items[0].dataIndex];
+                            const s = card.scoreJoueur;
+                            return [
+                                `Moyenne : ${s.moyenne}`,
+                                `Mediane : ${s.mediane}`,
+                                `Q1 : ${s.premierQuartile}  |  Q3 : ${s.troisiemeQuartile}`,
+                            ];
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+/* ── Scatter: card score vs player score ── */
+function renderScatterChart() {
+    const globalAvg = state.playerData.global.moyenne;
+    const data = state.cardData.map(c => ({
+        x: c.scoreCarte.moyenne,
+        y: c.scoreJoueur.moyenne,
+        label: c.nomCarte,
+    }));
+
+    state.charts.scatter = new Chart(document.getElementById('chart-scatter'), {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Cartes',
+                data,
+                backgroundColor: data.map(d =>
+                    d.y >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.55)'
+                ),
+                pointRadius: 5,
+                pointHoverRadius: 7,
+            }],
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'Score carte (moyenne)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
+                y: { title: { display: true, text: 'Score joueur (moyenne)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
+            },
+            plugins: {
+                legend: { display: false },
+                refLine: {},
+                tooltip: {
+                    callbacks: {
+                        label(ctx) {
+                            const d = ctx.raw;
+                            return `${d.label} — carte: ${d.x}, joueur: ${d.y}`;
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+/* ── Spread: IQR per card (Q3 - Q1) ── */
+function renderSpreadChart() {
+    const sorted = [...state.cardData].sort((a, b) => {
+        const iqrA = a.scoreCarte.troisiemeQuartile - a.scoreCarte.premierQuartile;
+        const iqrB = b.scoreCarte.troisiemeQuartile - b.scoreCarte.premierQuartile;
+        return iqrA - iqrB;
+    });
+
+    const data = sorted.map(c => ({
+        x: c.scoreCarte.troisiemeQuartile - c.scoreCarte.premierQuartile,
+        y: c.scoreCarte.moyenne,
+        label: c.nomCarte,
+    }));
+
+    state.charts.spread = new Chart(document.getElementById('chart-spread'), {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Cartes',
+                data,
+                backgroundColor: 'rgba(124, 58, 237, 0.6)',
+                pointRadius: 5,
+                pointHoverRadius: 7,
+            }],
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'IQR (Q3 - Q1)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' }, beginAtZero: true },
+                y: { title: { display: true, text: 'Score carte (moyenne)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
+            },
+            plugins: {
+                legend: { display: false },
+                refLine: {},
+                tooltip: {
+                    callbacks: {
+                        label(ctx) {
+                            const d = ctx.raw;
+                            return `${d.label} — moy: ${d.y}, IQR: ${d.x}`;
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+</script>
+</body>
+</html>
