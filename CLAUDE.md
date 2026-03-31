@@ -16,6 +16,15 @@ mvn test -Dtest=ChateauComboTest
 
 # Compile only
 mvn clean compile
+
+# Run simulation (default 10 000 games, outputs to stats/)
+mvn exec:java -Dexec.mainClass=com.chateaucombo.MainKt
+
+# Run simulation with custom number of games
+mvn exec:java -Dexec.mainClass=com.chateaucombo.MainKt -Dexec.args="50000"
+
+# Serve dashboard locally
+cd stats && python3 -m http.server 8080
 ```
 
 ## Conventions
@@ -34,6 +43,7 @@ Kotlin + Maven board game simulator for **Château Combo** (a card placement gam
 ```
 com.chateaucombo/
 ├── ChateauCombo.kt        # Main game orchestrator (9-turn loop)
+├── Main.kt                # Entry point – runs simulation, writes stats JSON + runs.json index
 ├── deck/
 │   ├── model/             # Carte, Deck, Blason, Chatelain, Villageois, CarteVerso
 │   └── repository/        # DeckRepository – load JSON, shuffle, draw cards
@@ -44,9 +54,12 @@ com.chateaucombo/
 │   ├── model/             # Tableau, Position (3x3 enum), PositionHorizontale, PositionVerticale, CartePositionee
 │   └── repository/        # TableauRepository – grid placement, adjacency
 ├── score/
-│   └── ScoreRepository.kt # End-of-game scoring (fills bourses then calls score effects)
-└── effet/
-    └── model/             # Effet interface, EffetContext, EffetScore, EffetPassif, concrete impls
+│   └── ScoreRepository.kt # End-of-game scoring (fills bourses, score effects, keys)
+├── effet/
+│   └── model/             # Effet interface, EffetContext, EffetScore, EffetPassif, concrete impls
+└── simulation/
+    ├── Simulation.kt              # Runs N games, aggregates per-player, per-card, and per-effect stats
+    └── StatistiquesSimulation.kt  # Data classes for stats output
 ```
 
 Card definitions live in `src/main/resources/cartes/` as JSON files (one file per card).
@@ -172,6 +185,34 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 2. `updateScoreWithEffects` — sums `effetScore.score(context)` for every card. Cards without an explicit `effetScore` use `EffetScoreVide` (0 pts). Bourse cards are not involved here.
 3. `updateScoreWithBourses` — adds `orDepose * 2` per `BourseScore` card to the player's score.
 4. `updateScoreWithCles` — adds 1 point per key (`clé`) the player holds at end of game.
+
+### Simulation & data visualization
+
+`Main.kt` runs N games (default 10 000) and writes results into a timestamped directory under `stats/`:
+
+```
+stats/
+├── index.html                      # Chart.js dashboard (single-page, no build step)
+├── runs.json                       # Index of available runs (auto-updated by Main.kt)
+└── 2026-03-31_23:30/               # One directory per simulation run
+    ├── player_scores.json           # Global + per-player stats (avg, Q1, median, Q3)
+    ├── card_scores.json             # Per-card stats (player score + card score contribution)
+    ├── effect_scores.json           # Stats grouped by on-play effect type
+    └── score_effect_scores.json     # Stats grouped by end-game scoring effect type
+```
+
+**Dashboard** (`stats/index.html`): static HTML + Chart.js (CDN), served locally. Features:
+- Run selector dropdown (reads `runs.json`)
+- Summary cards (games, players, avg/median/IQR)
+- Player balance chart (grouped bars: Q1/median/avg/Q3)
+- Card score ranking (horizontal bars, sortable by avg/median/Q3, detailed tooltips)
+- Player score impact (horizontal bars, green/red vs global average, reference line)
+- Scatter plots (card score vs player score, IQR spread)
+- Effect charts: on-play effects and score effects (toggleable between player score / card score metric)
+
+To view: `cd stats && python3 -m http.server 8080`, then open `http://localhost:8080`.
+
+`CarteVerso` cards are grouped into a single "Carte Verso" entry in stats output regardless of the original card face.
 
 ### Testing stack
 
