@@ -167,10 +167,11 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 
 ### Scoring
 
-`ScoreRepository.compteLeScore` runs at end of game per player in three steps:
+`ScoreRepository.compteLeScore` runs at end of game per player in four steps:
 1. `remplitLesBourses` — fills each `BourseScore` card with gold from `joueur.or` (in board order, capped at remaining capacity).
 2. `updateScoreWithEffects` — sums `effetScore.score(context)` for every card. Cards without an explicit `effetScore` use `EffetScoreVide` (0 pts). Bourse cards are not involved here.
 3. `updateScoreWithBourses` — adds `orDepose * 2` per `BourseScore` card to the player's score.
+4. `updateScoreWithCles` — adds 1 point per key (`clé`) the player holds at end of game.
 
 ### Testing stack
 

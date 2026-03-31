@@ -27,7 +27,7 @@ class ScoreRepositoryTest {
     fun `doit compter les points d'un joueur avec une carte qui rapporte 5 points`() {
         val carte = villageois(effetScore = AjoutePoints(5))
         val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
-        val joueur = Joueur(id = 1, tableau = tableau)
+        val joueur = Joueur(id = 1, cle = 0, tableau = tableau)
 
         scoreRepository.compteLesScores(listOf(joueur))
 
@@ -42,7 +42,7 @@ class ScoreRepositoryTest {
                 CartePositionee(carte = villageois(effetScore = AjoutePoints(5)), position = HAUTMILIEU),
             )
         )
-        val joueur = Joueur(id = 1, tableau = tableau)
+        val joueur = Joueur(id = 1, cle = 0, tableau = tableau)
 
         scoreRepository.compteLesScores(listOf(joueur))
 
@@ -57,7 +57,7 @@ class ScoreRepositoryTest {
                 CartePositionee(carte = villageois(), position = HAUTMILIEU),
             )
         )
-        val joueur = Joueur(id = 1, tableau = tableau)
+        val joueur = Joueur(id = 1, cle = 0, tableau = tableau)
 
         scoreRepository.compteLesScores(listOf(joueur))
 
@@ -77,8 +77,8 @@ class ScoreRepositoryTest {
                 CartePositionee(carte = villageois(effetScore = AjoutePoints(5)), position = HAUTMILIEU),
             )
         )
-        val joueur1 = Joueur(id = 1, tableau = tableauJoueur1)
-        val joueur2 = Joueur(id = 2, tableau = tableauJoueur2)
+        val joueur1 = Joueur(id = 1, cle = 0, tableau = tableauJoueur1)
+        val joueur2 = Joueur(id = 2, cle = 0, tableau = tableauJoueur2)
 
         scoreRepository.compteLesScores(listOf(joueur1, joueur2))
 
@@ -88,7 +88,7 @@ class ScoreRepositoryTest {
 
     @Test
     fun `le score est zero si le tableau est vide`() {
-        val joueur = Joueur(id = 1)
+        val joueur = Joueur(id = 1, cle = 0)
 
         scoreRepository.compteLesScores(listOf(joueur))
 
@@ -101,7 +101,7 @@ class ScoreRepositoryTest {
         fun `doit mettre les ors dans la bourse et valoir deux points par or quand or inferieur a la taille`() {
             val carte = villageois(bourse = BourseScore(taille = 5))
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
-            val joueur = Joueur(id = 1, or = 3, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =3, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -112,7 +112,7 @@ class ScoreRepositoryTest {
         fun `doit remplir la bourse au maximum quand or superieur a la taille`() {
             val carte = villageois(bourse = BourseScore(taille = 5))
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = carte, position = HAUTGAUCHE)))
-            val joueur = Joueur(id = 1, or = 10, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =10, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -127,7 +127,7 @@ class ScoreRepositoryTest {
                     CartePositionee(carte = villageois(bourse = BourseScore(taille = 4)), position = HAUTMILIEU),
                 )
             )
-            val joueur = Joueur(id = 1, or = 5, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =5, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -142,7 +142,7 @@ class ScoreRepositoryTest {
                     CartePositionee(carte = villageois(bourse = BourseScore(taille = 4)), position = HAUTMILIEU),
                 )
             )
-            val joueur = Joueur(id = 1, or = 20, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =20, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -157,7 +157,7 @@ class ScoreRepositoryTest {
                     CartePositionee(carte = villageois(effetScore = AjoutePoints(3)), position = HAUTMILIEU),
                 )
             )
-            val joueur = Joueur(id = 1, or = 4, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =4, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -171,7 +171,7 @@ class ScoreRepositoryTest {
                     CartePositionee(carte = villageois(), position = HAUTGAUCHE),
                 )
             )
-            val joueur = Joueur(id = 1, or = 10, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =10, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -182,7 +182,7 @@ class ScoreRepositoryTest {
         fun `doit combiner l'or des bourses pre-remplies avec l'or du joueur`() {
             val bourse = BourseScore(taille = 5).also { it.orDepose = 3 }
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE)))
-            val joueur = Joueur(id = 1, or = 2, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =2, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -193,7 +193,7 @@ class ScoreRepositoryTest {
         fun `une bourse deja pleine vaut sa taille fois deux meme si le joueur a de l'or`() {
             val bourse = BourseScore(taille = 4).also { it.orDepose = 4 }
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(carte = villageois(bourse = bourse), position = HAUTGAUCHE)))
-            val joueur = Joueur(id = 1, or = 10, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =10, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -212,7 +212,7 @@ class ScoreRepositoryTest {
                     CartePositionee(carte = villageois(effetScore = PointsParOrDepose()), position = HAUTMILIEU),
                 )
             )
-            val joueur = Joueur(id = 1, or = 3, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, or =3, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -229,7 +229,7 @@ class ScoreRepositoryTest {
                     CartePositionee(carte = villageois(effetScore = PointsSiRangSuperieur(points = 5)), position = HAUTGAUCHE),
                 )
             )
-            val joueur = Joueur(id = 1, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
@@ -243,11 +243,46 @@ class ScoreRepositoryTest {
                     CartePositionee(carte = villageois(effetScore = PointsSiRangSuperieur(points = 5)), position = MILIEUMILIEU),
                 )
             )
-            val joueur = Joueur(id = 1, tableau = tableau)
+            val joueur = Joueur(id = 1, cle = 0, tableau = tableau)
 
             scoreRepository.compteLesScores(listOf(joueur))
 
             assertThat(joueur.score).isEqualTo(0)
+        }
+    }
+
+    @Nested
+    inner class ScoreAvecCles {
+        @Test
+        fun `doit ajouter un point par cle restante`() {
+            val joueur = Joueur(id = 1, cle = 3)
+
+            scoreRepository.compteLesScores(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(3)
+        }
+
+        @Test
+        fun `doit ajouter zero points si aucune cle`() {
+            val joueur = Joueur(id = 1, cle = 0)
+
+            scoreRepository.compteLesScores(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(0)
+        }
+
+        @Test
+        fun `doit combiner cles et effets de score`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(
+                    CartePositionee(carte = villageois(effetScore = AjoutePoints(5)), position = HAUTGAUCHE),
+                )
+            )
+            val joueur = Joueur(id = 1, cle = 2, tableau = tableau)
+
+            scoreRepository.compteLesScores(listOf(joueur))
+
+            assertThat(joueur.score).isEqualTo(7)
         }
     }
 }

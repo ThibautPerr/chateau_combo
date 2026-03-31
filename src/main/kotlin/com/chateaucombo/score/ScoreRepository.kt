@@ -12,6 +12,7 @@ class ScoreRepository {
             joueur.remplitLesBourses()
             joueur.updateScoreWithEffects(joueurs)
             joueur.updateScoreWithBourses()
+            joueur.updateScoreWithCles()
         }
     }
 
@@ -32,6 +33,13 @@ class ScoreRepository {
             val points = cartePositionee.carte.effetScore.score(context)
             logger.debug { "Joueur ${this.id} : ${cartePositionee.carte.nom} rapporte $points point(s)" }
             points
+        }
+    }
+
+    private fun Joueur.updateScoreWithCles() {
+        if (this.cle > 0) {
+            logger.debug { "Joueur ${this.id} : ${this.cle} clé(s) rapporte(nt) ${this.cle} point(s)" }
+            this.score += this.cle
         }
     }
 
