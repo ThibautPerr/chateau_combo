@@ -3,6 +3,7 @@ package com.chateaucombo.simulation
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import com.chateaucombo.ChateauCombo
+import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.effet.model.EffetScoreVide
@@ -54,27 +55,50 @@ class Simulation(
         acc: Accumulateurs,
     ) {
         val carte = cartePositionee.carte
-        val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
-        val cardScore = carte.effetScore.score(context) + (carte.bourse?.orDepose?.times(2) ?: 0)
-        val nom = if (carte is CarteVerso) "Carte Verso" else carte.nom
-
-        acc.scoresJoueurParCarte.getOrPut(nom) { mutableListOf() }.add(joueur.score)
-        acc.scoresCarteParCarte.getOrPut(nom) { mutableListOf() }.add(cardScore)
-
-        val effetTypes = carte.effets.effets.map { it::class.simpleName!! } +
-                carte.effets.effetsPassifs.map { it::class.simpleName!! }
+        val nom = nomStatistique(carte)
+        val cardScore = calculeScoreCarte(joueur, joueurs, cartePositionee)
+        val effetTypes = typesEffets(carte)
         val effetScoreType = carte.effetScore::class.simpleName!!
 
+        accumulerScoresParCarte(nom, joueur.score, cardScore, acc)
+        enregistreTypesEffetsPourCarte(nom, effetTypes, effetScoreType, acc)
+        accumulerScoresParEffet(effetTypes, joueur.score, cardScore, acc)
+        accumulerScoresParEffetScore(effetScoreType, carte, joueur.score, cardScore, acc)
+    }
+
+    private fun nomStatistique(carte: Carte): String =
+        if (carte is CarteVerso) "Carte Verso" else carte.nom
+
+    private fun calculeScoreCarte(joueur: Joueur, joueurs: List<Joueur>, cartePositionee: CartePositionee): Int {
+        val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
+        return cartePositionee.carte.effetScore.score(context) + (cartePositionee.carte.bourse?.orDepose?.times(2) ?: 0)
+    }
+
+    private fun typesEffets(carte: Carte): List<String> =
+        carte.effets.effets.map { it::class.simpleName!! } +
+        carte.effets.effetsPassifs.map { it::class.simpleName!! }
+
+    private fun accumulerScoresParCarte(nom: String, scoreJoueur: Int, scoreCarte: Int, acc: Accumulateurs) {
+        acc.scoresJoueurParCarte.getOrPut(nom) { mutableListOf() }.add(scoreJoueur)
+        acc.scoresCarteParCarte.getOrPut(nom) { mutableListOf() }.add(scoreCarte)
+    }
+
+    private fun enregistreTypesEffetsPourCarte(nom: String, effetTypes: List<String>, effetScoreType: String, acc: Accumulateurs) {
         acc.effetsParCarte.putIfAbsent(nom, effetTypes)
         acc.effetScoreParCarte.putIfAbsent(nom, effetScoreType)
+    }
 
+    private fun accumulerScoresParEffet(effetTypes: List<String>, scoreJoueur: Int, scoreCarte: Int, acc: Accumulateurs) {
         for (type in effetTypes) {
-            acc.scoresJoueurParEffet.getOrPut(type) { mutableListOf() }.add(joueur.score)
-            acc.scoresCarteParEffet.getOrPut(type) { mutableListOf() }.add(cardScore)
+            acc.scoresJoueurParEffet.getOrPut(type) { mutableListOf() }.add(scoreJoueur)
+            acc.scoresCarteParEffet.getOrPut(type) { mutableListOf() }.add(scoreCarte)
         }
+    }
+
+    private fun accumulerScoresParEffetScore(effetScoreType: String, carte: Carte, scoreJoueur: Int, scoreCarte: Int, acc: Accumulateurs) {
         if (carte.effetScore !is EffetScoreVide) {
-            acc.scoresJoueurParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(joueur.score)
-            acc.scoresCarteParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(cardScore)
+            acc.scoresJoueurParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(scoreJoueur)
+            acc.scoresCarteParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(scoreCarte)
         }
     }
 
