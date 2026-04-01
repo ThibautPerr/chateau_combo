@@ -3,13 +3,15 @@ package com.chateaucombo.simulation
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import com.chateaucombo.ChateauCombo
+import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.repository.DeckRepository
+import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
-import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesJoueur
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesPoints
+import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.repository.TableauRepository
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
@@ -25,69 +27,84 @@ class Simulation(
     )
 
     fun run(nbParties: Int): ResultatSimulation {
-        val scoresParJoueur = List(nbJoueurs) { mutableListOf<Int>() }
-        val scoresJoueurParCarte = mutableMapOf<String, MutableList<Int>>()
-        val scoresCarteParCarte = mutableMapOf<String, MutableList<Int>>()
-        val effetsParCarte = mutableMapOf<String, List<String>>()
-        val effetScoreParCarte = mutableMapOf<String, String>()
-        val scoresJoueurParEffet = mutableMapOf<String, MutableList<Int>>()
-        val scoresCarteParEffet = mutableMapOf<String, MutableList<Int>>()
-        val scoresJoueurParEffetScore = mutableMapOf<String, MutableList<Int>>()
-        val scoresCarteParEffetScore = mutableMapOf<String, MutableList<Int>>()
-
+        val acc = Accumulateurs(nbJoueurs)
         silenceLogs {
             repeat(nbParties) {
                 val joueurs = List(nbJoueurs) { Joueur(id = it) }
                 jeu.play(joueurs, pathCartes)
-                joueurs.forEachIndexed { index, joueur ->
-                    scoresParJoueur[index].add(joueur.score)
-                    joueur.tableau.cartesPositionees.forEach { cartePositionee ->
-                        val carte = cartePositionee.carte
-                        val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
-                        val scoreEffet = carte.effetScore.score(context)
-                        val scoreBourse = carte.bourse?.orDepose?.times(2) ?: 0
-                        val nom = if (carte is com.chateaucombo.deck.model.CarteVerso) "Carte Verso" else carte.nom
-                        val cardScore = scoreEffet + scoreBourse
-
-                        scoresJoueurParCarte.getOrPut(nom) { mutableListOf() }.add(joueur.score)
-                        scoresCarteParCarte.getOrPut(nom) { mutableListOf() }.add(cardScore)
-
-                        val effetTypes = carte.effets.effets.map { it::class.simpleName!! } +
-                                carte.effets.effetsPassifs.map { it::class.simpleName!! }
-                        val effetScoreType = carte.effetScore::class.simpleName!!
-
-                        effetsParCarte.putIfAbsent(nom, effetTypes)
-                        effetScoreParCarte.putIfAbsent(nom, effetScoreType)
-
-                        for (type in effetTypes) {
-                            scoresJoueurParEffet.getOrPut(type) { mutableListOf() }.add(joueur.score)
-                            scoresCarteParEffet.getOrPut(type) { mutableListOf() }.add(cardScore)
-                        }
-                        if (carte.effetScore !is EffetScoreVide) {
-                            scoresJoueurParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(joueur.score)
-                            scoresCarteParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(cardScore)
-                        }
-                    }
-                }
+                accumuleDonneesPartie(joueurs, acc)
             }
         }
+        return construitResultat(nbParties, acc)
+    }
 
-        val tousLesScores = scoresParJoueur.flatten()
+    private fun accumuleDonneesPartie(joueurs: List<Joueur>, acc: Accumulateurs) {
+        joueurs.forEachIndexed { index, joueur ->
+            acc.scoresParJoueur[index].add(joueur.score)
+            joueur.tableau.cartesPositionees.forEach { cartePositionee ->
+                accumuleDonneesCarte(joueur, joueurs, cartePositionee, acc)
+            }
+        }
+    }
+
+    private fun accumuleDonneesCarte(
+        joueur: Joueur,
+        joueurs: List<Joueur>,
+        cartePositionee: CartePositionee,
+        acc: Accumulateurs,
+    ) {
+        val carte = cartePositionee.carte
+        val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
+        val cardScore = carte.effetScore.score(context) + (carte.bourse?.orDepose?.times(2) ?: 0)
+        val nom = if (carte is CarteVerso) "Carte Verso" else carte.nom
+
+        acc.scoresJoueurParCarte.getOrPut(nom) { mutableListOf() }.add(joueur.score)
+        acc.scoresCarteParCarte.getOrPut(nom) { mutableListOf() }.add(cardScore)
+
+        val effetTypes = carte.effets.effets.map { it::class.simpleName!! } +
+                carte.effets.effetsPassifs.map { it::class.simpleName!! }
+        val effetScoreType = carte.effetScore::class.simpleName!!
+
+        acc.effetsParCarte.putIfAbsent(nom, effetTypes)
+        acc.effetScoreParCarte.putIfAbsent(nom, effetScoreType)
+
+        for (type in effetTypes) {
+            acc.scoresJoueurParEffet.getOrPut(type) { mutableListOf() }.add(joueur.score)
+            acc.scoresCarteParEffet.getOrPut(type) { mutableListOf() }.add(cardScore)
+        }
+        if (carte.effetScore !is EffetScoreVide) {
+            acc.scoresJoueurParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(joueur.score)
+            acc.scoresCarteParEffetScore.getOrPut(effetScoreType) { mutableListOf() }.add(cardScore)
+        }
+    }
+
+    private fun inverseEffetsParCarte(acc: Accumulateurs): Map<String, Set<String>> {
         val cartesParEffet = mutableMapOf<String, MutableSet<String>>()
-        val cartesParEffetScore = mutableMapOf<String, MutableSet<String>>()
-        for ((nom, types) in effetsParCarte) {
+        for ((nom, types) in acc.effetsParCarte) {
             for (type in types) cartesParEffet.getOrPut(type) { mutableSetOf() }.add(nom)
         }
-        for ((nom, type) in effetScoreParCarte) {
+        return cartesParEffet
+    }
+
+    private fun inverseEffetScoreParCarte(acc: Accumulateurs): Map<String, Set<String>> {
+        val cartesParEffetScore = mutableMapOf<String, MutableSet<String>>()
+        for ((nom, type) in acc.effetScoreParCarte) {
             if (type != "EffetScoreVide") cartesParEffetScore.getOrPut(type) { mutableSetOf() }.add(nom)
         }
+        return cartesParEffetScore
+    }
+
+    private fun construitResultat(nbParties: Int, acc: Accumulateurs): ResultatSimulation {
+        val tousLesScores = acc.scoresParJoueur.flatten()
+        val cartesParEffet = inverseEffetsParCarte(acc)
+        val cartesParEffetScore = inverseEffetScoreParCarte(acc)
 
         return ResultatSimulation(
             joueurs = StatistiquesSimulation(
                 nbParties = nbParties,
                 nbJoueurs = nbJoueurs,
                 global = tousLesScores.stats(),
-                parJoueur = scoresParJoueur.mapIndexed { index, scores ->
+                parJoueur = acc.scoresParJoueur.mapIndexed { index, scores ->
                     StatistiquesJoueur(
                         joueurId = index,
                         moyenne = scores.average().round2(),
@@ -97,29 +114,29 @@ class Simulation(
                     )
                 },
             ),
-            cartes = scoresJoueurParCarte.keys.sorted().map { nom ->
+            cartes = acc.scoresJoueurParCarte.keys.sorted().map { nom ->
                 StatistiquesCarte(
                     nomCarte = nom,
-                    effets = effetsParCarte[nom] ?: emptyList(),
-                    effetScore = effetScoreParCarte[nom] ?: "EffetScoreVide",
-                    scoreJoueur = scoresJoueurParCarte[nom]!!.stats(),
-                    scoreCarte = scoresCarteParCarte[nom]!!.stats(),
+                    effets = acc.effetsParCarte[nom] ?: emptyList(),
+                    effetScore = acc.effetScoreParCarte[nom] ?: "EffetScoreVide",
+                    scoreJoueur = acc.scoresJoueurParCarte[nom]!!.stats(),
+                    scoreCarte = acc.scoresCarteParCarte[nom]!!.stats(),
                 )
             },
-            parEffet = scoresJoueurParEffet.keys.sorted().map { type ->
+            parEffet = acc.scoresJoueurParEffet.keys.sorted().map { type ->
                 StatistiquesEffet(
                     effet = type,
                     cartes = cartesParEffet[type]!!.sorted(),
-                    scoreJoueur = scoresJoueurParEffet[type]!!.stats(),
-                    scoreCarte = scoresCarteParEffet[type]!!.stats(),
+                    scoreJoueur = acc.scoresJoueurParEffet[type]!!.stats(),
+                    scoreCarte = acc.scoresCarteParEffet[type]!!.stats(),
                 )
             },
-            parEffetScore = scoresJoueurParEffetScore.keys.sorted().map { type ->
+            parEffetScore = acc.scoresJoueurParEffetScore.keys.sorted().map { type ->
                 StatistiquesEffet(
                     effet = type,
                     cartes = cartesParEffetScore[type]!!.sorted(),
-                    scoreJoueur = scoresJoueurParEffetScore[type]!!.stats(),
-                    scoreCarte = scoresCarteParEffetScore[type]!!.stats(),
+                    scoreJoueur = acc.scoresJoueurParEffetScore[type]!!.stats(),
+                    scoreCarte = acc.scoresCarteParEffetScore[type]!!.stats(),
                 )
             },
         )
@@ -153,4 +170,16 @@ class Simulation(
         val hi = minOf(lo + 1, sorted.size - 1)
         return sorted[lo] + (index - lo) * (sorted[hi] - sorted[lo])
     }
+}
+
+private class Accumulateurs(nbJoueurs: Int) {
+    val scoresParJoueur: List<MutableList<Int>> = List(nbJoueurs) { mutableListOf() }
+    val scoresJoueurParCarte: MutableMap<String, MutableList<Int>> = mutableMapOf()
+    val scoresCarteParCarte: MutableMap<String, MutableList<Int>> = mutableMapOf()
+    val effetsParCarte: MutableMap<String, List<String>> = mutableMapOf()
+    val effetScoreParCarte: MutableMap<String, String> = mutableMapOf()
+    val scoresJoueurParEffet: MutableMap<String, MutableList<Int>> = mutableMapOf()
+    val scoresCarteParEffet: MutableMap<String, MutableList<Int>> = mutableMapOf()
+    val scoresJoueurParEffetScore: MutableMap<String, MutableList<Int>> = mutableMapOf()
+    val scoresCarteParEffetScore: MutableMap<String, MutableList<Int>> = mutableMapOf()
 }

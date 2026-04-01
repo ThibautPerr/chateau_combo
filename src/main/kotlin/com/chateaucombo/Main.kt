@@ -1,5 +1,6 @@
 package com.chateaucombo
 
+import com.chateaucombo.simulation.ResultatSimulation
 import com.chateaucombo.simulation.Simulation
 import tools.jackson.module.kotlin.jacksonMapperBuilder
 import java.io.File
@@ -9,30 +10,24 @@ import java.time.format.DateTimeFormatter
 fun main(args: Array<String>) {
     val nbParties = args.firstOrNull()?.toIntOrNull() ?: 10000
     println("Simulation de $nbParties parties en cours...")
+    val resultat = Simulation().run(nbParties)
+    val runDir = File("stats", timestamp()).also { it.mkdirs() }
+    ecritsResultats(resultat, runDir)
+    metsAJourIndex(File("stats"))
+    afficheResume(resultat)
+}
 
-    val simulation = Simulation()
-    val resultat = simulation.run(nbParties)
+private fun timestamp() = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm"))
 
-    val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm"))
-    val runDir = File("stats", timestamp).also { it.mkdirs() }
+private fun ecritsResultats(resultat: ResultatSimulation, runDir: File) {
+    resultat.joueurs.writeIn(File(runDir, "player_scores.json"))
+    resultat.cartes.writeIn(File(runDir, "card_scores.json"))
+    resultat.parEffet.writeIn(File(runDir, "effect_scores.json"))
+    resultat.parEffetScore.writeIn(File(runDir, "score_effect_scores.json"))
+    println("Résultats écrits dans ${runDir.absolutePath}")
+}
 
-    val playerFile = File(runDir, "player_scores.json")
-    resultat.joueurs.writeIn(playerFile)
-    println("Résultats joueurs écrits dans ${playerFile.absolutePath}")
-
-    val cardFile = File(runDir, "card_scores.json")
-    resultat.cartes.writeIn(cardFile)
-    println("Résultats cartes écrits dans ${cardFile.absolutePath}")
-
-    val effetFile = File(runDir, "effect_scores.json")
-    resultat.parEffet.writeIn(effetFile)
-    println("Résultats par effet écrits dans ${effetFile.absolutePath}")
-
-    val effetScoreFile = File(runDir, "score_effect_scores.json")
-    resultat.parEffetScore.writeIn(effetScoreFile)
-    println("Résultats par effet de score écrits dans ${effetScoreFile.absolutePath}")
-
-    val statsDir = File("stats")
+private fun metsAJourIndex(statsDir: File) {
     val runs = statsDir.listFiles()
         ?.filter { it.isDirectory }
         ?.map { it.name }
@@ -40,7 +35,9 @@ fun main(args: Array<String>) {
         ?: emptyList()
     mapper.writeValue(File(statsDir, "runs.json"), runs)
     println("Index des simulations mis à jour (${runs.size} runs)")
+}
 
+private fun afficheResume(resultat: ResultatSimulation) {
     val global = resultat.joueurs.global
     println(
         "Global — moyenne: ${"%.1f".format(global.moyenne)}, " +
