@@ -7,14 +7,10 @@ import com.chateaucombo.tableau.model.Tableau
 
 class TableauRepository {
     fun ajouteCarte(tableau: Tableau, carte: Carte, position: Position): Boolean =
-        when (tableau.aucuneCarteDejaPositionnee(position)) {
-            true -> {
-                tableau.cartesPositionees.add(CartePositionee(carte, position))
-                true
-            }
-
-            false -> false
-        }
+        if (tableau.aucuneCarteDejaPositionnee(position)) {
+            tableau.cartesPositionees.add(CartePositionee(carte, position))
+            true
+        } else false
 
     private fun Tableau.aucuneCarteDejaPositionnee(position: Position) =
         this.cartesPositionees.none { it.position == position }
@@ -26,8 +22,9 @@ class TableauRepository {
     }
 
     private fun CartePositionee.deplaceAGauche(): CartePositionee {
-        val nouvellePosition = this.position.positionAGauche()
-        requireNotNull(nouvellePosition)
+        val nouvellePosition = requireNotNull(this.position.positionAGauche()) {
+            "Impossible de déplacer à gauche depuis ${this.position}"
+        }
         return this.copy(position = nouvellePosition)
     }
 
@@ -38,8 +35,9 @@ class TableauRepository {
     }
 
     private fun CartePositionee.deplaceADroite(): CartePositionee {
-        val nouvellePosition = this.position.positionADroite()
-        requireNotNull(nouvellePosition)
+        val nouvellePosition = requireNotNull(this.position.positionADroite()) {
+            "Impossible de déplacer à droite depuis ${this.position}"
+        }
         return this.copy(position = nouvellePosition)
     }
 
@@ -50,8 +48,9 @@ class TableauRepository {
     }
 
     private fun CartePositionee.deplaceEnHaut(): CartePositionee {
-        val nouvellePosition = this.position.positionEnHaut()
-        requireNotNull(nouvellePosition)
+        val nouvellePosition = requireNotNull(this.position.positionEnHaut()) {
+            "Impossible de déplacer en haut depuis ${this.position}"
+        }
         return this.copy(position = nouvellePosition)
     }
 
@@ -62,16 +61,15 @@ class TableauRepository {
     }
 
     private fun CartePositionee.deplaceEnBas(): CartePositionee {
-        val nouvellePosition = this.position.positionEnBas()
-        requireNotNull(nouvellePosition)
+        val nouvellePosition = requireNotNull(this.position.positionEnBas()) {
+            "Impossible de déplacer en bas depuis ${this.position}"
+        }
         return this.copy(position = nouvellePosition)
     }
 
     fun choisitUnePosition(tableau: Tableau): Position =
-        when (tableau.cartesPositionees.isEmpty()) {
-            true -> Position.MILIEUMILIEU
-            false -> tableau.trouvePositionAutorisees().random()
-        }
+        if (tableau.cartesPositionees.isEmpty()) Position.MILIEUMILIEU
+        else tableau.trouvePositionAutorisees().random()
 
     private fun Tableau.trouvePositionAutorisees() =
         this.cartesPositionees

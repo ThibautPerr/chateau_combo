@@ -57,19 +57,15 @@ class JoueurRepository(
     }
 
     private fun choisitUneCarte(cartesAchetables: List<Carte>, cartesDisponibles: List<Carte>) =
-        when (cartesAchetables.isNotEmpty()) {
-            true -> cartesAchetables.random()
-            false -> {
-                val carteOriginale = cartesDisponibles.random()
-                CarteVerso(nom = "Carte Verso (${carteOriginale.nom})", carteOriginale = carteOriginale)
-            }
+        if (cartesAchetables.isNotEmpty()) cartesAchetables.random()
+        else {
+            val carteOriginale = cartesDisponibles.random()
+            CarteVerso(nom = "Carte Verso (${carteOriginale.nom})", carteOriginale = carteOriginale)
         }
 
     private fun Joueur.metAJourOr(carteChoisie: Carte, reductionCoutVillageois: Int, reductionCoutChatelain: Int) {
-        when (carteChoisie is CarteVerso) {
-            true -> this.or += ReglesDuJeu.OR_CARTE_VERSO
-            false -> this.or = maxOf(0, this.or - carteChoisie.coutEffectif(reductionCoutVillageois, reductionCoutChatelain))
-        }
+        if (carteChoisie is CarteVerso) this.or += ReglesDuJeu.OR_CARTE_VERSO
+        else this.or = maxOf(0, this.or - carteChoisie.coutEffectif(reductionCoutVillageois, reductionCoutChatelain))
     }
 
     private fun Joueur.metAJourCle(carteChoisie: Carte) {

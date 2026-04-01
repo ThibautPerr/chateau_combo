@@ -169,13 +169,11 @@ class ChateauCombo(
     }
 
     private fun String.center(width: Int = 40): String =
-        when (this.length >= width) {
-            true -> this
-            else -> {
-                val totalPadding = width - this.length
-                val padStart = totalPadding / 2
-                val padEnd = totalPadding - padStart
-                " ".repeat(padStart) + this + " ".repeat(padEnd)
-            }
+        if (this.length >= width) this
+        else {
+            val totalPadding = width - this.length
+            val padStart = totalPadding / 2
+            val padEnd = totalPadding - padStart
+            " ".repeat(padStart) + this + " ".repeat(padEnd)
         }
 }
