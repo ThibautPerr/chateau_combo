@@ -13,7 +13,6 @@ import com.chateaucombo.tableau.model.Tableau
 import com.chateaucombo.tableau.repository.TableauRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -355,37 +354,35 @@ class TableauRepositoryTest {
     }
 
     @Nested
-    inner class ChoisitUnePosition {
+    inner class PositionsAutorisees {
         @Test
-        fun `doit renvoyer la position du milieu milieu s'il n'y a aucune carte`() {
+        fun `doit renvoyer uniquement la position milieu milieu s'il n'y a aucune carte`() {
             val tableau = Tableau()
 
-            val positionChoisie = repository.choisitUnePosition(tableau)
+            val positions = repository.positionsAutorisees(tableau)
 
-            assertThat(positionChoisie).isEqualTo(MILIEUMILIEU)
+            assertThat(positions).containsExactly(MILIEUMILIEU)
         }
 
-        @RepeatedTest(20)
-        fun `doit renvoyer la position d'une case adjacente a la carte posee au milieu`() {
+        @Test
+        fun `doit renvoyer les positions adjacentes a la carte posee au milieu`() {
             val tableau = tableauAvecUneCarteAuMilieuMilieu()
-            val positionAutorisees = listOf(HAUTMILIEU, MILIEUGAUCHE, MILIEUDROITE, BASMILIEU)
 
-            val positionChoisie = repository.choisitUnePosition(tableau)
+            val positions = repository.positionsAutorisees(tableau)
 
-            assertThat(positionAutorisees).contains(positionChoisie)
+            assertThat(positions).containsExactlyInAnyOrder(HAUTMILIEU, MILIEUGAUCHE, MILIEUDROITE, BASMILIEU)
         }
 
         private fun tableauAvecUneCarteAuMilieuMilieu() =
             Tableau(cartesPositionees = mutableListOf(CartePositionee(deckBuilder.cure(), MILIEUMILIEU)))
 
-        @RepeatedTest(20)
-        fun `doit renvoyer la position d'une case adjacente dans un tableau avec trois cartes au milieu vertical`() {
+        @Test
+        fun `doit renvoyer les positions adjacentes dans un tableau avec trois cartes au milieu vertical`() {
             val tableau = tableauAvecTroisCartesAuMilieuVertical()
-            val positionAutorisees = listOf(HAUTGAUCHE, HAUTDROITE, MILIEUGAUCHE, MILIEUDROITE, BASGAUCHE, BASDROITE)
 
-            val positionChoisie = repository.choisitUnePosition(tableau)
+            val positions = repository.positionsAutorisees(tableau)
 
-            assertThat(positionAutorisees).contains(positionChoisie)
+            assertThat(positions).containsExactlyInAnyOrder(HAUTGAUCHE, HAUTDROITE, MILIEUGAUCHE, MILIEUDROITE, BASGAUCHE, BASDROITE)
         }
 
         private fun tableauAvecTroisCartesAuMilieuVertical() =
@@ -397,14 +394,13 @@ class TableauRepositoryTest {
                 )
             )
 
-        @RepeatedTest(20)
-        fun `doit renvoyer la position d'une case adjacente dans un tableau avec trois cartes au milieu horizontal`() {
+        @Test
+        fun `doit renvoyer les positions adjacentes dans un tableau avec trois cartes au milieu horizontal`() {
             val tableau = tableauAvecTroisCartesAuMilieuHorizontal()
-            val positionAutorisees = listOf(HAUTGAUCHE, HAUTMILIEU, HAUTDROITE, BASGAUCHE, BASMILIEU, BASDROITE)
 
-            val positionChoisie = repository.choisitUnePosition(tableau)
+            val positions = repository.positionsAutorisees(tableau)
 
-            assertThat(positionAutorisees).contains(positionChoisie)
+            assertThat(positions).containsExactlyInAnyOrder(HAUTGAUCHE, HAUTMILIEU, HAUTDROITE, BASGAUCHE, BASMILIEU, BASDROITE)
         }
 
         private fun tableauAvecTroisCartesAuMilieuHorizontal() =
@@ -416,17 +412,16 @@ class TableauRepositoryTest {
                 )
             )
 
-        @RepeatedTest(20)
+        @Test
         fun `doit renvoyer uniquement les deux positions adjacentes d'un coin`() {
             val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(deckBuilder.cure(), HAUTGAUCHE)))
-            val positionsAutorisees = listOf(HAUTMILIEU, MILIEUGAUCHE)
 
-            val positionChoisie = repository.choisitUnePosition(tableau)
+            val positions = repository.positionsAutorisees(tableau)
 
-            assertThat(positionsAutorisees).contains(positionChoisie)
+            assertThat(positions).containsExactlyInAnyOrder(HAUTMILIEU, MILIEUGAUCHE)
         }
 
-        @RepeatedTest(20)
+        @Test
         fun `doit exclure les positions adjacentes deja occupees`() {
             val tableau = Tableau(
                 cartesPositionees = mutableListOf(
@@ -434,11 +429,10 @@ class TableauRepositoryTest {
                     CartePositionee(deckBuilder.cure(), HAUTMILIEU),
                 )
             )
-            val positionsAutorisees = listOf(HAUTGAUCHE, HAUTDROITE, MILIEUGAUCHE, MILIEUDROITE, BASMILIEU)
 
-            val positionChoisie = repository.choisitUnePosition(tableau)
+            val positions = repository.positionsAutorisees(tableau)
 
-            assertThat(positionsAutorisees).contains(positionChoisie)
+            assertThat(positions).containsExactlyInAnyOrder(HAUTGAUCHE, HAUTDROITE, MILIEUGAUCHE, MILIEUDROITE, BASMILIEU)
         }
 
     }

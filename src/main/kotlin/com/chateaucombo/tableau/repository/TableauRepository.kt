@@ -67,9 +67,9 @@ class TableauRepository {
         return this.copy(position = nouvellePosition)
     }
 
-    fun choisitUnePosition(tableau: Tableau): Position =
-        if (tableau.cartesPositionees.isEmpty()) Position.MILIEUMILIEU
-        else tableau.trouvePositionAutorisees().random()
+    fun positionsAutorisees(tableau: Tableau): List<Position> =
+        if (tableau.cartesPositionees.isEmpty()) listOf(Position.MILIEUMILIEU)
+        else tableau.trouvePositionAutorisees()
 
     private fun Tableau.trouvePositionAutorisees() =
         this.cartesPositionees

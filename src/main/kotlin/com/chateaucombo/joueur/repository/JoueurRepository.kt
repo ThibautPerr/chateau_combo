@@ -23,7 +23,7 @@ class JoueurRepository(
         val reductionCoutChatelain = joueur.reductionCoutChatelain()
         val cartesAchetables =
             cartesDisponibles.filter { carte -> joueur.or >= carte.coutEffectif(reductionCoutVillageois, reductionCoutChatelain) }
-        val carteChoisie = choisitUneCarte(cartesAchetables, cartesDisponibles)
+        val carteChoisie = joueur.strategie.choisitUneCarte(cartesAchetables, cartesDisponibles)
         joueur.metAJourOr(carteChoisie, reductionCoutVillageois, reductionCoutChatelain)
         joueur.metAJourCle(carteChoisie)
         deck.retireLaCarte(carteChoisie)
@@ -56,13 +56,6 @@ class JoueurRepository(
         }
     }
 
-    private fun choisitUneCarte(cartesAchetables: List<Carte>, cartesDisponibles: List<Carte>) =
-        if (cartesAchetables.isNotEmpty()) cartesAchetables.random()
-        else {
-            val carteOriginale = cartesDisponibles.random()
-            CarteVerso(nom = "Carte Verso (${carteOriginale.nom})", carteOriginale = carteOriginale)
-        }
-
     private fun Joueur.metAJourOr(carteChoisie: Carte, reductionCoutVillageois: Int, reductionCoutChatelain: Int) {
         if (carteChoisie is CarteVerso) this.or += ReglesDuJeu.OR_CARTE_VERSO
         else this.or = maxOf(0, this.or - carteChoisie.coutEffectif(reductionCoutVillageois, reductionCoutChatelain))
@@ -86,7 +79,7 @@ class JoueurRepository(
     fun deplaceEnBas(joueur: Joueur) = tableauRepository.deplaceEnBas(joueur.tableau)
 
     fun choisitUnePosition(joueur: Joueur): Position =
-        tableauRepository.choisitUnePosition(joueur.tableau)
+        joueur.strategie.choisitUnePosition(tableauRepository.positionsAutorisees(joueur.tableau))
 
     fun rafraichitLeDeck(joueur: Joueur, deck: Deck) {
         deckRepository.rafraichitLeDeck(deck)

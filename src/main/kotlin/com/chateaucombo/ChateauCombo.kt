@@ -9,6 +9,8 @@ import com.chateaucombo.effet.model.EffetSeparateur.ET
 import com.chateaucombo.effet.model.EffetSeparateur.OU
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
+import com.chateaucombo.joueur.strategie.ActionCle
+import com.chateaucombo.joueur.strategie.DirectionDeplacement
 import com.chateaucombo.score.ScoreRepository
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Position.*
@@ -32,6 +34,7 @@ class ChateauCombo(
             joueurs.forEach { joueur ->
                 logger.debug { "Joueur ${joueur.id} : ${joueur.or} or, ${joueur.cle} clés" }
                 joueur.utiliseUneCle(decks)
+                joueur.deplaceSonTableau()
 
                 val currentDeck = decks.first { it.estLeDeckActuel }
                 val cartePositionee = joueur.placeUneCarte(currentDeck)
@@ -68,11 +71,21 @@ class ChateauCombo(
 
     private fun Joueur.utiliseUneCle(decks: List<Deck>) {
         if (this.cle > 0) {
-            when ((0..2).random()) {
-                0 -> Unit
-                1 -> this.rafraichitLeDeck(decks)
-                2 -> this.changeLeDeckActuel(decks)
+            when (this.strategie.choisitActionCle(this, decks)) {
+                ActionCle.RIEN -> Unit
+                ActionCle.RAFRAICHIT -> this.rafraichitLeDeck(decks)
+                ActionCle.CHANGE_DECK -> this.changeLeDeckActuel(decks)
             }
+        }
+    }
+
+    private fun Joueur.deplaceSonTableau() {
+        when (this.strategie.choisitUnDeplacement(this)) {
+            DirectionDeplacement.AUCUN -> Unit
+            DirectionDeplacement.GAUCHE -> joueurRepository.deplaceAGauche(this)
+            DirectionDeplacement.DROITE -> joueurRepository.deplaceADroite(this)
+            DirectionDeplacement.HAUT -> joueurRepository.deplaceEnHaut(this)
+            DirectionDeplacement.BAS -> joueurRepository.deplaceEnBas(this)
         }
     }
 
