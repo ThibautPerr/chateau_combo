@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Château Combo — Scores effets</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .run-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .run-selector label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .run-selector select {
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.375rem;
+            border: 1px solid #475569;
+            font-size: 0.9rem;
+            background: #334155;
+            color: white;
+            cursor: pointer;
+        }
+
+        nav {
+            background: #1e293b;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0;
+            border-top: 1px solid #334155;
+        }
+
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 0.65rem 1.25rem;
+            font-size: 0.9rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        nav a.active {
+            color: white;
+            border-bottom-color: #2563eb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .chart-section {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chart-header h2 {
+            margin-bottom: 0;
+        }
+
+        .chart-section h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #334155;
+        }
+
+        .sort-buttons {
+            display: flex;
+            gap: 0.35rem;
+            align-items: center;
+        }
+
+        .sort-buttons span {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-right: 0.25rem;
+        }
+
+        .sort-buttons button {
+            padding: 0.3rem 0.65rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            background: white;
+            color: #475569;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.15s;
+        }
+
+        .sort-buttons button.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .sort-buttons button:hover:not(.active) {
+            background: #f1f5f9;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 4rem;
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        #no-data {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+            display: none;
+            background: white;
+            border-radius: 0.75rem;
+            margin: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        #error {
+            text-align: center;
+            padding: 3rem;
+            color: #ef4444;
+            display: none;
+            background: white;
+            border-radius: 0.75rem;
+            margin: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        #error code {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Chateau Combo — Dashboard</h1>
+    <div class="run-selector">
+        <label for="run-select">Simulation :</label>
+        <select id="run-select"></select>
+    </div>
+</header>
+<nav>
+    <a href="index.html">Scores joueurs</a>
+    <a href="cartes.html">Scores cartes</a>
+    <a href="effets.html" class="active">Scores effets</a>
+</nav>
+
+<div class="container">
+    <div id="loading">Chargement des donnees...</div>
+    <div id="error">
+        <p>Impossible de charger les donnees.</p>
+        <p>Lancez un serveur local depuis le dossier <b>stats/</b> :</p>
+        <code>cd stats && python3 -m http.server 8080</code>
+    </div>
+    <div id="no-data">
+        <p>Aucune donnee d'effets disponible pour cette simulation.</p>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2>Par effet (a la pose)</h2>
+                <div class="sort-buttons" data-target="effet">
+                    <span>Metrique :</span>
+                    <button class="active" data-key="scoreJoueur">Score joueur</button>
+                    <button data-key="scoreCarte">Score carte</button>
+                </div>
+            </div>
+            <div class="chart-wrap" id="chart-effet-wrap">
+                <canvas id="chart-effet"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2>Par effet de score (fin de partie)</h2>
+                <div class="sort-buttons" data-target="effetScore">
+                    <span>Metrique :</span>
+                    <button class="active" data-key="scoreJoueur">Score joueur</button>
+                    <button data-key="scoreCarte">Score carte</button>
+                </div>
+            </div>
+            <div class="chart-wrap" id="chart-effet-score-wrap">
+                <canvas id="chart-effet-score"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const state = {
+        runs: [],
+        playerData: null,
+        effectData: null,
+        scoreEffectData: null,
+        charts: {},
+        sort: {effet: 'scoreJoueur', effetScore: 'scoreJoueur'},
+    };
+
+    const refLinePlugin = {
+        id: 'refLine',
+        afterDraw(chart) {
+            const opts = chart.options.plugins.refLine;
+            if (!opts || opts.value == null) return;
+            const {ctx, chartArea, scales} = chart;
+            const x = scales.x.getPixelForValue(opts.value);
+            if (x < chartArea.left || x > chartArea.right) return;
+            ctx.save();
+            ctx.strokeStyle = opts.color || 'rgba(239, 68, 68, 0.6)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(x, chartArea.top);
+            ctx.lineTo(x, chartArea.bottom);
+            ctx.stroke();
+            ctx.fillStyle = opts.color || 'rgba(239, 68, 68, 0.8)';
+            ctx.font = '11px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText(opts.label || '', x, chartArea.top - 6);
+            ctx.restore();
+        }
+    };
+    Chart.register(refLinePlugin);
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+        try {
+            const res = await fetch('runs.json');
+            if (!res.ok) throw new Error('runs.json not found');
+            state.runs = await res.json();
+            populateSelector();
+            await loadRun(state.runs[0]);
+        } catch (e) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            console.error(e);
+        }
+
+        document.querySelectorAll('.sort-buttons').forEach(group => {
+            group.addEventListener('click', e => {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                const target = group.dataset.target;
+                const key = btn.dataset.key;
+                group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.sort[target] = key;
+                if (target === 'effet') renderEffetChart();
+                else if (target === 'effetScore') renderEffetScoreChart();
+            });
+        });
+
+        document.getElementById('run-select').addEventListener('change', e => loadRun(e.target.value));
+    }
+
+    function populateSelector() {
+        const sel = document.getElementById('run-select');
+        sel.innerHTML = state.runs.map(r => `<option value="${r}">${r}</option>`).join('');
+    }
+
+    async function loadRun(runId) {
+        const [pRes, eRes, esRes] = await Promise.all([
+            fetch(`${runId}/player_scores.json`),
+            fetch(`${runId}/effect_scores.json`).catch(() => null),
+            fetch(`${runId}/score_effect_scores.json`).catch(() => null),
+        ]);
+        state.playerData = await pRes.json();
+        state.effectData = eRes && eRes.ok ? await eRes.json() : null;
+        state.scoreEffectData = esRes && esRes.ok ? await esRes.json() : null;
+        render();
+    }
+
+    function render() {
+        document.getElementById('loading').style.display = 'none';
+
+        if (!state.effectData && !state.scoreEffectData) {
+            document.getElementById('no-data').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            return;
+        }
+
+        document.getElementById('no-data').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+
+        Object.values(state.charts).forEach(c => c.destroy());
+        state.charts = {};
+        if (state.effectData) renderEffetChart();
+        if (state.scoreEffectData) renderEffetScoreChart();
+    }
+
+    function renderEffetChart() {
+        if (state.charts.effet) state.charts.effet.destroy();
+        if (!state.effectData) return;
+        const metric = state.sort.effet;
+        const sorted = [...state.effectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
+        const globalAvg = state.playerData.global.moyenne;
+
+        const wrap = document.getElementById('chart-effet-wrap');
+        wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
+
+        state.charts.effet = new Chart(document.getElementById('chart-effet'), {
+            type: 'bar',
+            data: {
+                labels: sorted.map(e => e.effet),
+                datasets: [{
+                    label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
+                    data: sorted.map(e => e[metric].moyenne),
+                    backgroundColor: metric === 'scoreJoueur'
+                        ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
+                        : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
+                    borderRadius: 3,
+                }],
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Moyenne', font: {size: 12}}},
+                    y: {grid: {display: false}, ticks: {font: {size: 11}}},
+                },
+                plugins: {
+                    legend: {display: false},
+                    refLine: metric === 'scoreJoueur' ? {
+                        value: globalAvg,
+                        color: 'rgba(37, 99, 235, 0.7)',
+                        label: `Moy. ${globalAvg}`
+                    } : {},
+                    tooltip: {
+                        callbacks: {
+                            afterBody(items) {
+                                const e = sorted[items[0].dataIndex];
+                                const sj = e.scoreJoueur, sc = e.scoreCarte;
+                                return [
+                                    `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
+                                    `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
+                                    `Cartes : ${e.cartes.join(', ')}`,
+                                ];
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+
+    function renderEffetScoreChart() {
+        if (state.charts.effetScore) state.charts.effetScore.destroy();
+        if (!state.scoreEffectData) return;
+        const metric = state.sort.effetScore;
+        const sorted = [...state.scoreEffectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
+        const globalAvg = state.playerData.global.moyenne;
+
+        const wrap = document.getElementById('chart-effet-score-wrap');
+        wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
+
+        state.charts.effetScore = new Chart(document.getElementById('chart-effet-score'), {
+            type: 'bar',
+            data: {
+                labels: sorted.map(e => e.effet),
+                datasets: [{
+                    label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
+                    data: sorted.map(e => e[metric].moyenne),
+                    backgroundColor: metric === 'scoreJoueur'
+                        ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
+                        : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
+                    borderRadius: 3,
+                }],
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Moyenne', font: {size: 12}}},
+                    y: {grid: {display: false}, ticks: {font: {size: 11}}},
+                },
+                plugins: {
+                    legend: {display: false},
+                    refLine: metric === 'scoreJoueur' ? {
+                        value: globalAvg,
+                        color: 'rgba(37, 99, 235, 0.7)',
+                        label: `Moy. ${globalAvg}`
+                    } : {},
+                    tooltip: {
+                        callbacks: {
+                            afterBody(items) {
+                                const e = sorted[items[0].dataIndex];
+                                const sj = e.scoreJoueur, sc = e.scoreCarte;
+                                return [
+                                    `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
+                                    `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
+                                    `Cartes : ${e.cartes.join(', ')}`,
+                                ];
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+</script>
+</body>
+</html>

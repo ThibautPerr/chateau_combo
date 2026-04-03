@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Château Combo — Dashboard</title>
+    <title>Château Combo — Scores joueurs</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: system-ui, -apple-system, sans-serif;
             background: #f1f5f9;
             color: #1e293b;
             line-height: 1.5;
         }
+
         header {
             background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             color: white;
@@ -23,13 +29,23 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        header h1 { font-size: 1.5rem; font-weight: 600; }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
         .run-selector {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .run-selector label { font-size: 0.9rem; color: #94a3b8; }
+
+        .run-selector label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
         .run-selector select {
             padding: 0.4rem 0.75rem;
             border-radius: 0.375rem;
@@ -39,21 +55,67 @@
             color: white;
             cursor: pointer;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+
+        nav {
+            background: #1e293b;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0;
+            border-top: 1px solid #334155;
+        }
+
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 0.65rem 1.25rem;
+            font-size: 0.9rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        nav a.active {
+            color: white;
+            border-bottom-color: #2563eb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
         .summary {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
+
         .stat-card {
             background: white;
             border-radius: 0.75rem;
             padding: 1.25rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
-        .stat-card .label { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
-        .stat-card .value { font-size: 1.6rem; font-weight: 700; color: #1e293b; margin-top: 0.25rem; }
+
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-card .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 0.25rem;
+        }
+
         .chart-section {
             background: white;
             border-radius: 0.75rem;
@@ -61,778 +123,207 @@
             margin-bottom: 1.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
+
         .chart-section h2 {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.75rem;
             color: #334155;
         }
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+
+        .chart-wrap.medium {
+            height: 280px;
         }
-        .chart-header h2 { margin-bottom: 0; }
-        .sort-buttons {
-            display: flex;
-            gap: 0.35rem;
-            align-items: center;
-        }
-        .sort-buttons span { font-size: 0.8rem; color: #64748b; margin-right: 0.25rem; }
-        .sort-buttons button {
-            padding: 0.3rem 0.65rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
-            background: white;
-            color: #475569;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.15s;
-        }
-        .sort-buttons button.active { background: #2563eb; color: white; border-color: #2563eb; }
-        .sort-buttons button:hover:not(.active) { background: #f1f5f9; }
-        .chart-wrap { position: relative; }
-        .chart-wrap.tall { height: 1150px; }
-        .chart-wrap.medium { height: 280px; }
-        .chart-wrap.scatter { height: 480px; }
-        .card-list { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
-        .highlight-bar {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-bottom: 0.75rem;
-        }
-        .highlight-bar input {
-            padding: 0.3rem 0.5rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
-            font-size: 0.8rem;
-            color: #1e293b;
-            outline: none;
-            width: 180px;
-        }
-        .highlight-bar input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15); }
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.2rem 0.5rem;
-            background: #2563eb;
-            color: white;
-            border-radius: 1rem;
-            font-size: 0.8rem;
-            white-space: nowrap;
-        }
-        .tag button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1rem;
-            line-height: 1;
-            padding: 0;
-            opacity: 0.7;
-        }
-        .tag button:hover { opacity: 1; }
-        .clear-btn {
-            padding: 0.25rem 0.5rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
-            background: white;
+
+        #loading {
+            text-align: center;
+            padding: 4rem;
             color: #64748b;
-            cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 1.1rem;
         }
-        .clear-btn:hover { background: #f1f5f9; }
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        @media (max-width: 800px) { .row { grid-template-columns: 1fr; } }
-        #loading { text-align: center; padding: 4rem; color: #64748b; font-size: 1.1rem; }
+
         #error {
-            text-align: center; padding: 3rem; color: #ef4444; display: none;
-            background: white; border-radius: 0.75rem; margin: 1.5rem;
+            text-align: center;
+            padding: 3rem;
+            color: #ef4444;
+            display: none;
+            background: white;
+            border-radius: 0.75rem;
+            margin: 1.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
+
         #error code {
-            display: inline-block; margin-top: 0.75rem; padding: 0.5rem 1rem;
-            background: #1e293b; color: #e2e8f0; border-radius: 0.375rem; font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Chateau Combo — Dashboard</h1>
-        <div class="run-selector">
-            <label for="run-select">Simulation :</label>
-            <select id="run-select"></select>
+<header>
+    <h1>Chateau Combo — Dashboard</h1>
+    <div class="run-selector">
+        <label for="run-select">Simulation :</label>
+        <select id="run-select"></select>
+    </div>
+</header>
+<nav>
+    <a href="index.html" class="active">Scores joueurs</a>
+    <a href="cartes.html">Scores cartes</a>
+    <a href="effets.html">Scores effets</a>
+</nav>
+
+<div class="container">
+    <div id="loading">Chargement des donnees...</div>
+    <div id="error">
+        <p>Impossible de charger les donnees.</p>
+        <p>Lancez un serveur local depuis le dossier <b>stats/</b> :</p>
+        <code>cd stats && python3 -m http.server 8080</code>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <div class="summary">
+            <div class="stat-card">
+                <div class="label">Parties</div>
+                <div class="value" id="val-parties">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Joueurs</div>
+                <div class="value" id="val-joueurs">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Score moyen</div>
+                <div class="value" id="val-moyenne">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Score median</div>
+                <div class="value" id="val-mediane">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Q1 — Q3</div>
+                <div class="value" id="val-iqr">-</div>
+            </div>
         </div>
-    </header>
 
-    <div class="container">
-        <div id="loading">Chargement des donnees...</div>
-        <div id="error">
-            <p>Impossible de charger les donnees.</p>
-            <p>Lancez un serveur local depuis le dossier <b>stats/</b> :</p>
-            <code>cd stats && python3 -m http.server 8080</code>
-        </div>
-
-        <div id="dashboard" style="display: none;">
-            <div class="summary">
-                <div class="stat-card">
-                    <div class="label">Parties</div>
-                    <div class="value" id="val-parties">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Joueurs</div>
-                    <div class="value" id="val-joueurs">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Score moyen</div>
-                    <div class="value" id="val-moyenne">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Score median</div>
-                    <div class="value" id="val-mediane">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Q1 — Q3</div>
-                    <div class="value" id="val-iqr">-</div>
-                </div>
-            </div>
-
-            <datalist id="card-datalist"></datalist>
-
-            <div class="chart-section">
-                <h2>Equilibre entre joueurs</h2>
-                <div class="chart-wrap medium"><canvas id="chart-players"></canvas></div>
-            </div>
-
-            <div class="chart-section">
-                <div class="chart-header">
-                    <h2>Classement par score de la carte</h2>
-                    <div class="sort-buttons" data-target="cardScore">
-                        <span>Trier :</span>
-                        <button class="active" data-key="moyenne">Moyenne</button>
-                        <button data-key="mediane">Mediane</button>
-                        <button data-key="troisiemeQuartile">Q3</button>
-                    </div>
-                </div>
-                <div class="highlight-bar" data-chart="cardScore">
-                    <input type="text" list="card-datalist" placeholder="Filtrer par carte...">
-                    <span class="tags"></span>
-                    <button class="clear-btn" style="display:none">Effacer</button>
-                </div>
-                <div class="chart-wrap tall"><canvas id="chart-card-score"></canvas></div>
-            </div>
-
-            <div class="chart-section">
-                <div class="chart-header">
-                    <h2>Impact sur le score du joueur</h2>
-                    <div class="sort-buttons" data-target="playerImpact">
-                        <span>Trier :</span>
-                        <button class="active" data-key="moyenne">Moyenne</button>
-                        <button data-key="mediane">Mediane</button>
-                    </div>
-                </div>
-                <div class="highlight-bar" data-chart="playerImpact">
-                    <input type="text" list="card-datalist" placeholder="Filtrer par carte...">
-                    <span class="tags"></span>
-                    <button class="clear-btn" style="display:none">Effacer</button>
-                </div>
-                <div class="chart-wrap tall"><canvas id="chart-player-impact"></canvas></div>
-            </div>
-
-            <div class="row">
-                <div class="chart-section">
-                    <h2>Score carte vs Score joueur</h2>
-                    <div class="highlight-bar" data-chart="scatter">
-                        <input type="text" list="card-datalist" placeholder="Filtrer par carte...">
-                        <span class="tags"></span>
-                        <button class="clear-btn" style="display:none">Effacer</button>
-                    </div>
-                    <div class="chart-wrap scatter"><canvas id="chart-scatter"></canvas></div>
-                </div>
-                <div class="chart-section">
-                    <h2>Dispersion du score des cartes</h2>
-                    <div class="highlight-bar" data-chart="spread">
-                        <input type="text" list="card-datalist" placeholder="Filtrer par carte...">
-                        <span class="tags"></span>
-                        <button class="clear-btn" style="display:none">Effacer</button>
-                    </div>
-                    <div class="chart-wrap scatter"><canvas id="chart-spread"></canvas></div>
-                </div>
-            </div>
-
-            <div id="effect-sections" style="display: none;">
-                <div class="chart-section">
-                    <div class="chart-header">
-                        <h2>Par effet (a la pose)</h2>
-                        <div class="sort-buttons" data-target="effet">
-                            <span>Metrique :</span>
-                            <button class="active" data-key="scoreJoueur">Score joueur</button>
-                            <button data-key="scoreCarte">Score carte</button>
-                        </div>
-                    </div>
-                    <div class="chart-wrap" id="chart-effet-wrap"><canvas id="chart-effet"></canvas></div>
-                </div>
-
-                <div class="chart-section">
-                    <div class="chart-header">
-                        <h2>Par effet de score (fin de partie)</h2>
-                        <div class="sort-buttons" data-target="effetScore">
-                            <span>Metrique :</span>
-                            <button class="active" data-key="scoreJoueur">Score joueur</button>
-                            <button data-key="scoreCarte">Score carte</button>
-                        </div>
-                    </div>
-                    <div class="chart-wrap" id="chart-effet-score-wrap"><canvas id="chart-effet-score"></canvas></div>
-                </div>
+        <div class="chart-section">
+            <h2>Equilibre entre joueurs</h2>
+            <div class="chart-wrap medium">
+                <canvas id="chart-players"></canvas>
             </div>
         </div>
     </div>
+</div>
 
 <script>
-const state = {
-    runs: [],
-    playerData: null,
-    cardData: null,
-    effectData: null,
-    scoreEffectData: null,
-    charts: {},
-    sort: { cardScore: 'moyenne', playerImpact: 'moyenne', effet: 'scoreJoueur', effetScore: 'scoreJoueur' },
-    hl: { cardScore: new Set(), playerImpact: new Set(), scatter: new Set(), spread: new Set() },
-};
+    const state = {
+        runs: [],
+        playerData: null,
+        charts: {},
+    };
 
-const chartRenderers = {
-    cardScore: () => renderCardScoreChart(),
-    playerImpact: () => renderPlayerImpactChart(),
-    scatter: () => renderScatterChart(),
-    spread: () => renderSpreadChart(),
-};
+    const refLinePlugin = {
+        id: 'refLine',
+        afterDraw(chart) {
+            const opts = chart.options.plugins.refLine;
+            if (!opts || opts.value == null) return;
+            const {ctx, chartArea, scales} = chart;
+            const x = scales.x.getPixelForValue(opts.value);
+            if (x < chartArea.left || x > chartArea.right) return;
+            ctx.save();
+            ctx.strokeStyle = opts.color || 'rgba(239, 68, 68, 0.6)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(x, chartArea.top);
+            ctx.lineTo(x, chartArea.bottom);
+            ctx.stroke();
+            ctx.fillStyle = opts.color || 'rgba(239, 68, 68, 0.8)';
+            ctx.font = '11px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText(opts.label || '', x, chartArea.top - 6);
+            ctx.restore();
+        }
+    };
+    Chart.register(refLinePlugin);
 
-/* ── Reference-line plugin (dashed vertical line) ── */
-const refLinePlugin = {
-    id: 'refLine',
-    afterDraw(chart) {
-        const opts = chart.options.plugins.refLine;
-        if (!opts || opts.value == null) return;
-        const { ctx, chartArea, scales } = chart;
-        const x = scales.x.getPixelForValue(opts.value);
-        if (x < chartArea.left || x > chartArea.right) return;
-        ctx.save();
-        ctx.strokeStyle = opts.color || 'rgba(239, 68, 68, 0.6)';
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([6, 4]);
-        ctx.beginPath();
-        ctx.moveTo(x, chartArea.top);
-        ctx.lineTo(x, chartArea.bottom);
-        ctx.stroke();
-        /* label */
-        ctx.fillStyle = opts.color || 'rgba(239, 68, 68, 0.8)';
-        ctx.font = '11px system-ui';
-        ctx.textAlign = 'center';
-        ctx.fillText(opts.label || '', x, chartArea.top - 6);
-        ctx.restore();
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+        try {
+            const res = await fetch('runs.json');
+            if (!res.ok) throw new Error('runs.json not found');
+            state.runs = await res.json();
+            populateSelector();
+            await loadRun(state.runs[0]);
+        } catch (e) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            console.error(e);
+        }
+
+        document.getElementById('run-select').addEventListener('change', e => loadRun(e.target.value));
     }
-};
-Chart.register(refLinePlugin);
 
-/* ── Init ── */
-document.addEventListener('DOMContentLoaded', init);
+    function populateSelector() {
+        const sel = document.getElementById('run-select');
+        sel.innerHTML = state.runs.map(r => `<option value="${r}">${r}</option>`).join('');
+    }
 
-async function init() {
-    try {
-        const res = await fetch('runs.json');
-        if (!res.ok) throw new Error('runs.json not found');
-        state.runs = await res.json();
-        populateSelector();
-        await loadRun(state.runs[0]);
-    } catch (e) {
+    async function loadRun(runId) {
+        const pRes = await fetch(`${runId}/player_scores.json`);
+        state.playerData = await pRes.json();
+        render();
+    }
+
+    function render() {
         document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
-        console.error(e);
+        document.getElementById('dashboard').style.display = 'block';
+
+        const g = state.playerData.global;
+        document.getElementById('val-parties').textContent = state.playerData.nbParties.toLocaleString();
+        document.getElementById('val-joueurs').textContent = state.playerData.nbJoueurs;
+        document.getElementById('val-moyenne').textContent = g.moyenne.toFixed(1);
+        document.getElementById('val-mediane').textContent = g.mediane.toFixed(1);
+        document.getElementById('val-iqr').textContent = `${g.premierQuartile.toFixed(0)} — ${g.troisiemeQuartile.toFixed(0)}`;
+
+        if (state.charts.players) state.charts.players.destroy();
+        renderPlayerChart();
     }
 
-    /* Sort button clicks */
-    document.querySelectorAll('.sort-buttons').forEach(group => {
-        group.addEventListener('click', e => {
-            const btn = e.target.closest('button');
-            if (!btn) return;
-            const target = group.dataset.target;
-            const key = btn.dataset.key;
-            group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            state.sort[target] = key;
-            if (target === 'cardScore') renderCardScoreChart();
-            else if (target === 'playerImpact') renderPlayerImpactChart();
-            else if (target === 'effet') renderEffetChart();
-            else if (target === 'effetScore') renderEffetScoreChart();
+    function renderPlayerChart() {
+        const pd = state.playerData;
+        const labels = ['Global', ...pd.parJoueur.map(j => `Joueur ${j.joueurId + 1}`)];
+        const allStats = [pd.global, ...pd.parJoueur];
+
+        state.charts.players = new Chart(document.getElementById('chart-players'), {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    {label: 'Q1', data: allStats.map(s => s.premierQuartile), backgroundColor: '#cbd5e1'},
+                    {label: 'Mediane', data: allStats.map(s => s.mediane), backgroundColor: '#f59e0b'},
+                    {label: 'Moyenne', data: allStats.map(s => s.moyenne), backgroundColor: '#2563eb'},
+                    {label: 'Q3', data: allStats.map(s => s.troisiemeQuartile), backgroundColor: '#10b981'},
+                ],
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: {beginAtZero: false, grace: '5%', grid: {color: 'rgba(0,0,0,0.04)'}},
+                    x: {grid: {display: false}},
+                },
+                plugins: {
+                    legend: {position: 'bottom', labels: {boxWidth: 12, padding: 16, font: {size: 12}}},
+                    refLine: {},
+                },
+            },
         });
-    });
-
-    document.getElementById('run-select').addEventListener('change', e => loadRun(e.target.value));
-
-    /* Per-chart highlight selectors */
-    document.querySelectorAll('.highlight-bar').forEach(bar => {
-        const chartKey = bar.dataset.chart;
-        const input = bar.querySelector('input');
-        const clearBtn = bar.querySelector('.clear-btn');
-
-        input.addEventListener('input', () => {
-            const val = input.value;
-            if (state.cardData && state.cardData.some(c => c.nomCarte === val)) {
-                state.hl[chartKey].add(val);
-                input.value = '';
-                refreshHighlightBar(bar, chartKey);
-                chartRenderers[chartKey]();
-            }
-        });
-        clearBtn.addEventListener('click', () => {
-            state.hl[chartKey].clear();
-            refreshHighlightBar(bar, chartKey);
-            chartRenderers[chartKey]();
-        });
-    });
-}
-
-function populateSelector() {
-    const sel = document.getElementById('run-select');
-    sel.innerHTML = state.runs.map(r => `<option value="${r}">${r}</option>`).join('');
-}
-
-async function loadRun(runId) {
-    const [pRes, cRes, eRes, esRes] = await Promise.all([
-        fetch(`${runId}/player_scores.json`),
-        fetch(`${runId}/card_scores.json`),
-        fetch(`${runId}/effect_scores.json`).catch(() => null),
-        fetch(`${runId}/score_effect_scores.json`).catch(() => null),
-    ]);
-    state.playerData = await pRes.json();
-    state.cardData = await cRes.json();
-    state.effectData = eRes && eRes.ok ? await eRes.json() : null;
-    state.scoreEffectData = esRes && esRes.ok ? await esRes.json() : null;
-    render();
-}
-
-/* ── Highlight helpers ── */
-function refreshHighlightBar(bar, chartKey) {
-    const tagsEl = bar.querySelector('.tags');
-    const clearBtn = bar.querySelector('.clear-btn');
-    const hl = state.hl[chartKey];
-    tagsEl.innerHTML = [...hl].map(name =>
-        `<span class="tag">${name}<button data-card="${name}">&times;</button></span>`
-    ).join('');
-    clearBtn.style.display = hl.size > 0 ? '' : 'none';
-    tagsEl.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            hl.delete(btn.dataset.card);
-            refreshHighlightBar(bar, chartKey);
-            chartRenderers[chartKey]();
-        });
-    });
-}
-
-function refreshAllHighlightBars() {
-    document.querySelectorAll('.highlight-bar').forEach(bar => {
-        refreshHighlightBar(bar, bar.dataset.chart);
-    });
-}
-
-function populateCardDatalist() {
-    const dl = document.getElementById('card-datalist');
-    dl.innerHTML = state.cardData
-        .map(c => c.nomCarte).sort()
-        .map(n => `<option value="${n}">`).join('');
-}
-
-/* ── Render all ── */
-function render() {
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-
-    const g = state.playerData.global;
-    document.getElementById('val-parties').textContent = state.playerData.nbParties.toLocaleString();
-    document.getElementById('val-joueurs').textContent = state.playerData.nbJoueurs;
-    document.getElementById('val-moyenne').textContent = g.moyenne.toFixed(1);
-    document.getElementById('val-mediane').textContent = g.mediane.toFixed(1);
-    document.getElementById('val-iqr').textContent = `${g.premierQuartile.toFixed(0)} — ${g.troisiemeQuartile.toFixed(0)}`;
-
-    populateCardDatalist();
-    refreshAllHighlightBars();
-    destroyAll();
-    renderPlayerChart();
-    renderCardScoreChart();
-    renderPlayerImpactChart();
-    renderScatterChart();
-    renderSpreadChart();
-
-    const effectSections = document.getElementById('effect-sections');
-    if (state.effectData && state.scoreEffectData) {
-        effectSections.style.display = 'block';
-        renderEffetChart();
-        renderEffetScoreChart();
-    } else {
-        effectSections.style.display = 'none';
     }
-}
-
-function destroyAll() {
-    Object.values(state.charts).forEach(c => c.destroy());
-    state.charts = {};
-}
-
-/* ── Player balance ── */
-function renderPlayerChart() {
-    const pd = state.playerData;
-    const labels = ['Global', ...pd.parJoueur.map(j => `Joueur ${j.joueurId + 1}`)];
-    const allStats = [pd.global, ...pd.parJoueur];
-
-    state.charts.players = new Chart(document.getElementById('chart-players'), {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [
-                { label: 'Q1', data: allStats.map(s => s.premierQuartile), backgroundColor: '#cbd5e1' },
-                { label: 'Mediane', data: allStats.map(s => s.mediane), backgroundColor: '#f59e0b' },
-                { label: 'Moyenne', data: allStats.map(s => s.moyenne), backgroundColor: '#2563eb' },
-                { label: 'Q3', data: allStats.map(s => s.troisiemeQuartile), backgroundColor: '#10b981' },
-            ],
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: false, grace: '5%', grid: { color: 'rgba(0,0,0,0.04)' } },
-                x: { grid: { display: false } },
-            },
-            plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 16, font: { size: 12 } } },
-                refLine: {},
-            },
-        },
-    });
-}
-
-/* ── Card score ranking ── */
-function renderCardScoreChart() {
-    if (state.charts.cardScore) state.charts.cardScore.destroy();
-    const key = state.sort.cardScore;
-    const sorted = [...state.cardData].sort((a, b) => a.scoreCarte[key] - b.scoreCarte[key]);
-    const hl = state.hl.cardScore;
-    const active = hl.size > 0;
-
-    state.charts.cardScore = new Chart(document.getElementById('chart-card-score'), {
-        type: 'bar',
-        data: {
-            labels: sorted.map(c => c.nomCarte),
-            datasets: [{
-                label: 'Score carte',
-                data: sorted.map(c => c.scoreCarte[key]),
-                backgroundColor: sorted.map((c, i) => {
-                    const t = i / (sorted.length - 1);
-                    if (active && !hl.has(c.nomCarte)) return 'rgba(37, 99, 235, 0.08)';
-                    return `rgba(37, 99, 235, ${0.35 + t * 0.55})`;
-                }),
-                borderColor: sorted.map(c => active && hl.has(c.nomCarte) ? 'rgba(37, 99, 235, 1)' : 'transparent'),
-                borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
-                borderRadius: 3,
-            }],
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true, maintainAspectRatio: false,
-            scales: {
-                x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Points', font: { size: 12 } } },
-                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
-            },
-            plugins: {
-                legend: { display: false },
-                refLine: {},
-                tooltip: {
-                    callbacks: {
-                        afterBody(items) {
-                            const card = sorted[items[0].dataIndex];
-                            const s = card.scoreCarte;
-                            return [
-                                `Moyenne : ${s.moyenne}`,
-                                `Mediane : ${s.mediane}`,
-                                `Q1 : ${s.premierQuartile}  |  Q3 : ${s.troisiemeQuartile}`,
-                            ];
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
-
-/* ── Player score impact ── */
-function renderPlayerImpactChart() {
-    if (state.charts.playerImpact) state.charts.playerImpact.destroy();
-    const key = state.sort.playerImpact;
-    const sorted = [...state.cardData].sort((a, b) => a.scoreJoueur[key] - b.scoreJoueur[key]);
-    const globalAvg = state.playerData.global.moyenne;
-    const hl = state.hl.playerImpact;
-    const active = hl.size > 0;
-
-    state.charts.playerImpact = new Chart(document.getElementById('chart-player-impact'), {
-        type: 'bar',
-        data: {
-            labels: sorted.map(c => c.nomCarte),
-            datasets: [{
-                label: 'Score joueur',
-                data: sorted.map(c => c.scoreJoueur[key]),
-                backgroundColor: sorted.map(c => {
-                    if (active && !hl.has(c.nomCarte)) return 'rgba(148, 163, 184, 0.1)';
-                    return c.scoreJoueur[key] >= globalAvg
-                        ? 'rgba(16, 185, 129, 0.7)'
-                        : 'rgba(239, 68, 68, 0.5)';
-                }),
-                borderColor: sorted.map(c => active && hl.has(c.nomCarte)
-                    ? (c.scoreJoueur[key] >= globalAvg ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)')
-                    : 'transparent'),
-                borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
-                borderRadius: 3,
-            }],
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true, maintainAspectRatio: false,
-            scales: {
-                x: { grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Score joueur', font: { size: 12 } } },
-                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
-            },
-            plugins: {
-                legend: { display: false },
-                refLine: { value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}` },
-                tooltip: {
-                    callbacks: {
-                        afterBody(items) {
-                            const card = sorted[items[0].dataIndex];
-                            const s = card.scoreJoueur;
-                            return [
-                                `Moyenne : ${s.moyenne}`,
-                                `Mediane : ${s.mediane}`,
-                                `Q1 : ${s.premierQuartile}  |  Q3 : ${s.troisiemeQuartile}`,
-                            ];
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
-
-/* ── Scatter: card score vs player score ── */
-function renderScatterChart() {
-    if (state.charts.scatter) state.charts.scatter.destroy();
-    const globalAvg = state.playerData.global.moyenne;
-    const hl = state.hl.scatter;
-    const active = hl.size > 0;
-    const data = state.cardData.map(c => ({
-        x: c.scoreCarte.moyenne,
-        y: c.scoreJoueur.moyenne,
-        label: c.nomCarte,
-    }));
-
-    state.charts.scatter = new Chart(document.getElementById('chart-scatter'), {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'Cartes',
-                data,
-                backgroundColor: data.map(d => {
-                    if (active && !hl.has(d.label)) return 'rgba(148, 163, 184, 0.15)';
-                    return d.y >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.55)';
-                }),
-                borderColor: data.map(d => active && hl.has(d.label) ? '#1e293b' : 'transparent'),
-                borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
-                pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
-                pointHoverRadius: 7,
-            }],
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            scales: {
-                x: { title: { display: true, text: 'Score carte (moyenne)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
-                y: { title: { display: true, text: 'Score joueur (moyenne)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
-            },
-            plugins: {
-                legend: { display: false },
-                refLine: {},
-                tooltip: {
-                    callbacks: {
-                        label(ctx) {
-                            const d = ctx.raw;
-                            return `${d.label} — carte: ${d.x}, joueur: ${d.y}`;
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
-
-/* ── Effect chart (on-play effects) ── */
-function renderEffetChart() {
-    if (state.charts.effet) state.charts.effet.destroy();
-    if (!state.effectData) return;
-    const metric = state.sort.effet; // 'scoreJoueur' or 'scoreCarte'
-    const sorted = [...state.effectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
-    const globalAvg = state.playerData.global.moyenne;
-
-    const wrap = document.getElementById('chart-effet-wrap');
-    wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
-
-    state.charts.effet = new Chart(document.getElementById('chart-effet'), {
-        type: 'bar',
-        data: {
-            labels: sorted.map(e => e.effet),
-            datasets: [{
-                label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
-                data: sorted.map(e => e[metric].moyenne),
-                backgroundColor: metric === 'scoreJoueur'
-                    ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
-                    : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
-                borderRadius: 3,
-            }],
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true, maintainAspectRatio: false,
-            scales: {
-                x: { grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Moyenne', font: { size: 12 } } },
-                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
-            },
-            plugins: {
-                legend: { display: false },
-                refLine: metric === 'scoreJoueur' ? { value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}` } : {},
-                tooltip: {
-                    callbacks: {
-                        afterBody(items) {
-                            const e = sorted[items[0].dataIndex];
-                            const sj = e.scoreJoueur, sc = e.scoreCarte;
-                            return [
-                                `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
-                                `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
-                                `Cartes : ${e.cartes.join(', ')}`,
-                            ];
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
-
-/* ── Score effect chart (end-game scoring effects) ── */
-function renderEffetScoreChart() {
-    if (state.charts.effetScore) state.charts.effetScore.destroy();
-    if (!state.scoreEffectData) return;
-    const metric = state.sort.effetScore;
-    const sorted = [...state.scoreEffectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
-    const globalAvg = state.playerData.global.moyenne;
-
-    const wrap = document.getElementById('chart-effet-score-wrap');
-    wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
-
-    state.charts.effetScore = new Chart(document.getElementById('chart-effet-score'), {
-        type: 'bar',
-        data: {
-            labels: sorted.map(e => e.effet),
-            datasets: [{
-                label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
-                data: sorted.map(e => e[metric].moyenne),
-                backgroundColor: metric === 'scoreJoueur'
-                    ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
-                    : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
-                borderRadius: 3,
-            }],
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true, maintainAspectRatio: false,
-            scales: {
-                x: { grid: { color: 'rgba(0,0,0,0.04)' }, title: { display: true, text: 'Moyenne', font: { size: 12 } } },
-                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
-            },
-            plugins: {
-                legend: { display: false },
-                refLine: metric === 'scoreJoueur' ? { value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}` } : {},
-                tooltip: {
-                    callbacks: {
-                        afterBody(items) {
-                            const e = sorted[items[0].dataIndex];
-                            const sj = e.scoreJoueur, sc = e.scoreCarte;
-                            return [
-                                `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
-                                `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
-                                `Cartes : ${e.cartes.join(', ')}`,
-                            ];
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
-
-/* ── Spread: IQR per card (Q3 - Q1) ── */
-function renderSpreadChart() {
-    if (state.charts.spread) state.charts.spread.destroy();
-    const hl = state.hl.spread;
-    const active = hl.size > 0;
-    const sorted = [...state.cardData].sort((a, b) => {
-        const iqrA = a.scoreCarte.troisiemeQuartile - a.scoreCarte.premierQuartile;
-        const iqrB = b.scoreCarte.troisiemeQuartile - b.scoreCarte.premierQuartile;
-        return iqrA - iqrB;
-    });
-
-    const data = sorted.map(c => ({
-        x: c.scoreCarte.troisiemeQuartile - c.scoreCarte.premierQuartile,
-        y: c.scoreCarte.moyenne,
-        label: c.nomCarte,
-    }));
-
-    state.charts.spread = new Chart(document.getElementById('chart-spread'), {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'Cartes',
-                data,
-                backgroundColor: data.map(d => {
-                    if (active && !hl.has(d.label)) return 'rgba(124, 58, 237, 0.1)';
-                    return 'rgba(124, 58, 237, 0.6)';
-                }),
-                borderColor: data.map(d => active && hl.has(d.label) ? '#1e293b' : 'transparent'),
-                borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
-                pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
-                pointHoverRadius: 7,
-            }],
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            scales: {
-                x: { title: { display: true, text: 'IQR (Q3 - Q1)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' }, beginAtZero: true },
-                y: { title: { display: true, text: 'Score carte (moyenne)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
-            },
-            plugins: {
-                legend: { display: false },
-                refLine: {},
-                tooltip: {
-                    callbacks: {
-                        label(ctx) {
-                            const d = ctx.raw;
-                            return `${d.label} — moy: ${d.y}, IQR: ${d.x}`;
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
 </script>
 </body>
 </html>
