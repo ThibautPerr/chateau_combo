@@ -1,6 +1,6 @@
 package com.chateaucombo.score
 
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.ScoreContext
 import com.chateaucombo.joueur.model.Joueur
 import io.github.oshai.kotlinlogging.KotlinLogging
 

@@ -6,8 +6,8 @@ import com.chateaucombo.ChateauCombo
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.repository.DeckRepository
-import com.chateaucombo.effet.model.EffetScoreVide
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.EffetScoreVide
+import com.chateaucombo.effet.ScoreContext
 import com.chateaucombo.ReglesDuJeu
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
@@ -25,6 +25,7 @@ class Simulation(
 ) {
     private val nbJoueurs = joueurs.size
     private val nomsJoueurs = nomsDesJoueurs(joueurs)
+    private val strategies = joueurs.map { it.strategie.nom }.distinct()
     private val deckRepository = DeckRepository()
     private val jeu = ChateauCombo(
         joueurRepository = JoueurRepository(TableauRepository(), deckRepository),
@@ -49,7 +50,7 @@ class Simulation(
         joueurs.forEachIndexed { index, joueur ->
             acc.scoresParJoueur[index].add(joueur.score)
             joueur.tableau.cartesPositionees.forEach { cartePositionee ->
-                accumuleDonneesCarte(joueur, joueurs, cartePositionee, acc)
+                accumuleDonneesCarte(joueur, joueurs, cartePositionee, joueur.strategie.nom, acc)
             }
         }
     }
@@ -58,6 +59,7 @@ class Simulation(
         joueur: Joueur,
         joueurs: List<Joueur>,
         cartePositionee: CartePositionee,
+        strategieNom: String,
         acc: Accumulateurs,
     ) {
         val carte = cartePositionee.carte
@@ -70,6 +72,8 @@ class Simulation(
         enregistreTypesEffetsPourCarte(nom, effetTypes, effetScoreType, acc)
         accumulerScoresParEffet(effetTypes, joueur.score, cardScore, acc)
         accumulerScoresParEffetScore(effetScoreType, carte, joueur.score, cardScore, acc)
+        accumulerScoresParCarteParStrategie(nom, strategieNom, joueur.score, cardScore, acc)
+        accumulerScoresParEffetParStrategie(effetTypes, effetScoreType, carte, strategieNom, joueur.score, cardScore, acc)
     }
 
     private fun nomStatistique(carte: Carte): String =
@@ -108,6 +112,30 @@ class Simulation(
         }
     }
 
+    private fun accumulerScoresParCarteParStrategie(nom: String, strategie: String, scoreJoueur: Int, scoreCarte: Int, acc: Accumulateurs) {
+        acc.scoresJoueurParCarteParStrategie.getOrPut(strategie) { mutableMapOf() }.getOrPut(nom) { mutableListOf() }.add(scoreJoueur)
+        acc.scoresCarteParCarteParStrategie.getOrPut(strategie) { mutableMapOf() }.getOrPut(nom) { mutableListOf() }.add(scoreCarte)
+    }
+
+    private fun accumulerScoresParEffetParStrategie(
+        effetTypes: List<String>,
+        effetScoreType: String,
+        carte: Carte,
+        strategie: String,
+        scoreJoueur: Int,
+        scoreCarte: Int,
+        acc: Accumulateurs,
+    ) {
+        for (type in effetTypes) {
+            acc.scoresJoueurParEffetParStrategie.getOrPut(strategie) { mutableMapOf() }.getOrPut(type) { mutableListOf() }.add(scoreJoueur)
+            acc.scoresCarteParEffetParStrategie.getOrPut(strategie) { mutableMapOf() }.getOrPut(type) { mutableListOf() }.add(scoreCarte)
+        }
+        if (carte.effetScore !is EffetScoreVide) {
+            acc.scoresJoueurParEffetScoreParStrategie.getOrPut(strategie) { mutableMapOf() }.getOrPut(effetScoreType) { mutableListOf() }.add(scoreJoueur)
+            acc.scoresCarteParEffetScoreParStrategie.getOrPut(strategie) { mutableMapOf() }.getOrPut(effetScoreType) { mutableListOf() }.add(scoreCarte)
+        }
+    }
+
     private fun inverseEffetsParCarte(acc: Accumulateurs): Map<String, Set<String>> {
         val cartesParEffet = mutableMapOf<String, MutableSet<String>>()
         for ((nom, types) in acc.effetsParCarte) {
@@ -133,6 +161,7 @@ class Simulation(
             joueurs = StatistiquesSimulation(
                 nbParties = nbParties,
                 nbJoueurs = nbJoueurs,
+                strategies = strategies,
                 global = tousLesScores.stats(),
                 parJoueur = acc.scoresParJoueur.mapIndexed { index, scores ->
                     StatistiquesJoueur(
@@ -151,6 +180,11 @@ class Simulation(
                     effetScore = acc.effetScoreParCarte[nom] ?: "EffetScoreVide",
                     scoreJoueur = acc.scoresJoueurParCarte[nom]!!.stats(),
                     scoreCarte = acc.scoresCarteParCarte[nom]!!.stats(),
+                    parStrategie = strategies.mapNotNull { strat ->
+                        val scoresJ = acc.scoresJoueurParCarteParStrategie[strat]?.get(nom) ?: return@mapNotNull null
+                        val scoresC = acc.scoresCarteParCarteParStrategie[strat]?.get(nom) ?: return@mapNotNull null
+                        StatistiquesParStrategie(strat, scoresJ.stats(), scoresC.stats())
+                    },
                 )
             },
             parEffet = acc.scoresJoueurParEffet.keys.sorted().map { type ->
@@ -159,6 +193,11 @@ class Simulation(
                     cartes = cartesParEffet[type]!!.sorted(),
                     scoreJoueur = acc.scoresJoueurParEffet[type]!!.stats(),
                     scoreCarte = acc.scoresCarteParEffet[type]!!.stats(),
+                    parStrategie = strategies.mapNotNull { strat ->
+                        val scoresJ = acc.scoresJoueurParEffetParStrategie[strat]?.get(type) ?: return@mapNotNull null
+                        val scoresC = acc.scoresCarteParEffetParStrategie[strat]?.get(type) ?: return@mapNotNull null
+                        StatistiquesParStrategie(strat, scoresJ.stats(), scoresC.stats())
+                    },
                 )
             },
             parEffetScore = acc.scoresJoueurParEffetScore.keys.sorted().map { type ->
@@ -167,6 +206,11 @@ class Simulation(
                     cartes = cartesParEffetScore[type]!!.sorted(),
                     scoreJoueur = acc.scoresJoueurParEffetScore[type]!!.stats(),
                     scoreCarte = acc.scoresCarteParEffetScore[type]!!.stats(),
+                    parStrategie = strategies.mapNotNull { strat ->
+                        val scoresJ = acc.scoresJoueurParEffetScoreParStrategie[strat]?.get(type) ?: return@mapNotNull null
+                        val scoresC = acc.scoresCarteParEffetScoreParStrategie[strat]?.get(type) ?: return@mapNotNull null
+                        StatistiquesParStrategie(strat, scoresJ.stats(), scoresC.stats())
+                    },
                 )
             },
         )
@@ -222,4 +266,10 @@ private class Accumulateurs(nbJoueurs: Int) {
     val scoresCarteParEffet: MutableMap<String, MutableList<Int>> = mutableMapOf()
     val scoresJoueurParEffetScore: MutableMap<String, MutableList<Int>> = mutableMapOf()
     val scoresCarteParEffetScore: MutableMap<String, MutableList<Int>> = mutableMapOf()
+    val scoresJoueurParCarteParStrategie: MutableMap<String, MutableMap<String, MutableList<Int>>> = mutableMapOf()
+    val scoresCarteParCarteParStrategie: MutableMap<String, MutableMap<String, MutableList<Int>>> = mutableMapOf()
+    val scoresJoueurParEffetParStrategie: MutableMap<String, MutableMap<String, MutableList<Int>>> = mutableMapOf()
+    val scoresCarteParEffetParStrategie: MutableMap<String, MutableMap<String, MutableList<Int>>> = mutableMapOf()
+    val scoresJoueurParEffetScoreParStrategie: MutableMap<String, MutableMap<String, MutableList<Int>>> = mutableMapOf()
+    val scoresCarteParEffetScoreParStrategie: MutableMap<String, MutableMap<String, MutableList<Int>>> = mutableMapOf()
 }

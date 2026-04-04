@@ -4,7 +4,7 @@ import com.chateaucombo.deck.model.Blason.*
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.Effets
 
 class DeckBuilder {
 

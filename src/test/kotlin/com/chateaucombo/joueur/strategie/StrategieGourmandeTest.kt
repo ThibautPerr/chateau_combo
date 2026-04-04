@@ -5,10 +5,10 @@ import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.model.AjoutePoints
-import com.chateaucombo.effet.model.EffetScoreVide
-import com.chateaucombo.effet.model.Effets
-import com.chateaucombo.effet.model.PointsSiCoin
+import com.chateaucombo.effet.EffetScoreVide
+import com.chateaucombo.effet.Effets
+import com.chateaucombo.effet.effetpoint.AjoutePoints
+import com.chateaucombo.effet.effetpoint.PointsSiCoin
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.*

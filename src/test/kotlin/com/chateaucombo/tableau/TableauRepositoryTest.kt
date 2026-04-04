@@ -5,7 +5,7 @@ import com.chateaucombo.deck.model.Blason
 import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.Effets
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.model.Position.*

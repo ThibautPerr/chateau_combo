@@ -3,7 +3,10 @@ package com.chateaucombo.effet
 import com.chateaucombo.deck.model.Blason
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.model.*
+import com.chateaucombo.effet.BourseScore
+import com.chateaucombo.effet.EffetScore
+import com.chateaucombo.effet.EffetScoreVide
+import com.chateaucombo.effet.Effets
 
 abstract class EffetTestBase {
     protected fun villageois(

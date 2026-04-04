@@ -7,8 +7,8 @@ import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Villageois
 import com.chateaucombo.deck.repository.DeckRepository
-import com.chateaucombo.effet.model.ReduceCoutChatelain
-import com.chateaucombo.effet.model.ReduceCoutVillageois
+import com.chateaucombo.effet.effetplacement.ReduceCoutChatelain
+import com.chateaucombo.effet.effetplacement.ReduceCoutVillageois
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.Position
 import com.chateaucombo.tableau.repository.TableauRepository

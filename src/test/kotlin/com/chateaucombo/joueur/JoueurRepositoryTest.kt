@@ -3,9 +3,9 @@ package com.chateaucombo.joueur
 import com.chateaucombo.deck.DeckBuilder
 import com.chateaucombo.deck.model.*
 import com.chateaucombo.deck.repository.DeckRepository
-import com.chateaucombo.effet.model.Effets
-import com.chateaucombo.effet.model.ReduceCoutChatelain
-import com.chateaucombo.effet.model.ReduceCoutVillageois
+import com.chateaucombo.effet.Effets
+import com.chateaucombo.effet.effetplacement.ReduceCoutChatelain
+import com.chateaucombo.effet.effetplacement.ReduceCoutVillageois
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.tableau.model.CartePositionee

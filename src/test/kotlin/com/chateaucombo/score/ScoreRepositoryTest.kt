@@ -1,12 +1,12 @@
 package com.chateaucombo.score
 
 import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.model.AjoutePoints
-import com.chateaucombo.effet.model.BourseScore
-import com.chateaucombo.effet.model.EffetScoreVide
-import com.chateaucombo.effet.model.Effets
-import com.chateaucombo.effet.model.PointsParOrDepose
-import com.chateaucombo.effet.model.PointsSiRangSuperieur
+import com.chateaucombo.effet.BourseScore
+import com.chateaucombo.effet.EffetScoreVide
+import com.chateaucombo.effet.Effets
+import com.chateaucombo.effet.effetpoint.AjoutePoints
+import com.chateaucombo.effet.effetpoint.PointsParOrDepose
+import com.chateaucombo.effet.effetpoint.PointsSiRangSuperieur
 import com.chateaucombo.tableau.model.Position.MILIEUMILIEU
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 class ScoreRepositoryTest {
     private val scoreRepository = ScoreRepository()
 
-    private fun villageois(effetScore: com.chateaucombo.effet.model.EffetScore = EffetScoreVide, bourse: BourseScore? = null) =
+    private fun villageois(effetScore: com.chateaucombo.effet.EffetScore = EffetScoreVide, bourse: BourseScore? = null) =
         Villageois(cout = 0, nom = "carte", blasons = emptyList(), effets = Effets(), effetScore = effetScore, bourse = bourse)
 
     @Test

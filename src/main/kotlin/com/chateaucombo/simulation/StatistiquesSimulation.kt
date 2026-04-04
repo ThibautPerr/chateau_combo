@@ -3,6 +3,7 @@ package com.chateaucombo.simulation
 data class StatistiquesSimulation(
     val nbParties: Int,
     val nbJoueurs: Int,
+    val strategies: List<String>,
     val global: StatistiquesPoints,
     val parJoueur: List<StatistiquesJoueur>,
 ) {
@@ -23,12 +24,19 @@ data class StatistiquesSimulation(
     )
 }
 
+data class StatistiquesParStrategie(
+    val nomStrategie: String,
+    val scoreJoueur: StatistiquesSimulation.StatistiquesPoints,
+    val scoreCarte: StatistiquesSimulation.StatistiquesPoints,
+)
+
 data class StatistiquesCarte(
     val nomCarte: String,
     val effets: List<String>,
     val effetScore: String,
     val scoreJoueur: StatistiquesSimulation.StatistiquesPoints,
     val scoreCarte: StatistiquesSimulation.StatistiquesPoints,
+    val parStrategie: List<StatistiquesParStrategie>,
 )
 
 data class StatistiquesEffet(
@@ -36,6 +44,7 @@ data class StatistiquesEffet(
     val cartes: List<String>,
     val scoreJoueur: StatistiquesSimulation.StatistiquesPoints,
     val scoreCarte: StatistiquesSimulation.StatistiquesPoints,
+    val parStrategie: List<StatistiquesParStrategie>,
 )
 
 data class ResultatSimulation(

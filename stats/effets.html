@@ -246,6 +246,13 @@
 </div>
 
 <script>
+    const STRATEGY_COLORS = [
+        {bg: 'rgba(37, 99, 235, 0.65)',  border: 'rgba(37, 99, 235, 1)'},
+        {bg: 'rgba(245, 158, 11, 0.65)', border: 'rgba(245, 158, 11, 1)'},
+        {bg: 'rgba(16, 185, 129, 0.65)', border: 'rgba(16, 185, 129, 1)'},
+        {bg: 'rgba(239, 68, 68, 0.65)',  border: 'rgba(239, 68, 68, 1)'},
+    ];
+
     const state = {
         runs: [],
         playerData: null,
@@ -351,24 +358,29 @@
         if (state.charts.effet) state.charts.effet.destroy();
         if (!state.effectData) return;
         const metric = state.sort.effet;
+        const strategies = state.playerData.strategies || [];
         const sorted = [...state.effectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
         const globalAvg = state.playerData.global.moyenne;
 
         const wrap = document.getElementById('chart-effet-wrap');
-        wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
+        wrap.style.height = `${Math.max(sorted.length * (14 * Math.max(strategies.length, 1) + 10) + 40, 200)}px`;
 
         state.charts.effet = new Chart(document.getElementById('chart-effet'), {
             type: 'bar',
             data: {
                 labels: sorted.map(e => e.effet),
-                datasets: [{
-                    label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
-                    data: sorted.map(e => e[metric].moyenne),
-                    backgroundColor: metric === 'scoreJoueur'
-                        ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
-                        : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
-                    borderRadius: 3,
-                }],
+                datasets: strategies.map((strat, si) => {
+                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
+                    return {
+                        label: strat,
+                        data: sorted.map(e => {
+                            const ps = e.parStrategie.find(s => s.nomStrategie === strat);
+                            return ps ? ps[metric].moyenne : null;
+                        }),
+                        backgroundColor: col.bg,
+                        borderRadius: 2,
+                    };
+                }),
             },
             options: {
                 indexAxis: 'y',
@@ -378,22 +390,21 @@
                     y: {grid: {display: false}, ticks: {font: {size: 11}}},
                 },
                 plugins: {
-                    legend: {display: false},
-                    refLine: metric === 'scoreJoueur' ? {
-                        value: globalAvg,
-                        color: 'rgba(37, 99, 235, 0.7)',
-                        label: `Moy. ${globalAvg}`
-                    } : {},
+                    legend: {display: strategies.length > 1, position: 'top'},
+                    refLine: metric === 'scoreJoueur' ? {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`} : {},
                     tooltip: {
                         callbacks: {
+                            label(ctx) {
+                                const e = sorted[ctx.dataIndex];
+                                const strat = ctx.dataset.label;
+                                const ps = e.parStrategie.find(s => s.nomStrategie === strat);
+                                if (!ps) return `${strat}: N/A`;
+                                const s = ps[metric];
+                                return `${strat} — moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                            },
                             afterBody(items) {
                                 const e = sorted[items[0].dataIndex];
-                                const sj = e.scoreJoueur, sc = e.scoreCarte;
-                                return [
-                                    `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
-                                    `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
-                                    `Cartes : ${e.cartes.join(', ')}`,
-                                ];
+                                return [`Cartes : ${e.cartes.join(', ')}`];
                             },
                         },
                     },
@@ -406,24 +417,29 @@
         if (state.charts.effetScore) state.charts.effetScore.destroy();
         if (!state.scoreEffectData) return;
         const metric = state.sort.effetScore;
+        const strategies = state.playerData.strategies || [];
         const sorted = [...state.scoreEffectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
         const globalAvg = state.playerData.global.moyenne;
 
         const wrap = document.getElementById('chart-effet-score-wrap');
-        wrap.style.height = `${Math.max(sorted.length * 28 + 40, 200)}px`;
+        wrap.style.height = `${Math.max(sorted.length * (14 * Math.max(strategies.length, 1) + 10) + 40, 200)}px`;
 
         state.charts.effetScore = new Chart(document.getElementById('chart-effet-score'), {
             type: 'bar',
             data: {
                 labels: sorted.map(e => e.effet),
-                datasets: [{
-                    label: metric === 'scoreJoueur' ? 'Score joueur' : 'Score carte',
-                    data: sorted.map(e => e[metric].moyenne),
-                    backgroundColor: metric === 'scoreJoueur'
-                        ? sorted.map(e => e.scoreJoueur.moyenne >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.5)')
-                        : sorted.map((_, i) => `rgba(124, 58, 237, ${0.35 + (i / (sorted.length - 1)) * 0.55})`),
-                    borderRadius: 3,
-                }],
+                datasets: strategies.map((strat, si) => {
+                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
+                    return {
+                        label: strat,
+                        data: sorted.map(e => {
+                            const ps = e.parStrategie.find(s => s.nomStrategie === strat);
+                            return ps ? ps[metric].moyenne : null;
+                        }),
+                        backgroundColor: col.bg,
+                        borderRadius: 2,
+                    };
+                }),
             },
             options: {
                 indexAxis: 'y',
@@ -433,22 +449,21 @@
                     y: {grid: {display: false}, ticks: {font: {size: 11}}},
                 },
                 plugins: {
-                    legend: {display: false},
-                    refLine: metric === 'scoreJoueur' ? {
-                        value: globalAvg,
-                        color: 'rgba(37, 99, 235, 0.7)',
-                        label: `Moy. ${globalAvg}`
-                    } : {},
+                    legend: {display: strategies.length > 1, position: 'top'},
+                    refLine: metric === 'scoreJoueur' ? {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`} : {},
                     tooltip: {
                         callbacks: {
+                            label(ctx) {
+                                const e = sorted[ctx.dataIndex];
+                                const strat = ctx.dataset.label;
+                                const ps = e.parStrategie.find(s => s.nomStrategie === strat);
+                                if (!ps) return `${strat}: N/A`;
+                                const s = ps[metric];
+                                return `${strat} — moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                            },
                             afterBody(items) {
                                 const e = sorted[items[0].dataIndex];
-                                const sj = e.scoreJoueur, sc = e.scoreCarte;
-                                return [
-                                    `Score joueur — moy: ${sj.moyenne}, med: ${sj.mediane}, Q1: ${sj.premierQuartile}, Q3: ${sj.troisiemeQuartile}`,
-                                    `Score carte — moy: ${sc.moyenne}, med: ${sc.mediane}, Q1: ${sc.premierQuartile}, Q3: ${sc.troisiemeQuartile}`,
-                                    `Cartes : ${e.cartes.join(', ')}`,
-                                ];
+                                return [`Cartes : ${e.cartes.join(', ')}`];
                             },
                         },
                     },

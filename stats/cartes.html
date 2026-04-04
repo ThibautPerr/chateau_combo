@@ -354,6 +354,13 @@
 </div>
 
 <script>
+    const STRATEGY_COLORS = [
+        {bg: 'rgba(37, 99, 235, 0.65)',  border: 'rgba(37, 99, 235, 1)'},
+        {bg: 'rgba(245, 158, 11, 0.65)', border: 'rgba(245, 158, 11, 1)'},
+        {bg: 'rgba(16, 185, 129, 0.65)', border: 'rgba(16, 185, 129, 1)'},
+        {bg: 'rgba(239, 68, 68, 0.65)',  border: 'rgba(239, 68, 68, 1)'},
+    ];
+
     const state = {
         runs: [],
         playerData: null,
@@ -510,6 +517,7 @@
     function renderCardScoreChart() {
         if (state.charts.cardScore) state.charts.cardScore.destroy();
         const key = state.sort.cardScore;
+        const strategies = state.playerData.strategies || [];
         const sorted = [...state.cardData].sort((a, b) => a.scoreCarte[key] - b.scoreCarte[key]);
         const hl = state.hl.cardScore;
         const active = hl.size > 0;
@@ -518,43 +526,42 @@
             type: 'bar',
             data: {
                 labels: sorted.map(c => c.nomCarte),
-                datasets: [{
-                    label: 'Score carte',
-                    data: sorted.map(c => c.scoreCarte[key]),
-                    backgroundColor: sorted.map((c, i) => {
-                        const t = i / (sorted.length - 1);
-                        if (active && !hl.has(c.nomCarte)) return 'rgba(37, 99, 235, 0.08)';
-                        return `rgba(37, 99, 235, ${0.35 + t * 0.55})`;
-                    }),
-                    borderColor: sorted.map(c => active && hl.has(c.nomCarte) ? 'rgba(37, 99, 235, 1)' : 'transparent'),
-                    borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
-                    borderRadius: 3,
-                }],
+                datasets: strategies.map((strat, si) => {
+                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
+                    return {
+                        label: strat,
+                        data: sorted.map(c => {
+                            const ps = c.parStrategie.find(s => s.nomStrategie === strat);
+                            return ps ? ps.scoreCarte[key] : null;
+                        }),
+                        backgroundColor: sorted.map(c =>
+                            active && !hl.has(c.nomCarte) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg
+                        ),
+                        borderColor: sorted.map(c => active && hl.has(c.nomCarte) ? col.border : 'transparent'),
+                        borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
+                        borderRadius: 2,
+                    };
+                }),
             },
             options: {
                 indexAxis: 'y',
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    x: {
-                        beginAtZero: true,
-                        grid: {color: 'rgba(0,0,0,0.04)'},
-                        title: {display: true, text: 'Points', font: {size: 12}}
-                    },
+                    x: {beginAtZero: true, grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Points', font: {size: 12}}},
                     y: {grid: {display: false}, ticks: {font: {size: 11}}},
                 },
                 plugins: {
-                    legend: {display: false},
+                    legend: {display: strategies.length > 1, position: 'top'},
                     refLine: {},
                     tooltip: {
                         callbacks: {
-                            afterBody(items) {
-                                const card = sorted[items[0].dataIndex];
-                                const s = card.scoreCarte;
-                                return [
-                                    `Moyenne : ${s.moyenne}`,
-                                    `Mediane : ${s.mediane}`,
-                                    `Q1 : ${s.premierQuartile}  |  Q3 : ${s.troisiemeQuartile}`,
-                                ];
+                            label(ctx) {
+                                const card = sorted[ctx.dataIndex];
+                                const strat = ctx.dataset.label;
+                                const ps = card.parStrategie.find(s => s.nomStrategie === strat);
+                                if (!ps) return `${strat}: N/A`;
+                                const s = ps.scoreCarte;
+                                return `${strat} — moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
                             },
                         },
                     },
@@ -566,8 +573,9 @@
     function renderPlayerImpactChart() {
         if (state.charts.playerImpact) state.charts.playerImpact.destroy();
         const key = state.sort.playerImpact;
-        const sorted = [...state.cardData].sort((a, b) => a.scoreJoueur[key] - b.scoreJoueur[key]);
+        const strategies = state.playerData.strategies || [];
         const globalAvg = state.playerData.global.moyenne;
+        const sorted = [...state.cardData].sort((a, b) => a.scoreJoueur[key] - b.scoreJoueur[key]);
         const hl = state.hl.playerImpact;
         const active = hl.size > 0;
 
@@ -575,45 +583,42 @@
             type: 'bar',
             data: {
                 labels: sorted.map(c => c.nomCarte),
-                datasets: [{
-                    label: 'Score joueur',
-                    data: sorted.map(c => c.scoreJoueur[key]),
-                    backgroundColor: sorted.map(c => {
-                        if (active && !hl.has(c.nomCarte)) return 'rgba(148, 163, 184, 0.1)';
-                        return c.scoreJoueur[key] >= globalAvg
-                            ? 'rgba(16, 185, 129, 0.7)'
-                            : 'rgba(239, 68, 68, 0.5)';
-                    }),
-                    borderColor: sorted.map(c => active && hl.has(c.nomCarte)
-                        ? (c.scoreJoueur[key] >= globalAvg ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)')
-                        : 'transparent'),
-                    borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
-                    borderRadius: 3,
-                }],
+                datasets: strategies.map((strat, si) => {
+                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
+                    return {
+                        label: strat,
+                        data: sorted.map(c => {
+                            const ps = c.parStrategie.find(s => s.nomStrategie === strat);
+                            return ps ? ps.scoreJoueur[key] : null;
+                        }),
+                        backgroundColor: sorted.map(c =>
+                            active && !hl.has(c.nomCarte) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg
+                        ),
+                        borderColor: sorted.map(c => active && hl.has(c.nomCarte) ? col.border : 'transparent'),
+                        borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
+                        borderRadius: 2,
+                    };
+                }),
             },
             options: {
                 indexAxis: 'y',
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    x: {
-                        grid: {color: 'rgba(0,0,0,0.04)'},
-                        title: {display: true, text: 'Score joueur', font: {size: 12}}
-                    },
+                    x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Score joueur', font: {size: 12}}},
                     y: {grid: {display: false}, ticks: {font: {size: 11}}},
                 },
                 plugins: {
-                    legend: {display: false},
+                    legend: {display: strategies.length > 1, position: 'top'},
                     refLine: {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`},
                     tooltip: {
                         callbacks: {
-                            afterBody(items) {
-                                const card = sorted[items[0].dataIndex];
-                                const s = card.scoreJoueur;
-                                return [
-                                    `Moyenne : ${s.moyenne}`,
-                                    `Mediane : ${s.mediane}`,
-                                    `Q1 : ${s.premierQuartile}  |  Q3 : ${s.troisiemeQuartile}`,
-                                ];
+                            label(ctx) {
+                                const card = sorted[ctx.dataIndex];
+                                const strat = ctx.dataset.label;
+                                const ps = card.parStrategie.find(s => s.nomStrategie === strat);
+                                if (!ps) return `${strat}: N/A`;
+                                const s = ps.scoreJoueur;
+                                return `${strat} — moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
                             },
                         },
                     },
@@ -624,51 +629,46 @@
 
     function renderScatterChart() {
         if (state.charts.scatter) state.charts.scatter.destroy();
-        const globalAvg = state.playerData.global.moyenne;
+        const strategies = state.playerData.strategies || [];
         const hl = state.hl.scatter;
         const active = hl.size > 0;
-        const data = state.cardData.map(c => ({
-            x: c.scoreCarte.moyenne,
-            y: c.scoreJoueur.moyenne,
-            label: c.nomCarte,
-        }));
 
         state.charts.scatter = new Chart(document.getElementById('chart-scatter'), {
             type: 'scatter',
             data: {
-                datasets: [{
-                    label: 'Cartes',
-                    data,
-                    backgroundColor: data.map(d => {
-                        if (active && !hl.has(d.label)) return 'rgba(148, 163, 184, 0.15)';
-                        return d.y >= globalAvg ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.55)';
-                    }),
-                    borderColor: data.map(d => active && hl.has(d.label) ? '#1e293b' : 'transparent'),
-                    borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
-                    pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
-                    pointHoverRadius: 7,
-                }],
+                datasets: strategies.map((strat, si) => {
+                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
+                    const data = state.cardData.map(c => {
+                        const ps = c.parStrategie.find(s => s.nomStrategie === strat);
+                        return ps ? {x: ps.scoreCarte.moyenne, y: ps.scoreJoueur.moyenne, label: c.nomCarte} : null;
+                    }).filter(Boolean);
+                    return {
+                        label: strat,
+                        data,
+                        backgroundColor: data.map(d =>
+                            active && !hl.has(d.label) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg
+                        ),
+                        borderColor: data.map(d => active && hl.has(d.label) ? col.border : 'transparent'),
+                        borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
+                        pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
+                        pointHoverRadius: 7,
+                    };
+                }),
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    x: {
-                        title: {display: true, text: 'Score carte (moyenne)', font: {size: 12}},
-                        grid: {color: 'rgba(0,0,0,0.04)'}
-                    },
-                    y: {
-                        title: {display: true, text: 'Score joueur (moyenne)', font: {size: 12}},
-                        grid: {color: 'rgba(0,0,0,0.04)'}
-                    },
+                    x: {title: {display: true, text: 'Score carte (moyenne)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}},
+                    y: {title: {display: true, text: 'Score joueur (moyenne)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}},
                 },
                 plugins: {
-                    legend: {display: false},
+                    legend: {display: strategies.length > 1, position: 'top'},
                     refLine: {},
                     tooltip: {
                         callbacks: {
                             label(ctx) {
                                 const d = ctx.raw;
-                                return `${d.label} — carte: ${d.x}, joueur: ${d.y}`;
+                                return `${d.label} (${ctx.dataset.label}) — carte: ${d.x}, joueur: ${d.y}`;
                             },
                         },
                     },
@@ -679,57 +679,50 @@
 
     function renderSpreadChart() {
         if (state.charts.spread) state.charts.spread.destroy();
+        const strategies = state.playerData.strategies || [];
         const hl = state.hl.spread;
         const active = hl.size > 0;
-        const sorted = [...state.cardData].sort((a, b) => {
-            const iqrA = a.scoreCarte.troisiemeQuartile - a.scoreCarte.premierQuartile;
-            const iqrB = b.scoreCarte.troisiemeQuartile - b.scoreCarte.premierQuartile;
-            return iqrA - iqrB;
-        });
-
-        const data = sorted.map(c => ({
-            x: c.scoreCarte.troisiemeQuartile - c.scoreCarte.premierQuartile,
-            y: c.scoreCarte.moyenne,
-            label: c.nomCarte,
-        }));
 
         state.charts.spread = new Chart(document.getElementById('chart-spread'), {
             type: 'scatter',
             data: {
-                datasets: [{
-                    label: 'Cartes',
-                    data,
-                    backgroundColor: data.map(d => {
-                        if (active && !hl.has(d.label)) return 'rgba(124, 58, 237, 0.1)';
-                        return 'rgba(124, 58, 237, 0.6)';
-                    }),
-                    borderColor: data.map(d => active && hl.has(d.label) ? '#1e293b' : 'transparent'),
-                    borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
-                    pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
-                    pointHoverRadius: 7,
-                }],
+                datasets: strategies.map((strat, si) => {
+                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
+                    const data = state.cardData.map(c => {
+                        const ps = c.parStrategie.find(s => s.nomStrategie === strat);
+                        return ps ? {
+                            x: ps.scoreCarte.troisiemeQuartile - ps.scoreCarte.premierQuartile,
+                            y: ps.scoreCarte.moyenne,
+                            label: c.nomCarte,
+                        } : null;
+                    }).filter(Boolean);
+                    return {
+                        label: strat,
+                        data,
+                        backgroundColor: data.map(d =>
+                            active && !hl.has(d.label) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg
+                        ),
+                        borderColor: data.map(d => active && hl.has(d.label) ? col.border : 'transparent'),
+                        borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
+                        pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
+                        pointHoverRadius: 7,
+                    };
+                }),
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    x: {
-                        title: {display: true, text: 'IQR (Q3 - Q1)', font: {size: 12}},
-                        grid: {color: 'rgba(0,0,0,0.04)'},
-                        beginAtZero: true
-                    },
-                    y: {
-                        title: {display: true, text: 'Score carte (moyenne)', font: {size: 12}},
-                        grid: {color: 'rgba(0,0,0,0.04)'}
-                    },
+                    x: {title: {display: true, text: 'IQR (Q3 - Q1)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}, beginAtZero: true},
+                    y: {title: {display: true, text: 'Score carte (moyenne)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}},
                 },
                 plugins: {
-                    legend: {display: false},
+                    legend: {display: strategies.length > 1, position: 'top'},
                     refLine: {},
                     tooltip: {
                         callbacks: {
                             label(ctx) {
                                 const d = ctx.raw;
-                                return `${d.label} — moy: ${d.y}, IQR: ${d.x}`;
+                                return `${d.label} (${ctx.dataset.label}) — moy: ${d.y}, IQR: ${d.x}`;
                             },
                         },
                     },
