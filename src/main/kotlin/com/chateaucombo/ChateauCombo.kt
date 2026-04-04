@@ -122,7 +122,7 @@ class ChateauCombo(
     }
 
     private fun CartePositionee.appliqueLesEffets(joueur: Joueur, joueurs: List<Joueur>, decks: List<Deck>) {
-        val context = _root_ide_package_.com.chateaucombo.effet.EffetContext(
+        val context = EffetContext(
             joueurActuel = joueur,
             joueurs = joueurs,
             cartePositionee = this,

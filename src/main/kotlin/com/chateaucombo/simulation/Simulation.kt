@@ -147,7 +147,7 @@ class Simulation(
     private fun inverseEffetScoreParCarte(acc: Accumulateurs): Map<String, Set<String>> {
         val cartesParEffetScore = mutableMapOf<String, MutableSet<String>>()
         for ((nom, type) in acc.effetScoreParCarte) {
-            if (type != "EffetScoreVide") cartesParEffetScore.getOrPut(type) { mutableSetOf() }.add(nom)
+            if (type != EffetScoreVide::class.simpleName) cartesParEffetScore.getOrPut(type) { mutableSetOf() }.add(nom)
         }
         return cartesParEffetScore
     }

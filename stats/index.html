@@ -259,7 +259,7 @@
             if (!res.ok) throw new Error('runs.json not found');
             state.runs = await res.json();
             populateSelector();
-            await loadRun(state.runs[0]);
+            if (state.runs.length > 0) await loadRun(state.runs[0]);
         } catch (e) {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('error').style.display = 'block';
