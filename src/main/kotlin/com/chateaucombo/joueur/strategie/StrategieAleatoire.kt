@@ -7,6 +7,8 @@ import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.Position
 
 class StrategieAleatoire : Strategie {
+    override val nom = "Aléatoire"
+
     override fun choisitActionCle(joueur: Joueur, decks: List<Deck>): ActionCle =
         when ((0..2).random()) {
             1 -> ActionCle.RAFRAICHIT

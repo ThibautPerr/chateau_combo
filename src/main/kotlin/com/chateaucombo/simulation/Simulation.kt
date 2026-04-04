@@ -8,8 +8,10 @@ import com.chateaucombo.deck.model.CarteVerso
 import com.chateaucombo.deck.repository.DeckRepository
 import com.chateaucombo.effet.model.EffetScoreVide
 import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.ReglesDuJeu
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
+import com.chateaucombo.tableau.model.Tableau
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesJoueur
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesPoints
 import com.chateaucombo.tableau.model.CartePositionee
@@ -18,9 +20,11 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Path
 
 class Simulation(
-    private val nbJoueurs: Int = 4,
+    private val joueurs: List<Joueur> = List(4) { Joueur(id = it) },
     private val pathCartes: Path = Path.of("src/main/resources/cartes"),
 ) {
+    private val nbJoueurs = joueurs.size
+    private val nomsJoueurs = nomsDesJoueurs(joueurs)
     private val deckRepository = DeckRepository()
     private val jeu = ChateauCombo(
         joueurRepository = JoueurRepository(TableauRepository(), deckRepository),
@@ -31,9 +35,11 @@ class Simulation(
         val acc = Accumulateurs(nbJoueurs)
         silenceLogs {
             repeat(nbParties) {
-                val joueurs = List(nbJoueurs) { Joueur(id = it) }
-                jeu.play(joueurs, pathCartes)
-                accumuleDonneesPartie(joueurs, acc)
+                val joueursPartie = joueurs.mapIndexed { i, j ->
+                    j.copy(id = i, or = ReglesDuJeu.OR_INITIAL, cle = ReglesDuJeu.CLES_INITIALES, tableau = Tableau(), score = 0)
+                }
+                jeu.play(joueursPartie, pathCartes)
+                accumuleDonneesPartie(joueursPartie, acc)
             }
         }
         return construitResultat(nbParties, acc)
@@ -130,7 +136,7 @@ class Simulation(
                 global = tousLesScores.stats(),
                 parJoueur = acc.scoresParJoueur.mapIndexed { index, scores ->
                     StatistiquesJoueur(
-                        joueurId = index,
+                        nomStrategie = nomsJoueurs[index],
                         moyenne = scores.average().round2(),
                         premierQuartile = scores.percentile(25.0),
                         mediane = scores.percentile(50.0),
@@ -193,6 +199,16 @@ class Simulation(
         val lo = index.toInt()
         val hi = minOf(lo + 1, sorted.size - 1)
         return sorted[lo] + (index - lo) * (sorted[hi] - sorted[lo])
+    }
+}
+
+private fun nomsDesJoueurs(joueurs: List<Joueur>): List<String> {
+    val occurrences = joueurs.groupingBy { it.strategie.nom }.eachCount()
+    val compteurs = mutableMapOf<String, Int>()
+    return joueurs.map { j ->
+        val nom = j.strategie.nom
+        if (occurrences[nom]!! > 1) "$nom ${compteurs.merge(nom, 1, Int::plus)!!}"
+        else nom
     }
 }
 

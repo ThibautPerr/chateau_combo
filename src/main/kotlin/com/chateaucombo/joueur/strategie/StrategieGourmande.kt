@@ -15,6 +15,8 @@ import com.chateaucombo.tableau.model.Tableau
 
 class StrategieGourmande : Strategie {
 
+    override val nom = "Gourmande"
+
     private data class CoupEvalue(val carte: Carte, val position: Position, val score: Int)
 
     private var meilleureCartePrevu: Carte? = null

@@ -15,7 +15,7 @@ data class StatistiquesSimulation(
     )
 
     data class StatistiquesJoueur(
-        val joueurId: Int,
+        val nomStrategie: String,
         val moyenne: Double,
         val premierQuartile: Double,
         val mediane: Double,

@@ -1,5 +1,8 @@
 package com.chateaucombo
 
+import com.chateaucombo.joueur.model.Joueur
+import com.chateaucombo.joueur.strategie.StrategieAleatoire
+import com.chateaucombo.joueur.strategie.StrategieGourmande
 import com.chateaucombo.simulation.ResultatSimulation
 import com.chateaucombo.simulation.Simulation
 import tools.jackson.module.kotlin.jacksonMapperBuilder
@@ -10,7 +13,13 @@ import java.time.format.DateTimeFormatter
 fun main(args: Array<String>) {
     val nbParties = args.firstOrNull()?.toIntOrNull() ?: 10000
     println("Simulation de $nbParties parties en cours...")
-    val resultat = Simulation().run(nbParties)
+    val joueurs = listOf(
+        Joueur(id = 0, strategie = StrategieAleatoire()),
+        Joueur(id = 1, strategie = StrategieAleatoire()),
+        Joueur(id = 2, strategie = StrategieGourmande()),
+        Joueur(id = 3, strategie = StrategieGourmande()),
+    )
+    val resultat = Simulation(joueurs).run(nbParties)
     val runDir = File("stats", timestamp()).also { it.mkdirs() }
     ecritsResultats(resultat, runDir)
     metsAJourIndex(File("stats"))

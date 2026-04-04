@@ -297,7 +297,7 @@
 
     function renderPlayerChart() {
         const pd = state.playerData;
-        const labels = ['Global', ...pd.parJoueur.map(j => `Joueur ${j.joueurId + 1}`)];
+        const labels = ['Global', ...pd.parJoueur.map(j => j.nomStrategie)];
         const allStats = [pd.global, ...pd.parJoueur];
 
         state.charts.players = new Chart(document.getElementById('chart-players'), {
