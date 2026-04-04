@@ -149,6 +149,27 @@
             background: #f1f5f9;
         }
 
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+
+        .strategy-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            padding: 0.2rem 0.6rem;
+            background: #f1f5f9;
+            border-radius: 1rem;
+            display: inline-block;
+            color: #334155;
+        }
+
         #loading {
             text-align: center;
             padding: 4rem;
@@ -224,9 +245,7 @@
                     <button data-key="scoreCarte">Score carte</button>
                 </div>
             </div>
-            <div class="chart-wrap" id="chart-effet-wrap">
-                <canvas id="chart-effet"></canvas>
-            </div>
+            <div id="charts-effet"></div>
         </div>
 
         <div class="chart-section">
@@ -238,9 +257,7 @@
                     <button data-key="scoreCarte">Score carte</button>
                 </div>
             </div>
-            <div class="chart-wrap" id="chart-effet-score-wrap">
-                <canvas id="chart-effet-score"></canvas>
-            </div>
+            <div id="charts-effet-score"></div>
         </div>
     </div>
 </div>
@@ -260,6 +277,7 @@
         scoreEffectData: null,
         charts: {},
         sort: {effet: 'scoreJoueur', effetScore: 'scoreJoueur'},
+        activeEffect: {effet: null, effetScore: null},
     };
 
     const refLinePlugin = {
@@ -348,127 +366,160 @@
         document.getElementById('no-data').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
 
-        Object.values(state.charts).forEach(c => c.destroy());
+        Object.values(state.charts).flat().forEach(c => c.destroy());
         state.charts = {};
         if (state.effectData) renderEffetChart();
         if (state.scoreEffectData) renderEffetScoreChart();
     }
 
+    function makeStrategyCharts(containerId, strategies, buildChart) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        if (!strategies.length) return [];
+        const grid = document.createElement('div');
+        grid.className = 'charts-grid';
+        container.appendChild(grid);
+        return strategies.map((strat, si) => {
+            const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
+            const cell = document.createElement('div');
+            const label = document.createElement('div');
+            label.className = 'strategy-label';
+            label.style.color = col.border;
+            label.textContent = strat;
+            cell.appendChild(label);
+            const wrap = document.createElement('div');
+            wrap.className = 'chart-wrap';
+            const canvas = document.createElement('canvas');
+            wrap.appendChild(canvas);
+            cell.appendChild(wrap);
+            grid.appendChild(cell);
+            return buildChart(canvas, wrap, strat, si, col);
+        });
+    }
+
+    function hlColors(items, col, isHl, anyActive) {
+        return {
+            backgroundColor: items.map(i => anyActive && !isHl(i) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
+            borderColor: items.map(i => isHl(i) ? col.border : 'transparent'),
+            borderWidth: items.map(i => isHl(i) ? 2 : 0),
+        };
+    }
+
     function renderEffetChart() {
-        if (state.charts.effet) state.charts.effet.destroy();
+        (state.charts.effet || []).forEach(c => c.destroy());
         if (!state.effectData) return;
         const metric = state.sort.effet;
         const strategies = state.playerData.strategies || [];
-        const sorted = [...state.effectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
         const globalAvg = state.playerData.global.moyenne;
+        const ac = state.activeEffect.effet;
+        const anyActive = ac != null;
+        const isHl = e => e.effet === ac;
 
-        const wrap = document.getElementById('chart-effet-wrap');
-        wrap.style.height = `${Math.max(sorted.length * (14 * Math.max(strategies.length, 1) + 10) + 40, 200)}px`;
-
-        state.charts.effet = new Chart(document.getElementById('chart-effet'), {
-            type: 'bar',
-            data: {
-                labels: sorted.map(e => e.effet),
-                datasets: strategies.map((strat, si) => {
-                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
-                    return {
+        state.charts.effet = makeStrategyCharts('charts-effet', strategies, (canvas, wrap, strat, si, col) => {
+            const sorted = [...state.effectData].sort((a, b) => {
+                const psA = a.parStrategie.find(s => s.nomStrategie === strat);
+                const psB = b.parStrategie.find(s => s.nomStrategie === strat);
+                return (psA?.[metric].moyenne ?? 0) - (psB?.[metric].moyenne ?? 0);
+            });
+            wrap.style.height = `${Math.max(sorted.length * 24 + 40, 200)}px`;
+            return new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: sorted.map(e => e.effet),
+                    datasets: [{
                         label: strat,
-                        data: sorted.map(e => {
-                            const ps = e.parStrategie.find(s => s.nomStrategie === strat);
-                            return ps ? ps[metric].moyenne : null;
-                        }),
-                        backgroundColor: col.bg,
+                        data: sorted.map(e => e.parStrategie.find(s => s.nomStrategie === strat)?.[metric].moyenne ?? null),
+                        ...hlColors(sorted, col, isHl, anyActive),
                         borderRadius: 2,
-                    };
-                }),
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true, maintainAspectRatio: false,
-                scales: {
-                    x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Moyenne', font: {size: 12}}},
-                    y: {grid: {display: false}, ticks: {font: {size: 11}}},
+                    }],
                 },
-                plugins: {
-                    legend: {display: strategies.length > 1, position: 'top'},
-                    refLine: metric === 'scoreJoueur' ? {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`} : {},
-                    tooltip: {
-                        callbacks: {
+                options: {
+                    indexAxis: 'y',
+                    responsive: true, maintainAspectRatio: false,
+                    onClick(evt, elements) {
+                        const name = elements.length ? sorted[elements[0].index].effet : null;
+                        state.activeEffect.effet = (name && name !== ac) ? name : null;
+                        setTimeout(renderEffetChart, 0);
+                    },
+                    onHover(evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
+                    scales: {
+                        x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Moyenne', font: {size: 12}}},
+                        y: {grid: {display: false}, ticks: {font: {size: 11}}},
+                    },
+                    plugins: {
+                        legend: {display: false},
+                        refLine: metric === 'scoreJoueur' ? {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`} : {},
+                        tooltip: {callbacks: {
                             label(ctx) {
-                                const e = sorted[ctx.dataIndex];
-                                const strat = ctx.dataset.label;
-                                const ps = e.parStrategie.find(s => s.nomStrategie === strat);
-                                if (!ps) return `${strat}: N/A`;
+                                const ps = sorted[ctx.dataIndex].parStrategie.find(s => s.nomStrategie === strat);
+                                if (!ps) return 'N/A';
                                 const s = ps[metric];
-                                return `${strat} — moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                                return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
                             },
-                            afterBody(items) {
-                                const e = sorted[items[0].dataIndex];
-                                return [`Cartes : ${e.cartes.join(', ')}`];
-                            },
-                        },
+                            afterBody(items) { return [`Cartes : ${sorted[items[0].dataIndex].cartes.join(', ')}`]; },
+                        }},
                     },
                 },
-            },
+            });
         });
     }
 
     function renderEffetScoreChart() {
-        if (state.charts.effetScore) state.charts.effetScore.destroy();
+        (state.charts.effetScore || []).forEach(c => c.destroy());
         if (!state.scoreEffectData) return;
         const metric = state.sort.effetScore;
         const strategies = state.playerData.strategies || [];
-        const sorted = [...state.scoreEffectData].sort((a, b) => a[metric].moyenne - b[metric].moyenne);
         const globalAvg = state.playerData.global.moyenne;
+        const ac = state.activeEffect.effetScore;
+        const anyActive = ac != null;
+        const isHl = e => e.effet === ac;
 
-        const wrap = document.getElementById('chart-effet-score-wrap');
-        wrap.style.height = `${Math.max(sorted.length * (14 * Math.max(strategies.length, 1) + 10) + 40, 200)}px`;
-
-        state.charts.effetScore = new Chart(document.getElementById('chart-effet-score'), {
-            type: 'bar',
-            data: {
-                labels: sorted.map(e => e.effet),
-                datasets: strategies.map((strat, si) => {
-                    const col = STRATEGY_COLORS[si % STRATEGY_COLORS.length];
-                    return {
+        state.charts.effetScore = makeStrategyCharts('charts-effet-score', strategies, (canvas, wrap, strat, si, col) => {
+            const sorted = [...state.scoreEffectData].sort((a, b) => {
+                const psA = a.parStrategie.find(s => s.nomStrategie === strat);
+                const psB = b.parStrategie.find(s => s.nomStrategie === strat);
+                return (psA?.[metric].moyenne ?? 0) - (psB?.[metric].moyenne ?? 0);
+            });
+            wrap.style.height = `${Math.max(sorted.length * 24 + 40, 200)}px`;
+            return new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: sorted.map(e => e.effet),
+                    datasets: [{
                         label: strat,
-                        data: sorted.map(e => {
-                            const ps = e.parStrategie.find(s => s.nomStrategie === strat);
-                            return ps ? ps[metric].moyenne : null;
-                        }),
-                        backgroundColor: col.bg,
+                        data: sorted.map(e => e.parStrategie.find(s => s.nomStrategie === strat)?.[metric].moyenne ?? null),
+                        ...hlColors(sorted, col, isHl, anyActive),
                         borderRadius: 2,
-                    };
-                }),
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true, maintainAspectRatio: false,
-                scales: {
-                    x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Moyenne', font: {size: 12}}},
-                    y: {grid: {display: false}, ticks: {font: {size: 11}}},
+                    }],
                 },
-                plugins: {
-                    legend: {display: strategies.length > 1, position: 'top'},
-                    refLine: metric === 'scoreJoueur' ? {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`} : {},
-                    tooltip: {
-                        callbacks: {
+                options: {
+                    indexAxis: 'y',
+                    responsive: true, maintainAspectRatio: false,
+                    onClick(evt, elements) {
+                        const name = elements.length ? sorted[elements[0].index].effet : null;
+                        state.activeEffect.effetScore = (name && name !== ac) ? name : null;
+                        setTimeout(renderEffetScoreChart, 0);
+                    },
+                    onHover(evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
+                    scales: {
+                        x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Moyenne', font: {size: 12}}},
+                        y: {grid: {display: false}, ticks: {font: {size: 11}}},
+                    },
+                    plugins: {
+                        legend: {display: false},
+                        refLine: metric === 'scoreJoueur' ? {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`} : {},
+                        tooltip: {callbacks: {
                             label(ctx) {
-                                const e = sorted[ctx.dataIndex];
-                                const strat = ctx.dataset.label;
-                                const ps = e.parStrategie.find(s => s.nomStrategie === strat);
-                                if (!ps) return `${strat}: N/A`;
+                                const ps = sorted[ctx.dataIndex].parStrategie.find(s => s.nomStrategie === strat);
+                                if (!ps) return 'N/A';
                                 const s = ps[metric];
-                                return `${strat} — moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                                return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
                             },
-                            afterBody(items) {
-                                const e = sorted[items[0].dataIndex];
-                                return [`Cartes : ${e.cartes.join(', ')}`];
-                            },
-                        },
+                            afterBody(items) { return [`Cartes : ${sorted[items[0].dataIndex].cartes.join(', ')}`]; },
+                        }},
                     },
                 },
-            },
+            });
         });
     }
 </script>

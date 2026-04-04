@@ -380,6 +380,7 @@
         charts: {},
         sort: {cardScore: 'moyenne', playerImpact: 'moyenne'},
         hl: {cardScore: new Set(), playerImpact: new Set(), scatter: new Set(), spread: new Set()},
+        activeCard: {cardScore: null, playerImpact: null, scatter: null, spread: null},
     };
 
     const chartRenderers = {
@@ -551,37 +552,50 @@
         });
     }
 
+    function hlColors(items, col, isHl, anyActive) {
+        return {
+            backgroundColor: items.map(i => anyActive && !isHl(i) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
+            borderColor: items.map(i => isHl(i) ? col.border : 'transparent'),
+            borderWidth: items.map(i => isHl(i) ? 2 : 0),
+        };
+    }
+
     function renderCardScoreChart() {
         (state.charts.cardScore || []).forEach(c => c.destroy());
         const key = state.sort.cardScore;
         const strategies = state.playerData.strategies || [];
-        const sorted = [...state.cardData].sort((a, b) => a.scoreCarte[key] - b.scoreCarte[key]);
         const hl = state.hl.cardScore;
-        const active = hl.size > 0;
+        const ac = state.activeCard.cardScore;
+        const anyActive = hl.size > 0 || ac != null;
+        const isHl = c => hl.has(c.nomCarte) || c.nomCarte === ac;
 
         state.charts.cardScore = makeStrategyCharts('charts-card-score', strategies, (canvas, wrap, strat, si, col) => {
             wrap.style.height = '1150px';
+            const sorted = [...state.cardData].sort((a, b) => {
+                const psA = a.parStrategie.find(s => s.nomStrategie === strat);
+                const psB = b.parStrategie.find(s => s.nomStrategie === strat);
+                return (psA?.scoreCarte[key] ?? 0) - (psB?.scoreCarte[key] ?? 0);
+            });
             return new Chart(canvas, {
                 type: 'bar',
                 data: {
                     labels: sorted.map(c => c.nomCarte),
                     datasets: [{
                         label: strat,
-                        data: sorted.map(c => {
-                            const ps = c.parStrategie.find(s => s.nomStrategie === strat);
-                            return ps ? ps.scoreCarte[key] : null;
-                        }),
-                        backgroundColor: sorted.map(c =>
-                            active && !hl.has(c.nomCarte) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg
-                        ),
-                        borderColor: sorted.map(c => active && hl.has(c.nomCarte) ? col.border : 'transparent'),
-                        borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
+                        data: sorted.map(c => c.parStrategie.find(s => s.nomStrategie === strat)?.scoreCarte[key] ?? null),
+                        ...hlColors(sorted, col, isHl, anyActive),
                         borderRadius: 2,
                     }],
                 },
                 options: {
                     indexAxis: 'y',
                     responsive: true, maintainAspectRatio: false,
+                    onClick(evt, elements) {
+                        const name = elements.length ? sorted[elements[0].index].nomCarte : null;
+                        state.activeCard.cardScore = (name && name !== ac) ? name : null;
+                        setTimeout(renderCardScoreChart, 0);
+                    },
+                    onHover(evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
                     scales: {
                         x: {beginAtZero: true, grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Points', font: {size: 12}}},
                         y: {grid: {display: false}, ticks: {font: {size: 11}}},
@@ -589,17 +603,12 @@
                     plugins: {
                         legend: {display: false},
                         refLine: {},
-                        tooltip: {
-                            callbacks: {
-                                label(ctx) {
-                                    const card = sorted[ctx.dataIndex];
-                                    const ps = card.parStrategie.find(s => s.nomStrategie === strat);
-                                    if (!ps) return 'N/A';
-                                    const s = ps.scoreCarte;
-                                    return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
-                                },
-                            },
-                        },
+                        tooltip: {callbacks: {label(ctx) {
+                            const ps = sorted[ctx.dataIndex].parStrategie.find(s => s.nomStrategie === strat);
+                            if (!ps) return 'N/A';
+                            const s = ps.scoreCarte;
+                            return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                        }}},
                     },
                 },
             });
@@ -611,33 +620,38 @@
         const key = state.sort.playerImpact;
         const strategies = state.playerData.strategies || [];
         const globalAvg = state.playerData.global.moyenne;
-        const sorted = [...state.cardData].sort((a, b) => a.scoreJoueur[key] - b.scoreJoueur[key]);
         const hl = state.hl.playerImpact;
-        const active = hl.size > 0;
+        const ac = state.activeCard.playerImpact;
+        const anyActive = hl.size > 0 || ac != null;
+        const isHl = c => hl.has(c.nomCarte) || c.nomCarte === ac;
 
         state.charts.playerImpact = makeStrategyCharts('charts-player-impact', strategies, (canvas, wrap, strat, si, col) => {
             wrap.style.height = '1150px';
+            const sorted = [...state.cardData].sort((a, b) => {
+                const psA = a.parStrategie.find(s => s.nomStrategie === strat);
+                const psB = b.parStrategie.find(s => s.nomStrategie === strat);
+                return (psA?.scoreJoueur[key] ?? 0) - (psB?.scoreJoueur[key] ?? 0);
+            });
             return new Chart(canvas, {
                 type: 'bar',
                 data: {
                     labels: sorted.map(c => c.nomCarte),
                     datasets: [{
                         label: strat,
-                        data: sorted.map(c => {
-                            const ps = c.parStrategie.find(s => s.nomStrategie === strat);
-                            return ps ? ps.scoreJoueur[key] : null;
-                        }),
-                        backgroundColor: sorted.map(c =>
-                            active && !hl.has(c.nomCarte) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg
-                        ),
-                        borderColor: sorted.map(c => active && hl.has(c.nomCarte) ? col.border : 'transparent'),
-                        borderWidth: sorted.map(c => active && hl.has(c.nomCarte) ? 2 : 0),
+                        data: sorted.map(c => c.parStrategie.find(s => s.nomStrategie === strat)?.scoreJoueur[key] ?? null),
+                        ...hlColors(sorted, col, isHl, anyActive),
                         borderRadius: 2,
                     }],
                 },
                 options: {
                     indexAxis: 'y',
                     responsive: true, maintainAspectRatio: false,
+                    onClick(evt, elements) {
+                        const name = elements.length ? sorted[elements[0].index].nomCarte : null;
+                        state.activeCard.playerImpact = (name && name !== ac) ? name : null;
+                        setTimeout(renderPlayerImpactChart, 0);
+                    },
+                    onHover(evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
                     scales: {
                         x: {grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Score joueur', font: {size: 12}}},
                         y: {grid: {display: false}, ticks: {font: {size: 11}}},
@@ -645,17 +659,12 @@
                     plugins: {
                         legend: {display: false},
                         refLine: {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`},
-                        tooltip: {
-                            callbacks: {
-                                label(ctx) {
-                                    const card = sorted[ctx.dataIndex];
-                                    const ps = card.parStrategie.find(s => s.nomStrategie === strat);
-                                    if (!ps) return 'N/A';
-                                    const s = ps.scoreJoueur;
-                                    return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
-                                },
-                            },
-                        },
+                        tooltip: {callbacks: {label(ctx) {
+                            const ps = sorted[ctx.dataIndex].parStrategie.find(s => s.nomStrategie === strat);
+                            if (!ps) return 'N/A';
+                            const s = ps.scoreJoueur;
+                            return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                        }}},
                     },
                 },
             });
@@ -666,7 +675,9 @@
         (state.charts.scatter || []).forEach(c => c.destroy());
         const strategies = state.playerData.strategies || [];
         const hl = state.hl.scatter;
-        const active = hl.size > 0;
+        const ac = state.activeCard.scatter;
+        const anyActive = hl.size > 0 || ac != null;
+        const isHl = d => hl.has(d.label) || d.label === ac;
 
         state.charts.scatter = makeStrategyCharts('charts-scatter', strategies, (canvas, wrap, strat, si, col) => {
             wrap.style.height = '480px';
@@ -676,26 +687,26 @@
             }).filter(Boolean);
             return new Chart(canvas, {
                 type: 'scatter',
-                data: {
-                    datasets: [{
-                        label: strat,
-                        data,
-                        backgroundColor: data.map(d => active && !hl.has(d.label) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
-                        borderColor: data.map(d => active && hl.has(d.label) ? col.border : 'transparent'),
-                        borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
-                        pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
-                        pointHoverRadius: 7,
-                    }],
-                },
+                data: {datasets: [{
+                    label: strat, data,
+                    ...hlColors(data, col, isHl, anyActive),
+                    pointRadius: data.map(d => isHl(d) ? 8 : (anyActive ? 4 : 5)),
+                    pointHoverRadius: 7,
+                }]},
                 options: {
                     responsive: true, maintainAspectRatio: false,
+                    onClick(evt, elements) {
+                        const name = elements.length ? data[elements[0].index].label : null;
+                        state.activeCard.scatter = (name && name !== ac) ? name : null;
+                        setTimeout(renderScatterChart, 0);
+                    },
+                    onHover(evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
                     scales: {
                         x: {title: {display: true, text: 'Score carte (moyenne)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}},
                         y: {title: {display: true, text: 'Score joueur (moyenne)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}},
                     },
                     plugins: {
-                        legend: {display: false},
-                        refLine: {},
+                        legend: {display: false}, refLine: {},
                         tooltip: {callbacks: {label(ctx) { const d = ctx.raw; return `${d.label} — carte: ${d.x}, joueur: ${d.y}`; }}},
                     },
                 },
@@ -707,40 +718,38 @@
         (state.charts.spread || []).forEach(c => c.destroy());
         const strategies = state.playerData.strategies || [];
         const hl = state.hl.spread;
-        const active = hl.size > 0;
+        const ac = state.activeCard.spread;
+        const anyActive = hl.size > 0 || ac != null;
+        const isHl = d => hl.has(d.label) || d.label === ac;
 
         state.charts.spread = makeStrategyCharts('charts-spread', strategies, (canvas, wrap, strat, si, col) => {
             wrap.style.height = '480px';
             const data = state.cardData.map(c => {
                 const ps = c.parStrategie.find(s => s.nomStrategie === strat);
-                return ps ? {
-                    x: ps.scoreCarte.troisiemeQuartile - ps.scoreCarte.premierQuartile,
-                    y: ps.scoreCarte.moyenne,
-                    label: c.nomCarte,
-                } : null;
+                return ps ? {x: ps.scoreCarte.troisiemeQuartile - ps.scoreCarte.premierQuartile, y: ps.scoreCarte.moyenne, label: c.nomCarte} : null;
             }).filter(Boolean);
             return new Chart(canvas, {
                 type: 'scatter',
-                data: {
-                    datasets: [{
-                        label: strat,
-                        data,
-                        backgroundColor: data.map(d => active && !hl.has(d.label) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
-                        borderColor: data.map(d => active && hl.has(d.label) ? col.border : 'transparent'),
-                        borderWidth: data.map(d => active && hl.has(d.label) ? 2 : 0),
-                        pointRadius: data.map(d => active && hl.has(d.label) ? 8 : (active ? 4 : 5)),
-                        pointHoverRadius: 7,
-                    }],
-                },
+                data: {datasets: [{
+                    label: strat, data,
+                    ...hlColors(data, col, isHl, anyActive),
+                    pointRadius: data.map(d => isHl(d) ? 8 : (anyActive ? 4 : 5)),
+                    pointHoverRadius: 7,
+                }]},
                 options: {
                     responsive: true, maintainAspectRatio: false,
+                    onClick(evt, elements) {
+                        const name = elements.length ? data[elements[0].index].label : null;
+                        state.activeCard.spread = (name && name !== ac) ? name : null;
+                        setTimeout(renderSpreadChart, 0);
+                    },
+                    onHover(evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
                     scales: {
                         x: {title: {display: true, text: 'IQR (Q3 - Q1)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}, beginAtZero: true},
                         y: {title: {display: true, text: 'Score carte (moyenne)', font: {size: 12}}, grid: {color: 'rgba(0,0,0,0.04)'}},
                     },
                     plugins: {
-                        legend: {display: false},
-                        refLine: {},
+                        legend: {display: false}, refLine: {},
                         tooltip: {callbacks: {label(ctx) { const d = ctx.raw; return `${d.label} — moy: ${d.y}, IQR: ${d.x}`; }}},
                     },
                 },
