@@ -4,8 +4,7 @@ import com.chateaucombo.deck.model.Blason.ARTISAN
 import com.chateaucombo.deck.model.Blason.ERUDIT
 import com.chateaucombo.deck.model.Blason.MILITAIRE
 import com.chateaucombo.deck.model.Blason.NOBLE
-import com.chateaucombo.effet.model.PointsParCarteAvecNbBlasonMinimum
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsParCarteAvecNbBlasonMinimum
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTDROITE

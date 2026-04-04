@@ -1,7 +1,6 @@
 package com.chateaucombo.effet
 
-import com.chateaucombo.effet.model.PointsParCarteAvecCoutMinimum
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsParCarteAvecCoutMinimum
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTDROITE

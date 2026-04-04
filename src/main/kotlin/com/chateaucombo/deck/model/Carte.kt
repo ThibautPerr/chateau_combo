@@ -1,8 +1,8 @@
 package com.chateaucombo.deck.model
 
-import com.chateaucombo.effet.model.BourseScore
-import com.chateaucombo.effet.model.EffetScore
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.BourseScore
+import com.chateaucombo.effet.EffetScore
+import com.chateaucombo.effet.Effets
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 
 @JsonTypeInfo(
@@ -14,7 +14,7 @@ sealed class Carte {
     abstract val cout: Int
     abstract val nom: String
     abstract val blasons: List<Blason>
-    abstract val effets: Effets
-    abstract val effetScore: EffetScore
-    abstract val bourse: BourseScore?
+    abstract val effets: com.chateaucombo.effet.Effets
+    abstract val effetScore: com.chateaucombo.effet.EffetScore
+    abstract val bourse: com.chateaucombo.effet.BourseScore?
 }

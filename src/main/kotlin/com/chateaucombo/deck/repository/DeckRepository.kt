@@ -5,7 +5,9 @@ import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.model.*
+import com.chateaucombo.effet.*
+import com.chateaucombo.effet.effetpoint.*
+import com.chateaucombo.effet.effetplacement.*
 import tools.jackson.module.kotlin.jacksonMapperBuilder
 import tools.jackson.module.kotlin.readValue
 import java.nio.file.Path

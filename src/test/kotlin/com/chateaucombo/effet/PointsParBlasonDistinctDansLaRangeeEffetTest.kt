@@ -5,8 +5,7 @@ import com.chateaucombo.deck.model.Blason.ERUDIT
 import com.chateaucombo.deck.model.Blason.MILITAIRE
 import com.chateaucombo.deck.model.Blason.NOBLE
 import com.chateaucombo.deck.model.Blason.PAYSAN
-import com.chateaucombo.effet.model.PointsParBlasonDistinctDansLaRangee
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsParBlasonDistinctDansLaRangee
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.BASMILIEU
@@ -54,7 +53,10 @@ class PointsParBlasonDistinctDansLaRangeeEffetTest : EffetTestBase() {
 
     @Test
     fun `doit compter les blasons de la carte elle-meme`() {
-        val carte = villageois(blasons = listOf(ARTISAN, PAYSAN), effetScore = PointsParBlasonDistinctDansLaRangee(points = 2))
+        val carte = villageois(blasons = listOf(ARTISAN, PAYSAN), effetScore = PointsParBlasonDistinctDansLaRangee(
+            points = 2
+        )
+        )
         val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
         val joueur = Joueur(id = 1, tableau = Tableau(
             cartesPositionees = mutableListOf(cartePositionee)

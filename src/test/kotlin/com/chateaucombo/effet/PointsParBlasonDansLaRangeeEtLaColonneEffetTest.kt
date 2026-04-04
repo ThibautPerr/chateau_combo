@@ -1,8 +1,7 @@
 package com.chateaucombo.effet
 
 import com.chateaucombo.deck.model.Blason.NOBLE
-import com.chateaucombo.effet.model.PointsParBlasonDansLaRangeeEtLaColonne
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsParBlasonDansLaRangeeEtLaColonne
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
@@ -35,7 +34,11 @@ class PointsParBlasonDansLaRangeeEtLaColonneEffetTest : EffetTestBase() {
 
     @Test
     fun `ne doit pas double-compter la carte a l'intersection`() {
-        val carte = villageois(blasons = listOf(NOBLE), effetScore = PointsParBlasonDansLaRangeeEtLaColonne(points = 2, blason = NOBLE))
+        val carte = villageois(blasons = listOf(NOBLE), effetScore = PointsParBlasonDansLaRangeeEtLaColonne(
+            points = 2,
+            blason = NOBLE
+        )
+        )
         val cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)
         val joueur = Joueur(id = 1, tableau = Tableau(
             cartesPositionees = mutableListOf(cartePositionee)

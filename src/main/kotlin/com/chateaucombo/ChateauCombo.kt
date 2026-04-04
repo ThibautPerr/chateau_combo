@@ -4,9 +4,9 @@ import com.chateaucombo.deck.model.Carte
 import com.chateaucombo.deck.model.Deck
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.deck.repository.DeckRepository
-import com.chateaucombo.effet.model.EffetContext
-import com.chateaucombo.effet.model.EffetSeparateur.ET
-import com.chateaucombo.effet.model.EffetSeparateur.OU
+import com.chateaucombo.effet.EffetContext
+import com.chateaucombo.effet.EffetSeparateur.ET
+import com.chateaucombo.effet.EffetSeparateur.OU
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.joueur.repository.JoueurRepository
 import com.chateaucombo.joueur.strategie.ActionCle
@@ -122,7 +122,7 @@ class ChateauCombo(
     }
 
     private fun CartePositionee.appliqueLesEffets(joueur: Joueur, joueurs: List<Joueur>, decks: List<Deck>) {
-        val context = EffetContext(
+        val context = _root_ide_package_.com.chateaucombo.effet.EffetContext(
             joueurActuel = joueur,
             joueurs = joueurs,
             cartePositionee = this,

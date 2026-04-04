@@ -2,9 +2,7 @@ package com.chateaucombo.effet
 
 import com.chateaucombo.deck.model.Blason.MILITAIRE
 import com.chateaucombo.deck.model.Blason.NOBLE
-import com.chateaucombo.effet.model.AjouteCleParBlasonDansTableauVoisin
-import com.chateaucombo.effet.model.EffetContext
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.effetplacement.AjouteCleParBlasonDansTableauVoisin
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTDROITE

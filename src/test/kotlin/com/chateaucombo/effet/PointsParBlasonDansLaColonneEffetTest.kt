@@ -2,8 +2,7 @@ package com.chateaucombo.effet
 
 import com.chateaucombo.deck.model.Blason.ERUDIT
 import com.chateaucombo.deck.model.Blason.NOBLE
-import com.chateaucombo.effet.model.PointsParBlasonDansLaColonne
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsParBlasonDansLaColonne
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.BASMILIEU

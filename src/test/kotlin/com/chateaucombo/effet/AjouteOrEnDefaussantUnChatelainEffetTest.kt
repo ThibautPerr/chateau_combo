@@ -2,9 +2,7 @@ package com.chateaucombo.effet
 
 import com.chateaucombo.deck.model.Chatelain
 import com.chateaucombo.deck.model.Deck
-import com.chateaucombo.effet.model.AjouteOrEnDefaussantUnChatelain
-import com.chateaucombo.effet.model.EffetContext
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.effetplacement.AjouteOrEnDefaussantUnChatelain
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.MILIEUMILIEU

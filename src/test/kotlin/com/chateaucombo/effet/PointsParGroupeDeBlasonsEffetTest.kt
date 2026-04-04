@@ -5,8 +5,7 @@ import com.chateaucombo.deck.model.Blason.MILITAIRE
 import com.chateaucombo.deck.model.Blason.NOBLE
 import com.chateaucombo.deck.model.Blason.PAYSAN
 import com.chateaucombo.deck.model.Blason.RELIGIEUX
-import com.chateaucombo.effet.model.PointsParGroupeDeBlasons
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsParGroupeDeBlasons
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
@@ -27,7 +26,11 @@ class PointsParGroupeDeBlasonsEffetTest : EffetTestBase() {
                 CartePositionee(carte = villageois(blasons = listOf(MILITAIRE, PAYSAN)), position = HAUTDROITE),
             )
         ))
-        val carte = villageois(effetScore = PointsParGroupeDeBlasons(points = 7, blasons = listOf(RELIGIEUX, MILITAIRE, PAYSAN)))
+        val carte = villageois(effetScore = PointsParGroupeDeBlasons(
+            points = 7,
+            blasons = listOf(RELIGIEUX, MILITAIRE, PAYSAN)
+        )
+        )
         val context = ScoreContext(
             joueurActuel = joueur,
             cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU)

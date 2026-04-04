@@ -1,7 +1,6 @@
 package com.chateaucombo.effet
 
-import com.chateaucombo.effet.model.PointsSiBord
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsSiBord
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position

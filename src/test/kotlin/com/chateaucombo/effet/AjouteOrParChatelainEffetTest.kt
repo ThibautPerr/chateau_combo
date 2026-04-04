@@ -1,9 +1,7 @@
 package com.chateaucombo.effet
 
 import com.chateaucombo.deck.model.CarteVerso
-import com.chateaucombo.effet.model.AjouteOrParChatelain
-import com.chateaucombo.effet.model.EffetContext
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.effetplacement.AjouteOrParChatelain
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTDROITE

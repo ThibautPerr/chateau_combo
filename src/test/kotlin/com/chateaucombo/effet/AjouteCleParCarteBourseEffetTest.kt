@@ -1,9 +1,6 @@
 package com.chateaucombo.effet
 
-import com.chateaucombo.effet.model.AjouteCleParCarteBourse
-import com.chateaucombo.effet.model.BourseScore
-import com.chateaucombo.effet.model.EffetContext
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.effetplacement.AjouteCleParCarteBourse
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTDROITE

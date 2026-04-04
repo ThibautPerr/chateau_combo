@@ -1,10 +1,8 @@
 package com.chateaucombo.effet
 
-import com.chateaucombo.effet.model.Effets
-import com.chateaucombo.effet.model.PointsParCarteAvecReductionDeCout
-import com.chateaucombo.effet.model.ReduceCoutChatelain
-import com.chateaucombo.effet.model.ReduceCoutVillageois
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetplacement.ReduceCoutChatelain
+import com.chateaucombo.effet.effetplacement.ReduceCoutVillageois
+import com.chateaucombo.effet.effetpoint.PointsParCarteAvecReductionDeCout
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTDROITE
@@ -38,7 +36,10 @@ class PointsParCarteAvecReductionDeCoutEffetTest : EffetTestBase() {
     fun `doit compter une carte avec les deux reductions`() {
         val joueur = Joueur(id = 1, tableau = Tableau(
             cartesPositionees = mutableListOf(
-                CartePositionee(carte = chatelain(effets = Effets(effetsPassifs = listOf(ReduceCoutChatelain(), ReduceCoutVillageois()))), position = HAUTGAUCHE),
+                CartePositionee(carte = chatelain(effets = Effets(effetsPassifs = listOf(
+                    ReduceCoutChatelain(),
+                    ReduceCoutVillageois()
+                ))), position = HAUTGAUCHE),
             )
         ))
         val carte = villageois(effetScore = PointsParCarteAvecReductionDeCout(points = 4))

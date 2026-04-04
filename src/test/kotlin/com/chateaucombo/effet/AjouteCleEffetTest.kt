@@ -1,8 +1,6 @@
 package com.chateaucombo.effet
 
-import com.chateaucombo.effet.model.AjouteCle
-import com.chateaucombo.effet.model.EffetContext
-import com.chateaucombo.effet.model.Effets
+import com.chateaucombo.effet.effetplacement.AjouteCle
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.MILIEUMILIEU

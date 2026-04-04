@@ -1,8 +1,7 @@
 package com.chateaucombo.effet
 
 import com.chateaucombo.deck.model.CarteVerso
-import com.chateaucombo.effet.model.PointsSiCarteVersoPresente
-import com.chateaucombo.effet.model.ScoreContext
+import com.chateaucombo.effet.effetpoint.PointsSiCarteVersoPresente
 import com.chateaucombo.joueur.model.Joueur
 import com.chateaucombo.tableau.model.CartePositionee
 import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
