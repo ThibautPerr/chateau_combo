@@ -1,10 +1,9 @@
 package com.chateaucombo.deck
 
-import com.chateaucombo.deck.model.Blason.*
-import com.chateaucombo.deck.model.Carte
-import com.chateaucombo.deck.model.Deck
-import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.Effets
+import com.chateaucombo.deck.carte.Blason.*
+import com.chateaucombo.deck.carte.Carte
+import com.chateaucombo.deck.carte.Villageois
+import com.chateaucombo.deck.carte.effet.Effets
 
 class DeckBuilder {
 

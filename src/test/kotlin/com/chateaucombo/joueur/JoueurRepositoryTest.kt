@@ -1,18 +1,21 @@
 package com.chateaucombo.joueur
 
+import com.chateaucombo.deck.Deck
 import com.chateaucombo.deck.DeckBuilder
-import com.chateaucombo.deck.model.*
-import com.chateaucombo.deck.repository.DeckRepository
-import com.chateaucombo.effet.Effets
-import com.chateaucombo.effet.effetplacement.ReduceCoutChatelain
-import com.chateaucombo.effet.effetplacement.ReduceCoutVillageois
-import com.chateaucombo.joueur.model.Joueur
-import com.chateaucombo.joueur.repository.JoueurRepository
-import com.chateaucombo.tableau.model.CartePositionee
-import com.chateaucombo.tableau.model.Position
-import com.chateaucombo.tableau.model.Position.*
-import com.chateaucombo.tableau.model.Tableau
-import com.chateaucombo.tableau.repository.TableauRepository
+import com.chateaucombo.deck.DeckRepository
+import com.chateaucombo.deck.carte.Blason
+import com.chateaucombo.deck.carte.Carte
+import com.chateaucombo.deck.carte.CarteVerso
+import com.chateaucombo.deck.carte.Chatelain
+import com.chateaucombo.deck.carte.Villageois
+import com.chateaucombo.deck.carte.effet.Effets
+import com.chateaucombo.deck.carte.effet.effetplacement.ReduceCoutChatelain
+import com.chateaucombo.deck.carte.effet.effetplacement.ReduceCoutVillageois
+import com.chateaucombo.tableau.CartePositionee
+import com.chateaucombo.tableau.Position
+import com.chateaucombo.tableau.Position.*
+import com.chateaucombo.tableau.Tableau
+import com.chateaucombo.tableau.TableauRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.RepeatedTest
@@ -494,7 +497,7 @@ class JoueurRepositoryTest {
 
         private fun tableauAvecPassif(nbPassifs: Int = 1) = Tableau(
             cartesPositionees = (1..nbPassifs).mapTo(mutableListOf()) {
-                CartePositionee(carteAvecPassif(), Position.entries[it - 1])
+                CartePositionee(carteAvecPassif(), entries[it - 1])
             }
         )
 
@@ -525,7 +528,12 @@ class JoueurRepositoryTest {
         fun `ne doit pas reduire le cout d'un chatelain`() {
             val chatelain = Chatelain(cout = 3, nom = "Noble", blasons = emptyList(), effets = Effets())
             val joueur = Joueur(id = 1, or = 2, tableau = tableauAvecPassif())
-            val deck = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(chatelain), estLeDeckActuel = false)
+            val deck = Deck(
+                nom = "Chatelains",
+                cartes = mutableListOf(),
+                cartesDisponibles = mutableListOf(chatelain),
+                estLeDeckActuel = false
+            )
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -566,7 +574,7 @@ class JoueurRepositoryTest {
 
         private fun tableauAvecPassif(nbPassifs: Int = 1) = Tableau(
             cartesPositionees = (1..nbPassifs).mapTo(mutableListOf()) {
-                CartePositionee(carteAvecPassif(), Position.entries[it - 1])
+                CartePositionee(carteAvecPassif(), entries[it - 1])
             }
         )
 
@@ -574,7 +582,12 @@ class JoueurRepositoryTest {
         fun `doit permettre d'acheter un chatelain avec une reduction de cout`() {
             val chatelain = Chatelain(cout = 3, nom = "Noble", blasons = emptyList(), effets = Effets())
             val joueur = Joueur(id = 1, or = 2, tableau = tableauAvecPassif())
-            val deck = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(chatelain), estLeDeckActuel = false)
+            val deck = Deck(
+                nom = "Chatelains",
+                cartes = mutableListOf(),
+                cartesDisponibles = mutableListOf(chatelain),
+                estLeDeckActuel = false
+            )
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -586,7 +599,12 @@ class JoueurRepositoryTest {
         fun `doit deduire le cout effectif apres reduction`() {
             val chatelain = Chatelain(cout = 4, nom = "Noble", blasons = emptyList(), effets = Effets())
             val joueur = Joueur(id = 1, or = 5, tableau = tableauAvecPassif())
-            val deck = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(chatelain), estLeDeckActuel = false)
+            val deck = Deck(
+                nom = "Chatelains",
+                cartes = mutableListOf(),
+                cartesDisponibles = mutableListOf(chatelain),
+                estLeDeckActuel = false
+            )
 
             joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -608,7 +626,12 @@ class JoueurRepositoryTest {
         fun `le cout effectif ne peut pas etre negatif`() {
             val chatelain = Chatelain(cout = 0, nom = "Noble", blasons = emptyList(), effets = Effets())
             val joueur = Joueur(id = 1, or = 0, tableau = tableauAvecPassif())
-            val deck = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(chatelain), estLeDeckActuel = false)
+            val deck = Deck(
+                nom = "Chatelains",
+                cartes = mutableListOf(),
+                cartesDisponibles = mutableListOf(chatelain),
+                estLeDeckActuel = false
+            )
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 
@@ -620,7 +643,12 @@ class JoueurRepositoryTest {
         fun `plusieurs reductions se cumulent`() {
             val chatelain = Chatelain(cout = 3, nom = "Noble", blasons = emptyList(), effets = Effets())
             val joueur = Joueur(id = 1, or = 1, tableau = tableauAvecPassif(nbPassifs = 2))
-            val deck = Deck(nom = "Chatelains", cartes = mutableListOf(), cartesDisponibles = mutableListOf(chatelain), estLeDeckActuel = false)
+            val deck = Deck(
+                nom = "Chatelains",
+                cartes = mutableListOf(),
+                cartesDisponibles = mutableListOf(chatelain),
+                estLeDeckActuel = false
+            )
 
             val carteChoisie = joueurRepository.choisitUneCarte(joueur, deck)
 

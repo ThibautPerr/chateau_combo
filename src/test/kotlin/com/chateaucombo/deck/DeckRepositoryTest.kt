@@ -1,11 +1,9 @@
 package com.chateaucombo.deck
 
-import com.chateaucombo.deck.model.Blason.ERUDIT
-import com.chateaucombo.deck.model.Blason.MILITAIRE
-import com.chateaucombo.deck.model.Chatelain
-import com.chateaucombo.deck.model.Deck
-import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.deck.repository.DeckRepository
+import com.chateaucombo.deck.carte.Blason.ERUDIT
+import com.chateaucombo.deck.carte.Blason.MILITAIRE
+import com.chateaucombo.deck.carte.Chatelain
+import com.chateaucombo.deck.carte.Villageois
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

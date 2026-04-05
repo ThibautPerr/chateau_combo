@@ -1,20 +1,20 @@
 package com.chateaucombo.score
 
-import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.BourseScore
-import com.chateaucombo.effet.EffetScore
-import com.chateaucombo.effet.EffetScoreVide
-import com.chateaucombo.effet.Effets
-import com.chateaucombo.effet.ScoreContext
-import com.chateaucombo.effet.effetpoint.AjoutePoints
-import com.chateaucombo.effet.effetpoint.PointsParOrDepose
-import com.chateaucombo.effet.effetpoint.PointsSiRangSuperieur
-import com.chateaucombo.joueur.model.Joueur
-import com.chateaucombo.tableau.model.CartePositionee
-import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
-import com.chateaucombo.tableau.model.Position.HAUTMILIEU
-import com.chateaucombo.tableau.model.Position.MILIEUMILIEU
-import com.chateaucombo.tableau.model.Tableau
+import com.chateaucombo.deck.carte.Villageois
+import com.chateaucombo.deck.carte.effet.BourseScore
+import com.chateaucombo.deck.carte.effet.EffetScore
+import com.chateaucombo.deck.carte.effet.EffetScoreVide
+import com.chateaucombo.deck.carte.effet.Effets
+import com.chateaucombo.deck.carte.effet.EffetScoreContext
+import com.chateaucombo.deck.carte.effet.effetpoint.AjoutePoints
+import com.chateaucombo.deck.carte.effet.effetpoint.PointsParOrDepose
+import com.chateaucombo.deck.carte.effet.effetpoint.PointsSiRangSuperieur
+import com.chateaucombo.joueur.Joueur
+import com.chateaucombo.tableau.CartePositionee
+import com.chateaucombo.tableau.Position.HAUTGAUCHE
+import com.chateaucombo.tableau.Position.HAUTMILIEU
+import com.chateaucombo.tableau.Position.MILIEUMILIEU
+import com.chateaucombo.tableau.Tableau
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ class ScoreTest {
         @ValueSource(ints = [1, 5, 10])
         fun `doit retourner le nombre de points fixes`(points: Int) {
             val carte = villageois(effetScore = AjoutePoints(points))
-            val context = ScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
+            val context = EffetScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             val score = AjoutePoints(points).score(context)
 
@@ -44,7 +44,7 @@ class ScoreTest {
         @Test
         fun `doit retourner zero points`() {
             val carte = villageois()
-            val context = ScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
+            val context = EffetScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             val score = EffetScoreVide.score(context)
 
@@ -65,7 +65,7 @@ class ScoreTest {
                 )
             ))
             val carte = villageois(effetScore = PointsParOrDepose())
-            val context = ScoreContext(joueurActuel = joueur, cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
+            val context = EffetScoreContext(joueurActuel = joueur, cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             val score = PointsParOrDepose().score(context)
 
@@ -75,7 +75,7 @@ class ScoreTest {
         @Test
         fun `doit retourner zero si aucune bourse sur le tableau`() {
             val carte = villageois(effetScore = PointsParOrDepose())
-            val context = ScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
+            val context = EffetScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             val score = PointsParOrDepose().score(context)
 
@@ -88,7 +88,7 @@ class ScoreTest {
         @Test
         fun `doit retourner les points si la carte est dans le rang superieur`() {
             val carte = villageois(effetScore = PointsSiRangSuperieur(points = 5))
-            val context = ScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = HAUTGAUCHE))
+            val context = EffetScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = HAUTGAUCHE))
 
             val score = PointsSiRangSuperieur(points = 5).score(context)
 
@@ -98,7 +98,7 @@ class ScoreTest {
         @Test
         fun `doit retourner zero si la carte n'est pas dans le rang superieur`() {
             val carte = villageois(effetScore = PointsSiRangSuperieur(points = 5))
-            val context = ScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
+            val context = EffetScoreContext(joueurActuel = Joueur(id = 1), cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU))
 
             val score = PointsSiRangSuperieur(points = 5).score(context)
 

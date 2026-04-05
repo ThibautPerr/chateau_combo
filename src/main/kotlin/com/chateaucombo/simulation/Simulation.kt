@@ -3,19 +3,19 @@ package com.chateaucombo.simulation
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import com.chateaucombo.ChateauCombo
-import com.chateaucombo.deck.model.Carte
-import com.chateaucombo.deck.model.CarteVerso
-import com.chateaucombo.deck.repository.DeckRepository
-import com.chateaucombo.effet.EffetScoreVide
-import com.chateaucombo.effet.ScoreContext
+import com.chateaucombo.deck.carte.Carte
+import com.chateaucombo.deck.carte.CarteVerso
+import com.chateaucombo.deck.DeckRepository
+import com.chateaucombo.deck.carte.effet.EffetScoreVide
+import com.chateaucombo.deck.carte.effet.EffetScoreContext
 import com.chateaucombo.ReglesDuJeu
-import com.chateaucombo.joueur.model.Joueur
-import com.chateaucombo.joueur.repository.JoueurRepository
-import com.chateaucombo.tableau.model.Tableau
+import com.chateaucombo.joueur.Joueur
+import com.chateaucombo.joueur.JoueurRepository
+import com.chateaucombo.tableau.Tableau
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesJoueur
 import com.chateaucombo.simulation.StatistiquesSimulation.StatistiquesPoints
-import com.chateaucombo.tableau.model.CartePositionee
-import com.chateaucombo.tableau.repository.TableauRepository
+import com.chateaucombo.tableau.CartePositionee
+import com.chateaucombo.tableau.TableauRepository
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 
@@ -80,7 +80,7 @@ class Simulation(
         if (carte is CarteVerso) "Carte Verso" else carte.nom
 
     private fun calculeScoreCarte(joueur: Joueur, joueurs: List<Joueur>, cartePositionee: CartePositionee): Int {
-        val context = ScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
+        val context = EffetScoreContext(joueurActuel = joueur, joueurs = joueurs, cartePositionee = cartePositionee)
         return cartePositionee.carte.effetScore.score(context) + (cartePositionee.carte.bourse?.orDepose?.times(2) ?: 0)
     }
 

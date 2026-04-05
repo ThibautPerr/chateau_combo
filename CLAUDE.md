@@ -115,7 +115,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `RemplitBourses` | `nb: Int` — fills the `nb` largest `BourseScore` cards on the board to capacity (sets `orDepose = taille`) |
 | `AjouteOrDansBourses` | `or: Int` — adds up to `or` gold to every non-full bourse (capped at each bourse's remaining capacity) |
 
-**Score effects** (`effetScore` field on `Carte` — evaluated once at end of game via `ScoreRepository.compteLeScore`; defaults to `EffetScoreVide` (0 pts)); receive a `ScoreContext(joueurActuel, joueurs, cartePositionee)` — note: no `decks` field unlike `EffetContext`):
+**Score effects** (`effetScore` field on `Carte` — evaluated once at end of game via `ScoreRepository.compteLeScore`; defaults to `EffetScoreVide` (0 pts)); receive a `EffetScoreContext(joueurActuel, joueurs, cartePositionee)` — note: no `decks` field unlike `EffetContext`):
 
 | type | extra fields |
 |---|---|

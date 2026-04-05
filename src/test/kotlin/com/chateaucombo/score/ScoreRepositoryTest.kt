@@ -1,18 +1,18 @@
 package com.chateaucombo.score
 
-import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.BourseScore
-import com.chateaucombo.effet.EffetScoreVide
-import com.chateaucombo.effet.Effets
-import com.chateaucombo.effet.effetpoint.AjoutePoints
-import com.chateaucombo.effet.effetpoint.PointsParOrDepose
-import com.chateaucombo.effet.effetpoint.PointsSiRangSuperieur
-import com.chateaucombo.tableau.model.Position.MILIEUMILIEU
-import com.chateaucombo.joueur.model.Joueur
-import com.chateaucombo.tableau.model.CartePositionee
-import com.chateaucombo.tableau.model.Position.HAUTGAUCHE
-import com.chateaucombo.tableau.model.Position.HAUTMILIEU
-import com.chateaucombo.tableau.model.Tableau
+import com.chateaucombo.deck.carte.Villageois
+import com.chateaucombo.deck.carte.effet.BourseScore
+import com.chateaucombo.deck.carte.effet.EffetScoreVide
+import com.chateaucombo.deck.carte.effet.Effets
+import com.chateaucombo.deck.carte.effet.effetpoint.AjoutePoints
+import com.chateaucombo.deck.carte.effet.effetpoint.PointsParOrDepose
+import com.chateaucombo.deck.carte.effet.effetpoint.PointsSiRangSuperieur
+import com.chateaucombo.tableau.Position.MILIEUMILIEU
+import com.chateaucombo.joueur.Joueur
+import com.chateaucombo.tableau.CartePositionee
+import com.chateaucombo.tableau.Position.HAUTGAUCHE
+import com.chateaucombo.tableau.Position.HAUTMILIEU
+import com.chateaucombo.tableau.Tableau
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 class ScoreRepositoryTest {
     private val scoreRepository = ScoreRepository()
 
-    private fun villageois(effetScore: com.chateaucombo.effet.EffetScore = EffetScoreVide, bourse: BourseScore? = null) =
+    private fun villageois(effetScore: com.chateaucombo.deck.carte.effet.EffetScore = EffetScoreVide, bourse: BourseScore? = null) =
         Villageois(cout = 0, nom = "carte", blasons = emptyList(), effets = Effets(), effetScore = effetScore, bourse = bourse)
 
     @Test

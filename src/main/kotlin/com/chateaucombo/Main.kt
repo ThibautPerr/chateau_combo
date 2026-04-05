@@ -1,8 +1,8 @@
 package com.chateaucombo
 
-import com.chateaucombo.joueur.model.Joueur
-import com.chateaucombo.joueur.strategie.StrategieAleatoire
-import com.chateaucombo.joueur.strategie.StrategieGourmande
+import com.chateaucombo.joueur.Joueur
+import com.chateaucombo.strategie.StrategieAleatoire
+import com.chateaucombo.strategie.StrategieGourmande
 import com.chateaucombo.simulation.ResultatSimulation
 import com.chateaucombo.simulation.Simulation
 import tools.jackson.module.kotlin.jacksonMapperBuilder

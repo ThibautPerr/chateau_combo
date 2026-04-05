@@ -1,9 +1,12 @@
 package com.chateaucombo.joueur.strategie
 
 import com.chateaucombo.deck.DeckBuilder
-import com.chateaucombo.deck.model.CarteVerso
-import com.chateaucombo.joueur.model.Joueur
-import com.chateaucombo.tableau.model.Position.*
+import com.chateaucombo.deck.carte.CarteVerso
+import com.chateaucombo.joueur.Joueur
+import com.chateaucombo.strategie.ActionCle
+import com.chateaucombo.strategie.DirectionDeplacement
+import com.chateaucombo.strategie.StrategieAleatoire
+import com.chateaucombo.tableau.Position.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.RepeatedTest

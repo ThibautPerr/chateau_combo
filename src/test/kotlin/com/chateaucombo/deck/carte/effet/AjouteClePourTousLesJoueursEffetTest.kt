@@ -1,0 +1,46 @@
+package com.chateaucombo.deck.carte.effet
+
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteClePourTousLesJoueurs
+import com.chateaucombo.joueur.Joueur
+import com.chateaucombo.tableau.CartePositionee
+import com.chateaucombo.tableau.Position.MILIEUMILIEU
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+class AjouteClePourTousLesJoueursEffetTest : com.chateaucombo.deck.carte.effet.EffetTestBase() {
+    @Test
+    fun `doit ajouter une cle a tous les joueurs`() {
+        val cleInitiale = 2
+        val joueurs = List(4) { Joueur(id = it, cle = cleInitiale) }
+        val carte = villageois(effets = Effets(effets = listOf(AjouteClePourTousLesJoueurs(1))))
+        val context = EffetContext(
+            joueurActuel = joueurs.first(),
+            joueurs = joueurs,
+            cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
+            decks = emptyList()
+        )
+
+        carte.effets.effets.first().apply(context)
+
+        joueurs.forEach { joueur ->
+            assertThat(joueur.cle).isEqualTo(cleInitiale + 1)
+        }
+    }
+
+    @Test
+    fun `doit ajouter une cle au joueur actuel contrairement a AjouteClePourTousLesAdversaires`() {
+        val cleInitiale = 2
+        val joueurActuel = Joueur(id = 0, cle = cleInitiale)
+        val carte = villageois(effets = Effets(effets = listOf(AjouteClePourTousLesJoueurs(1))))
+        val context = EffetContext(
+            joueurActuel = joueurActuel,
+            joueurs = listOf(joueurActuel),
+            cartePositionee = CartePositionee(carte = carte, position = MILIEUMILIEU),
+            decks = emptyList()
+        )
+
+        carte.effets.effets.first().apply(context)
+
+        assertThat(joueurActuel.cle).isEqualTo(cleInitiale + 1)
+    }
+}

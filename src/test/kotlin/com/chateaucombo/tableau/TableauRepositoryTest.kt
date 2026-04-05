@@ -1,16 +1,12 @@
 package com.chateaucombo.tableau
 
 import com.chateaucombo.deck.DeckBuilder
-import com.chateaucombo.deck.model.Blason
-import com.chateaucombo.deck.model.Carte
-import com.chateaucombo.deck.model.Chatelain
-import com.chateaucombo.deck.model.Villageois
-import com.chateaucombo.effet.Effets
-import com.chateaucombo.tableau.model.CartePositionee
-import com.chateaucombo.tableau.model.Position
-import com.chateaucombo.tableau.model.Position.*
-import com.chateaucombo.tableau.model.Tableau
-import com.chateaucombo.tableau.repository.TableauRepository
+import com.chateaucombo.deck.carte.Blason
+import com.chateaucombo.deck.carte.Carte
+import com.chateaucombo.deck.carte.Chatelain
+import com.chateaucombo.deck.carte.Villageois
+import com.chateaucombo.deck.carte.effet.Effets
+import com.chateaucombo.tableau.Position.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

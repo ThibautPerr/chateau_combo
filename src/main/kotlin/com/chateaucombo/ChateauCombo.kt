@@ -1,20 +1,19 @@
 package com.chateaucombo
 
-import com.chateaucombo.deck.model.Carte
-import com.chateaucombo.deck.model.Deck
-import com.chateaucombo.tableau.model.CartePositionee
-import com.chateaucombo.deck.repository.DeckRepository
-import com.chateaucombo.effet.EffetContext
-import com.chateaucombo.effet.EffetSeparateur.ET
-import com.chateaucombo.effet.EffetSeparateur.OU
-import com.chateaucombo.joueur.model.Joueur
-import com.chateaucombo.joueur.repository.JoueurRepository
-import com.chateaucombo.joueur.strategie.ActionCle
-import com.chateaucombo.joueur.strategie.DirectionDeplacement
+import com.chateaucombo.deck.carte.Carte
+import com.chateaucombo.deck.Deck
+import com.chateaucombo.tableau.CartePositionee
+import com.chateaucombo.deck.DeckRepository
+import com.chateaucombo.deck.carte.effet.EffetSeparateur.ET
+import com.chateaucombo.deck.carte.effet.EffetSeparateur.OU
+import com.chateaucombo.joueur.Joueur
+import com.chateaucombo.joueur.JoueurRepository
+import com.chateaucombo.strategie.ActionCle
+import com.chateaucombo.strategie.DirectionDeplacement
 import com.chateaucombo.score.ScoreRepository
-import com.chateaucombo.tableau.model.Position
-import com.chateaucombo.tableau.model.Position.*
-import com.chateaucombo.tableau.model.Tableau
+import com.chateaucombo.tableau.Position
+import com.chateaucombo.tableau.Position.*
+import com.chateaucombo.tableau.Tableau
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.nio.file.Path
 
@@ -122,7 +121,7 @@ class ChateauCombo(
     }
 
     private fun CartePositionee.appliqueLesEffets(joueur: Joueur, joueurs: List<Joueur>, decks: List<Deck>) {
-        val context = EffetContext(
+        val context = _root_ide_package_.com.chateaucombo.deck.carte.effet.EffetContext(
             joueurActuel = joueur,
             joueurs = joueurs,
             cartePositionee = this,

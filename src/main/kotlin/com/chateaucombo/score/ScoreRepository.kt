@@ -1,7 +1,7 @@
 package com.chateaucombo.score
 
-import com.chateaucombo.effet.ScoreContext
-import com.chateaucombo.joueur.model.Joueur
+import com.chateaucombo.deck.carte.effet.EffetScoreContext
+import com.chateaucombo.joueur.Joueur
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 class ScoreRepository {
@@ -29,7 +29,7 @@ class ScoreRepository {
 
     private fun Joueur.updateScoreWithEffects(joueurs: List<Joueur>) {
         this.score = this.tableau.cartesPositionees.sumOf { cartePositionee ->
-            val context = ScoreContext(joueurActuel = this, joueurs = joueurs, cartePositionee = cartePositionee)
+            val context = EffetScoreContext(joueurActuel = this, joueurs = joueurs, cartePositionee = cartePositionee)
             val points = cartePositionee.carte.effetScore.score(context)
             logger.debug { "Joueur ${this.id} : ${cartePositionee.carte.nom} rapporte $points point(s)" }
             points
