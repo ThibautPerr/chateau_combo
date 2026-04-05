@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Château Combo — Scores cartes</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4/build/index.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -96,65 +97,11 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .chart-header h2 {
-            margin-bottom: 0;
-        }
-
         .chart-section h2 {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.75rem;
             color: #334155;
-        }
-
-        .sort-buttons {
-            display: flex;
-            gap: 0.35rem;
-            align-items: center;
-        }
-
-        .sort-buttons span {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-right: 0.25rem;
-        }
-
-        .sort-buttons button {
-            padding: 0.3rem 0.65rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
-            background: white;
-            color: #475569;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.15s;
-        }
-
-        .sort-buttons button.active {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
-        }
-
-        .sort-buttons button:hover:not(.active) {
-            background: #f1f5f9;
-        }
-
-        .chart-wrap.tall {
-            height: 1150px;
-        }
-
-        .chart-wrap.scatter {
-            height: 480px;
         }
 
         .charts-grid {
@@ -242,18 +189,6 @@
             background: #f1f5f9;
         }
 
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 800px) {
-            .row {
-                grid-template-columns: 1fr;
-            }
-        }
-
         #loading {
             text-align: center;
             padding: 4rem;
@@ -309,15 +244,7 @@
         <datalist id="card-datalist"></datalist>
 
         <div class="chart-section">
-            <div class="chart-header">
-                <h2>Classement par score de la carte</h2>
-                <div class="sort-buttons" data-target="cardScore">
-                    <span>Trier :</span>
-                    <button class="active" data-key="moyenne">Moyenne</button>
-                    <button data-key="mediane">Mediane</button>
-                    <button data-key="troisiemeQuartile">Q3</button>
-                </div>
-            </div>
+            <h2>Classement par score de la carte</h2>
             <div class="highlight-bar" data-chart="cardScore">
                 <input type="text" list="card-datalist" placeholder="Filtrer par carte...">
                 <span class="tags"></span>
@@ -327,14 +254,7 @@
         </div>
 
         <div class="chart-section">
-            <div class="chart-header">
-                <h2>Impact sur le score du joueur</h2>
-                <div class="sort-buttons" data-target="playerImpact">
-                    <span>Trier :</span>
-                    <button class="active" data-key="moyenne">Moyenne</button>
-                    <button data-key="mediane">Mediane</button>
-                </div>
-            </div>
+            <h2>Impact sur le score du joueur</h2>
             <div class="highlight-bar" data-chart="playerImpact">
                 <input type="text" list="card-datalist" placeholder="Filtrer par carte...">
                 <span class="tags"></span>
@@ -378,7 +298,6 @@
         playerData: null,
         cardData: null,
         charts: {},
-        sort: {cardScore: 'moyenne', playerImpact: 'moyenne'},
         hl: {cardScore: new Set(), playerImpact: new Set(), scatter: new Set(), spread: new Set()},
         activeCard: {cardScore: null, playerImpact: null, scatter: null, spread: null},
     };
@@ -429,20 +348,6 @@
             document.getElementById('error').style.display = 'block';
             console.error(e);
         }
-
-        document.querySelectorAll('.sort-buttons').forEach(group => {
-            group.addEventListener('click', e => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                const target = group.dataset.target;
-                const key = btn.dataset.key;
-                group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                state.sort[target] = key;
-                if (target === 'cardScore') renderCardScoreChart();
-                else if (target === 'playerImpact') renderPlayerImpactChart();
-            });
-        });
 
         document.getElementById('run-select').addEventListener('change', e => loadRun(e.target.value));
 
@@ -543,7 +448,6 @@
             label.textContent = strat;
             cell.appendChild(label);
             const wrap = document.createElement('div');
-            wrap.className = 'chart-wrap';
             const canvas = document.createElement('canvas');
             wrap.appendChild(canvas);
             cell.appendChild(wrap);
@@ -552,17 +456,12 @@
         });
     }
 
-    function hlColors(items, col, isHl, anyActive) {
-        return {
-            backgroundColor: items.map(i => anyActive && !isHl(i) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
-            borderColor: items.map(i => isHl(i) ? col.border : 'transparent'),
-            borderWidth: items.map(i => isHl(i) ? 2 : 0),
-        };
+    function toBoxPoint(s) {
+        return {min: s.premierQuartile, q1: s.premierQuartile, median: s.mediane, mean: s.moyenne, q3: s.troisiemeQuartile, max: s.troisiemeQuartile};
     }
 
     function renderCardScoreChart() {
         (state.charts.cardScore || []).forEach(c => c.destroy());
-        const key = state.sort.cardScore;
         const strategies = state.playerData.strategies || [];
         const hl = state.hl.cardScore;
         const ac = state.activeCard.cardScore;
@@ -570,21 +469,31 @@
         const isHl = c => hl.has(c.nomCarte) || c.nomCarte === ac;
 
         state.charts.cardScore = makeStrategyCharts('charts-card-score', strategies, (canvas, wrap, strat, si, col) => {
-            wrap.style.height = '1150px';
             const sorted = [...state.cardData].sort((a, b) => {
                 const psA = a.parStrategie.find(s => s.nomStrategie === strat);
                 const psB = b.parStrategie.find(s => s.nomStrategie === strat);
-                return (psA?.scoreCarte[key] ?? 0) - (psB?.scoreCarte[key] ?? 0);
+                return (psA?.scoreCarte.mediane ?? 0) - (psB?.scoreCarte.mediane ?? 0);
             });
+            wrap.style.height = `${Math.max(sorted.length * 22 + 40, 300)}px`;
             return new Chart(canvas, {
-                type: 'bar',
+                type: 'boxplot',
                 data: {
                     labels: sorted.map(c => c.nomCarte),
                     datasets: [{
                         label: strat,
-                        data: sorted.map(c => c.parStrategie.find(s => s.nomStrategie === strat)?.scoreCarte[key] ?? null),
-                        ...hlColors(sorted, col, isHl, anyActive),
-                        borderRadius: 2,
+                        data: sorted.map(c => {
+                            const ps = c.parStrategie.find(s => s.nomStrategie === strat);
+                            return ps ? toBoxPoint(ps.scoreCarte) : null;
+                        }),
+                        backgroundColor: sorted.map(c => anyActive && !isHl(c) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
+                        borderColor: col.border,
+                        borderWidth: 1,
+                        medianColor: 'rgba(30, 41, 59, 0.85)',
+                        meanStyle: 'triangle',
+                        meanBackgroundColor: col.border,
+                        meanBorderColor: col.border,
+                        itemRadius: 0,
+                        outlierRadius: 0,
                     }],
                 },
                 options: {
@@ -617,7 +526,6 @@
 
     function renderPlayerImpactChart() {
         (state.charts.playerImpact || []).forEach(c => c.destroy());
-        const key = state.sort.playerImpact;
         const strategies = state.playerData.strategies || [];
         const globalAvg = state.playerData.global.moyenne;
         const hl = state.hl.playerImpact;
@@ -626,21 +534,31 @@
         const isHl = c => hl.has(c.nomCarte) || c.nomCarte === ac;
 
         state.charts.playerImpact = makeStrategyCharts('charts-player-impact', strategies, (canvas, wrap, strat, si, col) => {
-            wrap.style.height = '1150px';
             const sorted = [...state.cardData].sort((a, b) => {
                 const psA = a.parStrategie.find(s => s.nomStrategie === strat);
                 const psB = b.parStrategie.find(s => s.nomStrategie === strat);
-                return (psA?.scoreJoueur[key] ?? 0) - (psB?.scoreJoueur[key] ?? 0);
+                return (psA?.scoreJoueur.mediane ?? 0) - (psB?.scoreJoueur.mediane ?? 0);
             });
+            wrap.style.height = `${Math.max(sorted.length * 22 + 40, 300)}px`;
             return new Chart(canvas, {
-                type: 'bar',
+                type: 'boxplot',
                 data: {
                     labels: sorted.map(c => c.nomCarte),
                     datasets: [{
                         label: strat,
-                        data: sorted.map(c => c.parStrategie.find(s => s.nomStrategie === strat)?.scoreJoueur[key] ?? null),
-                        ...hlColors(sorted, col, isHl, anyActive),
-                        borderRadius: 2,
+                        data: sorted.map(c => {
+                            const ps = c.parStrategie.find(s => s.nomStrategie === strat);
+                            return ps ? toBoxPoint(ps.scoreJoueur) : null;
+                        }),
+                        backgroundColor: sorted.map(c => anyActive && !isHl(c) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
+                        borderColor: col.border,
+                        borderWidth: 1,
+                        medianColor: 'rgba(30, 41, 59, 0.85)',
+                        meanStyle: 'triangle',
+                        meanBackgroundColor: col.border,
+                        meanBorderColor: col.border,
+                        itemRadius: 0,
+                        outlierRadius: 0,
                     }],
                 },
                 options: {
@@ -689,7 +607,9 @@
                 type: 'scatter',
                 data: {datasets: [{
                     label: strat, data,
-                    ...hlColors(data, col, isHl, anyActive),
+                    backgroundColor: data.map(d => anyActive && !isHl(d) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
+                    borderColor: data.map(d => isHl(d) ? col.border : 'transparent'),
+                    borderWidth: data.map(d => isHl(d) ? 2 : 0),
                     pointRadius: data.map(d => isHl(d) ? 8 : (anyActive ? 4 : 5)),
                     pointHoverRadius: 7,
                 }]},
@@ -732,7 +652,9 @@
                 type: 'scatter',
                 data: {datasets: [{
                     label: strat, data,
-                    ...hlColors(data, col, isHl, anyActive),
+                    backgroundColor: data.map(d => anyActive && !isHl(d) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
+                    borderColor: data.map(d => isHl(d) ? col.border : 'transparent'),
+                    borderWidth: data.map(d => isHl(d) ? 2 : 0),
                     pointRadius: data.map(d => isHl(d) ? 8 : (anyActive ? 4 : 5)),
                     pointHoverRadius: 7,
                 }]},
