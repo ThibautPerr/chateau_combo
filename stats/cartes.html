@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Château Combo — Scores cartes</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4/build/index.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -456,10 +455,6 @@
         });
     }
 
-    function toBoxPoint(s) {
-        return {min: s.premierQuartile, q1: s.premierQuartile, median: s.mediane, mean: s.moyenne, q3: s.troisiemeQuartile, max: s.troisiemeQuartile};
-    }
-
     function renderCardScoreChart() {
         (state.charts.cardScore || []).forEach(c => c.destroy());
         const strategies = state.playerData.strategies || [];
@@ -472,28 +467,22 @@
             const sorted = [...state.cardData].sort((a, b) => {
                 const psA = a.parStrategie.find(s => s.nomStrategie === strat);
                 const psB = b.parStrategie.find(s => s.nomStrategie === strat);
-                return (psA?.scoreCarte.mediane ?? 0) - (psB?.scoreCarte.mediane ?? 0);
+                return (psA?.scoreCarte.moyenne ?? 0) - (psB?.scoreCarte.moyenne ?? 0);
             });
             wrap.style.height = `${Math.max(sorted.length * 22 + 40, 300)}px`;
             return new Chart(canvas, {
-                type: 'boxplot',
+                type: 'bar',
                 data: {
                     labels: sorted.map(c => c.nomCarte),
                     datasets: [{
                         label: strat,
                         data: sorted.map(c => {
                             const ps = c.parStrategie.find(s => s.nomStrategie === strat);
-                            return ps ? toBoxPoint(ps.scoreCarte) : null;
+                            return ps ? ps.scoreCarte.moyenne : null;
                         }),
                         backgroundColor: sorted.map(c => anyActive && !isHl(c) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
                         borderColor: col.border,
                         borderWidth: 1,
-                        medianColor: 'rgba(30, 41, 59, 0.85)',
-                        meanStyle: 'triangle',
-                        meanBackgroundColor: col.border,
-                        meanBorderColor: col.border,
-                        itemRadius: 0,
-                        outlierRadius: 0,
                     }],
                 },
                 options: {
@@ -514,9 +503,7 @@
                         refLine: {},
                         tooltip: {callbacks: {label(ctx) {
                             const ps = sorted[ctx.dataIndex].parStrategie.find(s => s.nomStrategie === strat);
-                            if (!ps) return 'N/A';
-                            const s = ps.scoreCarte;
-                            return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                            return ps ? `moy: ${ps.scoreCarte.moyenne}` : 'N/A';
                         }}},
                     },
                 },
@@ -537,28 +524,22 @@
             const sorted = [...state.cardData].sort((a, b) => {
                 const psA = a.parStrategie.find(s => s.nomStrategie === strat);
                 const psB = b.parStrategie.find(s => s.nomStrategie === strat);
-                return (psA?.scoreJoueur.mediane ?? 0) - (psB?.scoreJoueur.mediane ?? 0);
+                return (psA?.scoreJoueur.moyenne ?? 0) - (psB?.scoreJoueur.moyenne ?? 0);
             });
             wrap.style.height = `${Math.max(sorted.length * 22 + 40, 300)}px`;
             return new Chart(canvas, {
-                type: 'boxplot',
+                type: 'bar',
                 data: {
                     labels: sorted.map(c => c.nomCarte),
                     datasets: [{
                         label: strat,
                         data: sorted.map(c => {
                             const ps = c.parStrategie.find(s => s.nomStrategie === strat);
-                            return ps ? toBoxPoint(ps.scoreJoueur) : null;
+                            return ps ? ps.scoreJoueur.moyenne : null;
                         }),
                         backgroundColor: sorted.map(c => anyActive && !isHl(c) ? col.bg.replace(/[\d.]+\)$/, '0.08)') : col.bg),
                         borderColor: col.border,
                         borderWidth: 1,
-                        medianColor: 'rgba(30, 41, 59, 0.85)',
-                        meanStyle: 'triangle',
-                        meanBackgroundColor: col.border,
-                        meanBorderColor: col.border,
-                        itemRadius: 0,
-                        outlierRadius: 0,
                     }],
                 },
                 options: {
@@ -579,9 +560,7 @@
                         refLine: {value: globalAvg, color: 'rgba(37, 99, 235, 0.7)', label: `Moy. ${globalAvg}`},
                         tooltip: {callbacks: {label(ctx) {
                             const ps = sorted[ctx.dataIndex].parStrategie.find(s => s.nomStrategie === strat);
-                            if (!ps) return 'N/A';
-                            const s = ps.scoreJoueur;
-                            return `moy: ${s.moyenne}, med: ${s.mediane}, Q1: ${s.premierQuartile}, Q3: ${s.troisiemeQuartile}`;
+                            return ps ? `moy: ${ps.scoreJoueur.moyenne}` : 'N/A';
                         }}},
                     },
                 },
