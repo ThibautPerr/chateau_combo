@@ -66,8 +66,8 @@ class JoueurRepository(
         }
     }
 
-    fun placeUneCarte(joueur: Joueur, carte: Carte, position: Position): Boolean =
-        tableauRepository.ajouteCarte(tableau = joueur.tableau, carte = carte, position = position)
+    fun placeUneCarte(joueur: Joueur, carte: Carte, position: Position, tour: Int = 0): Boolean =
+        tableauRepository.ajouteCarte(tableau = joueur.tableau, carte = carte, position = position, tour = tour)
 
     fun deplaceAGauche(joueur: Joueur) = tableauRepository.deplaceAGauche(joueur.tableau)
 

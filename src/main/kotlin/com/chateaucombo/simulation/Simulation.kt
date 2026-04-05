@@ -50,13 +50,14 @@ class Simulation(
         joueurs.forEachIndexed { index, joueur ->
             acc.scoresParJoueur[index].add(joueur.score)
             joueur.tableau.cartesPositionees.forEach { cartePositionee ->
-                accumuleDonneesCarte(joueur, joueurs, cartePositionee, joueur.strategie.nom, acc)
+                accumuleDonneesCarte(joueur, index, joueurs, cartePositionee, joueur.strategie.nom, acc)
             }
         }
     }
 
     private fun accumuleDonneesCarte(
         joueur: Joueur,
+        joueurIndex: Int,
         joueurs: List<Joueur>,
         cartePositionee: CartePositionee,
         strategieNom: String,
@@ -74,6 +75,9 @@ class Simulation(
         accumulerScoresParEffetScore(effetScoreType, carte, joueur.score, cardScore, acc)
         accumulerScoresParCarteParStrategie(nom, strategieNom, joueur.score, cardScore, acc)
         accumulerScoresParEffetParStrategie(effetTypes, effetScoreType, carte, strategieNom, joueur.score, cardScore, acc)
+        acc.scoresCarteParTourParJoueur[joueurIndex]
+            .getOrPut(cartePositionee.tour) { mutableListOf() }
+            .add(cardScore)
     }
 
     private fun nomStatistique(carte: Carte): String =
@@ -170,6 +174,9 @@ class Simulation(
                         premierQuartile = scores.percentile(25.0),
                         mediane = scores.percentile(50.0),
                         troisiemeQuartile = scores.percentile(75.0),
+                        scoreCarteParTour = (1..ReglesDuJeu.NOMBRE_DE_TOURS).map { tour ->
+                            acc.scoresCarteParTourParJoueur[index][tour]?.average()?.round2() ?: 0.0
+                        },
                     )
                 },
             ),
@@ -258,6 +265,7 @@ private fun nomsDesJoueurs(joueurs: List<Joueur>): List<String> {
 
 private class Accumulateurs(nbJoueurs: Int) {
     val scoresParJoueur: List<MutableList<Int>> = List(nbJoueurs) { mutableListOf() }
+    val scoresCarteParTourParJoueur: List<MutableMap<Int, MutableList<Int>>> = List(nbJoueurs) { mutableMapOf() }
     val scoresJoueurParCarte: MutableMap<String, MutableList<Int>> = mutableMapOf()
     val scoresCarteParCarte: MutableMap<String, MutableList<Int>> = mutableMapOf()
     val effetsParCarte: MutableMap<String, List<String>> = mutableMapOf()

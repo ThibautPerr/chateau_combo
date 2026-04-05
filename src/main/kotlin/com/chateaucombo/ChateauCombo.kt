@@ -36,7 +36,7 @@ class ChateauCombo(
                 joueur.deplaceSonTableau()
 
                 val currentDeck = decks.first { it.estLeDeckActuel }
-                val cartePositionee = joueur.placeUneCarte(currentDeck)
+                val cartePositionee = joueur.placeUneCarte(currentDeck, i)
                 cartePositionee.appliqueLesEffets(joueur, joueurs, decks)
                 currentDeck.remplitLesCartesDisponibles()
 
@@ -102,12 +102,12 @@ class ChateauCombo(
 
     private fun List<Deck>.prochainDeckActuel() = this.first { it.estLeDeckActuel.not() }
 
-    private fun Joueur.placeUneCarte(currentDeck: Deck): CartePositionee {
+    private fun Joueur.placeUneCarte(currentDeck: Deck, tour: Int): CartePositionee {
         val carte = this.choisitUneCarte(currentDeck)
         val position = this.choisitUnePosition()
-        this.placeUneCarte(carte, position)
+        this.placeUneCarte(carte, position, tour)
         logger.info { "Le joueur ${this.id} a placé la carte ${carte.nom} à la position ${position.name}" }
-        return CartePositionee(carte = carte, position = position)
+        return CartePositionee(carte = carte, position = position, tour = tour)
     }
 
     private fun Joueur.choisitUneCarte(deckChatelains: Deck) =
@@ -115,9 +115,9 @@ class ChateauCombo(
 
     private fun Joueur.choisitUnePosition() = joueurRepository.choisitUnePosition(this)
 
-    private fun Joueur.placeUneCarte(carte: Carte, position: Position) {
-        val cartePositionee = joueurRepository.placeUneCarte(this, carte, position)
-        if (!cartePositionee) error("Problème lors du placement de la carte $carte à la position $position pour le joueur ${this.id} avec le tableau ${this.tableau}")
+    private fun Joueur.placeUneCarte(carte: Carte, position: Position, tour: Int) {
+        val ok = joueurRepository.placeUneCarte(this, carte, position, tour)
+        if (!ok) error("Problème lors du placement de la carte $carte à la position $position pour le joueur ${this.id} avec le tableau ${this.tableau}")
     }
 
     private fun CartePositionee.appliqueLesEffets(joueur: Joueur, joueurs: List<Joueur>, decks: List<Deck>) {

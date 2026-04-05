@@ -21,6 +21,7 @@ data class StatistiquesSimulation(
         val premierQuartile: Double,
         val mediane: Double,
         val troisiemeQuartile: Double,
+        val scoreCarteParTour: List<Double>,
     )
 }
 

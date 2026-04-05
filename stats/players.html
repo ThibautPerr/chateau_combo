@@ -216,6 +216,13 @@
                 <canvas id="chart-players"></canvas>
             </div>
         </div>
+
+        <div class="chart-section">
+            <h2>Score moyen des cartes par tour</h2>
+            <div class="chart-wrap medium">
+                <canvas id="chart-score-par-tour"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -250,6 +257,13 @@
         }
     };
     Chart.register(refLinePlugin);
+
+    const STRATEGY_COLORS = [
+        {bg: 'rgba(37, 99, 235, 0.65)',  border: 'rgba(37, 99, 235, 1)'},
+        {bg: 'rgba(245, 158, 11, 0.65)', border: 'rgba(245, 158, 11, 1)'},
+        {bg: 'rgba(16, 185, 129, 0.65)', border: 'rgba(16, 185, 129, 1)'},
+        {bg: 'rgba(239, 68, 68, 0.65)',  border: 'rgba(239, 68, 68, 1)'},
+    ];
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -292,7 +306,9 @@
         document.getElementById('val-iqr').textContent = `${g.premierQuartile.toFixed(0)} — ${g.troisiemeQuartile.toFixed(0)}`;
 
         if (state.charts.players) state.charts.players.destroy();
+        if (state.charts.scoreParTour) state.charts.scoreParTour.destroy();
         renderPlayerChart();
+        renderScoreParTourChart();
     }
 
     function renderPlayerChart() {
@@ -315,6 +331,41 @@
                 responsive: true, maintainAspectRatio: false,
                 scales: {
                     y: {beginAtZero: false, grace: '5%', grid: {color: 'rgba(0,0,0,0.04)'}},
+                    x: {grid: {display: false}},
+                },
+                plugins: {
+                    legend: {position: 'bottom', labels: {boxWidth: 12, padding: 16, font: {size: 12}}},
+                    refLine: {},
+                },
+            },
+        });
+    }
+
+    function renderScoreParTourChart() {
+        const pd = state.playerData;
+        const labels = Array.from({length: 9}, (_, i) => `Tour ${i + 1}`);
+        state.charts.scoreParTour = new Chart(document.getElementById('chart-score-par-tour'), {
+            type: 'line',
+            data: {
+                labels,
+                datasets: pd.parJoueur.map((j, i) => {
+                    const col = STRATEGY_COLORS[i % STRATEGY_COLORS.length];
+                    return {
+                        label: j.nomStrategie,
+                        data: j.scoreCarteParTour,
+                        backgroundColor: col.bg,
+                        borderColor: col.border,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3,
+                        fill: false,
+                    };
+                }),
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: {beginAtZero: true, grace: '5%', grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Score moyen (points)', font: {size: 12}}},
                     x: {grid: {display: false}},
                 },
                 plugins: {

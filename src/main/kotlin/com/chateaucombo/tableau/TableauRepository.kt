@@ -3,9 +3,9 @@ package com.chateaucombo.tableau
 import com.chateaucombo.deck.carte.Carte
 
 class TableauRepository {
-    fun ajouteCarte(tableau: Tableau, carte: Carte, position: Position): Boolean =
+    fun ajouteCarte(tableau: Tableau, carte: Carte, position: Position, tour: Int = 0): Boolean =
         if (tableau.aucuneCarteDejaPositionnee(position)) {
-            tableau.cartesPositionees.add(CartePositionee(carte, position))
+            tableau.cartesPositionees.add(CartePositionee(carte, position, tour))
             true
         } else false
 

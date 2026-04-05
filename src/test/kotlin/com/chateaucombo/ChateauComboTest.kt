@@ -78,7 +78,7 @@ class ChateauComboTest {
             verify(exactly = 9) {
                 joueurRepository.choisitUneCarte(joueur, any())
                 joueurRepository.choisitUnePosition(joueur)
-                joueurRepository.placeUneCarte(joueur, any(), any())
+                joueurRepository.placeUneCarte(joueur, any(), any(), any())
             }
         }
     }
