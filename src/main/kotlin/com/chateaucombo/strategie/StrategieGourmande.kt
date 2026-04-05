@@ -30,7 +30,7 @@ class StrategieGourmande : Strategie {
         val meilleureAutreDeck = evaluerMeilleurCoupDeck(joueur, autreDeck, penaliteCle = 1)
 
         val changerDeck = meilleureAutreDeck != null &&
-            (meilleureActuelle == null || meilleureAutreDeck.score > meilleureActuelle.score)
+                (meilleureActuelle == null || meilleureAutreDeck.score > meilleureActuelle.score)
 
         val meilleur = if (changerDeck) meilleureAutreDeck else meilleureActuelle
         meilleureCartePrevu = meilleur?.carte

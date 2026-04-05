@@ -44,19 +44,40 @@ Kotlin + Maven board game simulator for **Château Combo** (a card placement gam
 com.chateaucombo/
 ├── ChateauCombo.kt        # Main game orchestrator (9-turn loop)
 ├── Main.kt                # Entry point – runs simulation, writes stats JSON + runs.json index
+├── ReglesDuJeu.kt         # Game rules constants
 ├── deck/
-│   ├── model/             # Carte, Deck, Blason, Chatelain, Villageois, CarteVerso
-│   └── repository/        # DeckRepository – load JSON, shuffle, draw cards
+│   ├── Deck.kt
+│   ├── DeckRepository.kt  # Load JSON, shuffle, draw cards
+│   └── carte/
+│       ├── Carte.kt       # Sealed class (Chatelain, Villageois, CarteVerso)
+│       ├── Blason.kt      # Enum: NOBLE, MILITAIRE, RELIGIEUX, ERUDIT, ARTISAN, PAYSAN
+│       ├── Chatelain.kt
+│       ├── Villageois.kt
+│       ├── CarteVerso.kt
+│       └── effet/
+│           ├── Effet.kt / EffetScore.kt / EffetPassif.kt  # Interfaces
+│           ├── EffetContext.kt / EffetScoreContext.kt      # Data classes
+│           ├── EffetSeparateur.kt / Effets.kt / BourseScore.kt / EffetScoreVide.kt
+│           ├── effetplacement/   # Effet implementations (fire on card placement)
+│           └── effetpoint/       # EffetScore implementations (end-of-game scoring)
 ├── joueur/
-│   ├── model/             # Joueur – player state (gold/or, keys/clé, tableau ref, score)
-│   └── repository/        # JoueurRepository – card selection, resource updates
+│   ├── Joueur.kt          # Player state: or, clé, tableau, score, strategie
+│   └── JoueurRepository.kt
 ├── tableau/
-│   ├── model/             # Tableau, Position (3x3 enum), PositionHorizontale, PositionVerticale, CartePositionee
-│   └── repository/        # TableauRepository – grid placement, adjacency
+│   ├── Tableau.kt
+│   ├── TableauRepository.kt
+│   ├── CartePositionee.kt
+│   ├── Position.kt            # 3×3 enum
+│   ├── PositionHorizontale.kt # GAUCHE, MILIEU, DROITE
+│   └── PositionVerticale.kt   # HAUT, MILIEU, BAS
 ├── score/
 │   └── ScoreRepository.kt # End-of-game scoring (fills bourses, score effects, keys)
-├── effet/
-│   └── model/             # Effet interface, EffetContext, EffetScore, EffetPassif, concrete impls
+├── strategie/
+│   ├── Strategie.kt           # Interface
+│   ├── ActionCle.kt           # Enum: ECHANGER, RAFRAICHIR
+│   ├── DirectionDeplacement.kt
+│   ├── StrategieAleatoire.kt
+│   └── StrategieGourmande.kt
 └── simulation/
     ├── Simulation.kt              # Runs N games, aggregates per-player, per-card, and per-effect stats
     └── StatistiquesSimulation.kt  # Data classes for stats output
@@ -97,17 +118,17 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 | `AjouteCleParVillageois` | _(none)_ |
 | `AjouteCleParCarteAvecNbBlason` | `nbBlason: Int` |
 | `AjouteCleParCarteBourse` | _(none)_ — 1 clé per `BourseScore` card already on the board |
-| `AjouteClePourChaqueBlason` | `blason: String`, `cleParBlason: Int` |
+| `AjouteClePourChaqueBlason` | `blason: Blason` — gains 1 clé per occurrence of `blason` across all cards on the board |
 | `AjouteClePourTousLesJoueurs` | `cle: Int` |
 | `AjouteClePourTousLesAdversaires` | `cle: Int` |
 | `AjouteOrParChatelain` | _(none)_ |
 | `AjouteOrParVillageois` | _(none)_ |
 | `AjouteOrParBlasonDistinct` | _(none)_ |
 | `AjouteOrParBlasonDansTableauVoisin` | `blason: Blason` |
-| `AjouteOrParCarteAvecLeCout` | `orParCarte: Int`, `cout: String` |
+| `AjouteOrParCarteAvecLeCout` | `orParCarte: Int`, `cout: Int` |
 | `AjouteOrParCartePositionee` | _(none)_ |
 | `AjouteOrParEmplacementVide` | _(none)_ |
-| `AjouteOrPourChaqueBlason` | `orParBlason: Int`, `blason: String` |
+| `AjouteOrPourChaqueBlason` | `orParBlason: Int`, `blason: Blason` |
 | `AjouteOrPourTousLesAdversaires` | `or: Int` |
 | `AjouteOrEnDefaussantUnVillageois` | _(none)_ |
 | `AjouteOrEnDefaussantUnChatelain` | _(none)_ |
@@ -192,7 +213,9 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 
 ```
 stats/
-├── index.html                      # Chart.js dashboard (single-page, no build step)
+├── index.html                      # Player scores dashboard
+├── cartes.html                     # Card scores dashboard
+├── effets.html                     # Effect scores dashboard
 ├── runs.json                       # Index of available runs (auto-updated by Main.kt)
 └── 2026-03-31_23:30/               # One directory per simulation run
     ├── player_scores.json           # Global + per-player stats (avg, Q1, median, Q3)
@@ -201,14 +224,10 @@ stats/
     └── score_effect_scores.json     # Stats grouped by end-game scoring effect type
 ```
 
-**Dashboard** (`stats/index.html`): static HTML + Chart.js (CDN), served locally. Features:
-- Run selector dropdown (reads `runs.json`)
-- Summary cards (games, players, avg/median/IQR)
-- Player balance chart (grouped bars: Q1/median/avg/Q3)
-- Card score ranking (horizontal bars, sortable by avg/median/Q3, detailed tooltips)
-- Player score impact (horizontal bars, green/red vs global average, reference line)
-- Scatter plots (card score vs player score, IQR spread)
-- Effect charts: on-play effects and score effects (toggleable between player score / card score metric)
+**Dashboard** (3 static HTML pages + Chart.js CDN, no build step):
+- `index.html` — run selector, summary cards (games/players/avg/median/IQR), player balance chart (grouped bars Q1/median/avg/Q3 per strategy)
+- `cartes.html` — card score ranking (horizontal bars, sortable), player score impact vs global average, scatter plots (card score vs player score, IQR spread)
+- `effets.html` — on-play effect stats and end-game score effect stats, toggleable between player score / card score metric
 
 To view: `cd stats && python3 -m http.server 8080`, then open `http://localhost:8080`.
 
