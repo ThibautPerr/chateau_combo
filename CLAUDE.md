@@ -213,7 +213,7 @@ Card definitions live in `src/main/resources/cartes/` as JSON files (one file pe
 
 ```
 stats/
-├── index.html                      # Player scores dashboard
+├── players.html                      # Player scores dashboard
 ├── cartes.html                     # Card scores dashboard
 ├── effets.html                     # Effect scores dashboard
 ├── runs.json                       # Index of available runs (auto-updated by Main.kt)
@@ -225,7 +225,7 @@ stats/
 ```
 
 **Dashboard** (3 static HTML pages + Chart.js CDN, no build step):
-- `index.html` — run selector, summary cards (games/players/avg/median/IQR), player balance chart (grouped bars Q1/median/avg/Q3 per strategy)
+- `players.html` — run selector, summary cards (games/players/avg/median/IQR), player balance chart (grouped bars Q1/median/avg/Q3 per strategy)
 - `cartes.html` — card score ranking (horizontal bars, sortable), player score impact vs global average, scatter plots (card score vs player score, IQR spread)
 - `effets.html` — on-play effect stats and end-game score effect stats, toggleable between player score / card score metric
 
