@@ -3,6 +3,7 @@ package com.chateaucombo
 import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.strategie.StrategieAleatoire
 import com.chateaucombo.strategie.StrategieGourmande
+import com.chateaucombo.strategie.StrategiePrevoyante
 import com.chateaucombo.simulation.ResultatSimulation
 import com.chateaucombo.simulation.Simulation
 import tools.jackson.module.kotlin.jacksonMapperBuilder
@@ -17,7 +18,7 @@ fun main(args: Array<String>) {
         Joueur(id = 0, strategie = StrategieAleatoire()),
         Joueur(id = 1, strategie = StrategieAleatoire()),
         Joueur(id = 2, strategie = StrategieGourmande()),
-        Joueur(id = 3, strategie = StrategieGourmande()),
+        Joueur(id = 3, strategie = StrategiePrevoyante()),
     )
     val resultat = Simulation(joueurs).run(nbParties)
     val runDir = File("stats", timestamp()).also { it.mkdirs() }
