@@ -3,11 +3,14 @@ package com.chateaucombo.joueur.strategie
 import com.chateaucombo.deck.carte.Blason
 import com.chateaucombo.deck.carte.Carte
 import com.chateaucombo.deck.carte.CarteVerso
+import com.chateaucombo.deck.carte.Chatelain
 import com.chateaucombo.deck.Deck
 import com.chateaucombo.deck.carte.Villageois
+import com.chateaucombo.deck.carte.effet.BourseScore
 import com.chateaucombo.deck.carte.effet.EffetScoreVide
 import com.chateaucombo.deck.carte.effet.Effets
 import com.chateaucombo.deck.carte.effet.effetpoint.AjoutePoints
+import com.chateaucombo.deck.carte.effet.effetpoint.PointsParVillageois
 import com.chateaucombo.deck.carte.effet.effetpoint.PointsSiCoin
 import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.strategie.ActionCle
@@ -43,6 +46,23 @@ class StrategieGourmandeTest {
     private fun carteAvecPointsSiCoin(nom: String, points: Int): Carte = Villageois(
         nom = nom, cout = 0, blasons = listOf(Blason.PAYSAN),
         effets = Effets(), effetScore = PointsSiCoin(points)
+    )
+
+    private fun carteBourse(nom: String, taille: Int): Carte =
+        Villageois(
+            nom = nom, cout = 0, blasons = listOf(Blason.PAYSAN),
+            effets = Effets(), effetScore = EffetScoreVide,
+            bourse = BourseScore(taille)
+        )
+
+    private fun carteAvecPointsParVillageois(nom: String, points: Int): Carte = Villageois(
+        nom = nom, cout = 0, blasons = listOf(Blason.PAYSAN),
+        effets = Effets(), effetScore = PointsParVillageois(points)
+    )
+
+    private fun chatelainAvecPoints(nom: String, points: Int): Carte = Chatelain(
+        nom = nom, cout = 0, blasons = listOf(Blason.NOBLE),
+        effets = Effets(), effetScore = AjoutePoints(points)
     )
 
     private fun deckActuel(cartes: List<Carte>) = Deck(
@@ -272,6 +292,49 @@ class StrategieGourmandeTest {
             val deplacement = strategie.choisitUnDeplacement(Joueur(id = 1))
 
             assertThat(deplacement).isEqualTo(DirectionDeplacement.AUCUN)
+        }
+    }
+
+    @Nested
+    inner class EvaluationMarginale {
+
+        @Test
+        fun `doit preferer une carte bourse a une carte avec moins de points fixes`() {
+            // Bourse taille=5 => valeur theorique 5*2=10 pts > AjoutePoints(3)
+            val joueur = Joueur(id = 1)
+            val carteBourse = carteBourse("Bourse", taille = 5)
+            val carteMoinsBonne = carteAvecPoints("Moins bonne", 3)
+            val decks = listOf(
+                deckActuel(listOf(carteBourse, carteMoinsBonne)),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val carteChoisie = strategie.choisitUneCarte(listOf(carteBourse, carteMoinsBonne), emptyList())
+
+            assertThat(carteChoisie).isEqualTo(carteBourse)
+        }
+
+        @Test
+        fun `doit compter la synergie sur les cartes existantes dans l'evaluation`() {
+            // Tableau avec PointsParVillageois(3) : ajouter un villageois synergique (score propre=0)
+            // rapporte +3 (synergy) alors qu'un Chatelain AjoutePoints(2) ne rapporte que +2 sans synergy
+            val carteExistante = carteAvecPointsParVillageois("Synergy", 3)
+            val tableau = Tableau(cartesPositionees = mutableListOf(
+                CartePositionee(carteExistante, MILIEUMILIEU)
+            ))
+            val joueur = Joueur(id = 1, tableau = tableau)
+            val carteSynergique = carteSansPoints("Villageois synergique")       // Villageois : +3 synergy
+            val carteMoinsBonne = chatelainAvecPoints("Chatelain", 2)            // Chatelain : +2 fixe, pas de synergy
+            val decks = listOf(
+                deckActuel(listOf(carteSynergique, carteMoinsBonne)),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val carteChoisie = strategie.choisitUneCarte(listOf(carteSynergique, carteMoinsBonne), emptyList())
+
+            assertThat(carteChoisie).isEqualTo(carteSynergique)
         }
     }
 }

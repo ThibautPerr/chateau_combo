@@ -38,16 +38,20 @@ class StrategiePrevoyante : Strategie {
         return if (changerDeck) ActionCle.CHANGE_DECK else ActionCle.RIEN
     }
 
-    private fun evaluerMeilleurCoupToutesDirections(joueur: Joueur, deck: Deck, penaliteCle: Int): Pair<CoupEvalue?, DirectionDeplacement> =
-        DirectionDeplacement.entries
+    // scoreOriginal est calculé une fois sur le tableau avant déplacement et sert de référence commune
+    // pour toutes les directions, capturant ainsi le bénéfice du déplacement sur les cartes existantes
+    private fun evaluerMeilleurCoupToutesDirections(joueur: Joueur, deck: Deck, penaliteCle: Int): Pair<CoupEvalue?, DirectionDeplacement> {
+        val scoreOriginal = scoreTotalTheorique(joueur)
+        return DirectionDeplacement.entries
             .mapNotNull { direction ->
                 val tableauDeplace = simulerDeplacement(joueur.tableau, direction) ?: return@mapNotNull null
                 val joueurDeplace = joueur.copy(tableau = tableauDeplace)
-                val meilleur = evaluerMeilleurCoupDeck(joueurDeplace, deck, penaliteCle)
+                val meilleur = evaluerMeilleurCoupDeck(joueurDeplace, deck, penaliteCle, scoreOriginal)
                 meilleur?.let { Pair(it, direction) }
             }
             .maxByOrNull { (coup, _) -> coup.score }
             ?: Pair(null, DirectionDeplacement.AUCUN)
+    }
 
     private fun simulerDeplacement(tableau: Tableau, direction: DirectionDeplacement): Tableau? =
         when (direction) {
@@ -66,14 +70,14 @@ class StrategiePrevoyante : Strategie {
             else null
         }
 
-    private fun evaluerMeilleurCoupDeck(joueur: Joueur, deck: Deck, penaliteCle: Int): CoupEvalue? {
+    private fun evaluerMeilleurCoupDeck(joueur: Joueur, deck: Deck, penaliteCle: Int, scoreBase: Int): CoupEvalue? {
         val positions = positionsAutorisees(joueur)
         val reductionVillageois = joueur.reductionCoutVillageois()
         val reductionChatelain = joueur.reductionCoutChatelain()
         val orDisponible = orDisponiblePourAchat(joueur)
         return deck.cartesDisponibles
             .filter { orDisponible >= it.coutEffectif(reductionVillageois, reductionChatelain) }
-            .flatMap { carte -> positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle) } }
+            .flatMap { carte -> positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle, scoreBase) } }
             .maxByOrNull { it.score }
     }
 
@@ -86,12 +90,13 @@ class StrategiePrevoyante : Strategie {
                 .filter { pos -> cartesPositionees.none { it.position == pos } }
         }
 
-    // Or réservé pour remplir les bourses déjà posées
+    // Reserve au plus la moitié de l'or courant pour remplir les bourses déjà posées
     private fun orDisponiblePourAchat(joueur: Joueur): Int {
-        val orAReserver = joueur.tableau.cartesPositionees
+        val capaciteRestanteBourses = joueur.tableau.cartesPositionees
             .mapNotNull { it.carte.bourse }
             .sumOf { bourse -> bourse.taille - bourse.orDepose }
-        return maxOf(0, joueur.or - orAReserver)
+        val reserve = minOf(capaciteRestanteBourses, joueur.or / 2)
+        return joueur.or - reserve
     }
 
     private fun Joueur.reductionCoutVillageois(): Int =
@@ -113,29 +118,30 @@ class StrategiePrevoyante : Strategie {
             else -> cout
         }
 
-    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int): CoupEvalue {
+    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int, scoreBase: Int): CoupEvalue {
         val cartePositionee = CartePositionee(carte, pos)
         val tableauSimule = Tableau(
             cartesPositionees = (joueur.tableau.cartesPositionees + cartePositionee).toMutableList()
         )
         val joueurSimule = joueur.copy(tableau = tableauSimule)
-        val scoreNouvellesCarte = scoreTheorique(joueurSimule, cartePositionee)
-        // Gain marginal pour les PointsParOrDepose existants si la nouvelle carte est une bourse
-        val gainPourPointsParOrDepose = carte.bourse?.let { bourse ->
-            joueur.tableau.cartesPositionees.count { it.carte.effetScore is PointsParOrDepose } * bourse.taille
-        } ?: 0
-        return CoupEvalue(carte, pos, scoreNouvellesCarte + gainPourPointsParOrDepose - penaliteCle)
+        val gain = scoreTotalTheorique(joueurSimule) - scoreBase
+        return CoupEvalue(carte, pos, gain - penaliteCle)
     }
 
-    // Évalue le score théorique d'une carte : pour PointsParOrDepose, suppose les bourses remplies à leur capacité maximale
-    private fun scoreTheorique(joueurSimule: Joueur, cartePositionee: CartePositionee): Int {
-        val context = EffetScoreContext(joueurSimule, listOf(joueurSimule), cartePositionee)
-        return when (cartePositionee.carte.effetScore) {
-            is PointsParOrDepose -> joueurSimule.tableau.cartesPositionees
+    // Score théorique total : effets de score (PointsParOrDepose supposé rempli) + valeur maximale des bourses (taille * 2)
+    private fun scoreTotalTheorique(joueur: Joueur): Int =
+        joueur.tableau.cartesPositionees.sumOf { cp -> scoreTheorique(joueur, cp) }
+
+    private fun scoreTheorique(joueur: Joueur, cartePositionee: CartePositionee): Int {
+        val context = EffetScoreContext(joueur, listOf(joueur), cartePositionee)
+        val effectScore = when (cartePositionee.carte.effetScore) {
+            is PointsParOrDepose -> joueur.tableau.cartesPositionees
                 .mapNotNull { it.carte.bourse }
                 .sumOf { it.taille }
             else -> cartePositionee.carte.effetScore.score(context)
         }
+        val bourseScore = cartePositionee.carte.bourse?.taille?.times(2) ?: 0
+        return effectScore + bourseScore
     }
 
     private fun doitChangerDeck(meilleureActuelle: CoupEvalue?, meilleureAutreDeck: CoupEvalue?): Boolean =
@@ -156,15 +162,13 @@ class StrategiePrevoyante : Strategie {
         return direction
     }
 
-    // Évalue la meilleure direction sans tenir compte des nouvelles cartes (utilisé quand cle == 0)
+    // Évalue la meilleure direction sans nouvelles cartes (utilisé quand cle == 0)
     private fun evaluerMeilleurDeplacementActuel(joueur: Joueur): DirectionDeplacement =
         DirectionDeplacement.entries
             .mapNotNull { direction ->
                 val tableauDeplace = simulerDeplacement(joueur.tableau, direction) ?: return@mapNotNull null
                 val joueurDeplace = joueur.copy(tableau = tableauDeplace)
-                val scoreTotal = joueurDeplace.tableau.cartesPositionees
-                    .sumOf { cp -> scoreTheorique(joueurDeplace, cp) }
-                Pair(direction, scoreTotal)
+                Pair(direction, scoreTotalTheorique(joueurDeplace))
             }
             .maxByOrNull { (_, score) -> score }
             ?.first

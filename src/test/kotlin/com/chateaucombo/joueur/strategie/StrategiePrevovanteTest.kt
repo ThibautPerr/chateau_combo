@@ -130,13 +130,13 @@ class StrategiePrevovanteTest {
         inner class ReservationOrBourse {
 
             @Test
-            fun `doit considerer une carte inabordable si l'or est entierement reserve pour les bourses`() {
-                // or=1, bourse taille=1 (orDepose=0) => orAReserver=1, orDisponible=0
-                // la carte cout=1 devient inabordable malgre or==cout
-                val bourse = carteBourse("Bourse", taille = 1)
+            fun `doit considerer une carte inabordable si l'or disponible apres reserve est insuffisant`() {
+                // or=6, bourse taille=6 (orDepose=0) => reserve=min(6, 3)=3, orDisponible=3
+                // carte cout=4 reste inabordable : 4 > 3
+                val bourse = carteBourse("Bourse", taille = 6)
                 val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(bourse, MILIEUMILIEU)))
-                val joueur = Joueur(id = 1, or = 1, tableau = tableau)
-                val carteChere = carteAvecPoints("Trop chere apres reserve", points = 10, cout = 1)
+                val joueur = Joueur(id = 1, or = 6, tableau = tableau)
+                val carteChere = carteAvecPoints("Trop chere apres reserve", points = 10, cout = 4)
                 val decks = listOf(
                     deckActuel(listOf(carteChere)),
                     autreDeck(listOf(carteChere))

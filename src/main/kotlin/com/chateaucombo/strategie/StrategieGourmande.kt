@@ -39,9 +39,10 @@ class StrategieGourmande : Strategie {
         val positions = positionsAutorisees(joueur)
         val reductionVillageois = joueur.reductionCoutVillageois()
         val reductionChatelain = joueur.reductionCoutChatelain()
+        val scoreBase = scoreTotalTheorique(joueur)
         return deck.cartesDisponibles
             .filter { joueur.or >= it.coutEffectif(reductionVillageois, reductionChatelain) }
-            .flatMap { carte -> positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle) } }
+            .flatMap { carte -> positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle, scoreBase) } }
             .maxByOrNull { it.score }
     }
 
@@ -73,15 +74,22 @@ class StrategieGourmande : Strategie {
             else -> cout
         }
 
-    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int): CoupEvalue {
+    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int, scoreBase: Int): CoupEvalue {
         val cartePositionee = CartePositionee(carte, pos)
         val tableauSimule = Tableau(
             cartesPositionees = (joueur.tableau.cartesPositionees + cartePositionee).toMutableList()
         )
         val joueurSimule = joueur.copy(tableau = tableauSimule)
-        val context = EffetScoreContext(joueurSimule, listOf(joueurSimule), cartePositionee)
-        return CoupEvalue(carte, pos, carte.effetScore.score(context) - penaliteCle)
+        val gain = scoreTotalTheorique(joueurSimule) - scoreBase
+        return CoupEvalue(carte, pos, gain - penaliteCle)
     }
+
+    // Score théorique total du tableau : effets de score + valeur maximale des bourses (taille * 2)
+    private fun scoreTotalTheorique(joueur: Joueur): Int =
+        joueur.tableau.cartesPositionees.sumOf { cp ->
+            val context = EffetScoreContext(joueur, listOf(joueur), cp)
+            cp.carte.effetScore.score(context) + (cp.carte.bourse?.taille?.times(2) ?: 0)
+        }
 
     private fun doitChangerDeck(meilleureActuelle: CoupEvalue?, meilleureAutreDeck: CoupEvalue?): Boolean =
         meilleureAutreDeck != null &&
