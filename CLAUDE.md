@@ -31,7 +31,7 @@ cd stats && python3 -m http.server 8080
 
 - Domain code (variable names, method names, class names, comments) is written in **French**.
 - Git commit messages are written in **English**.
-- Every new feature must be covered by tests. Effect tests live in `src/test/kotlin/com/chateaucombo/effet/EffetTest.kt`, one `@Nested` inner class per effect type. Passive effects that modify purchase behaviour are tested in `src/test/kotlin/com/chateaucombo/joueur/JoueurRepositoryTest.kt`.
+- Every new feature must be covered by tests. Effect tests live in `src/test/kotlin/com/chateaucombo/deck/carte/effet/`, one file per effect type (e.g. `AjouteCleEffetTest.kt`). Passive effects that modify purchase behaviour are tested in `src/test/kotlin/com/chateaucombo/joueur/JoueurRepositoryTest.kt`. Strategy tests live in `src/test/kotlin/com/chateaucombo/joueur/strategie/`, one file per strategy.
 - **Always run the full test suite before committing.** Use `JAVA_HOME=/home/thibaut-perrouin/.jdks/ms-25.0.2 /home/thibaut-perrouin/.m2/wrapper/dists/apache-maven-3.9.14-bin/1cb7fhup6b5n3bed6kckbrnspv/apache-maven-3.9.14/bin/mvn test` and fix all failures before staging a commit.
 
 ## Architecture
@@ -66,7 +66,7 @@ com.chateaucombo/
 ├── tableau/
 │   ├── Tableau.kt
 │   ├── TableauRepository.kt
-│   ├── CartePositionee.kt
+│   ├── CartePositionee.kt     # carte + position + tour: Int (turn number, default 0)
 │   ├── Position.kt            # 3×3 enum
 │   ├── PositionHorizontale.kt # GAUCHE, MILIEU, DROITE
 │   └── PositionVerticale.kt   # HAUT, MILIEU, BAS
@@ -74,10 +74,11 @@ com.chateaucombo/
 │   └── ScoreRepository.kt # End-of-game scoring (fills bourses, score effects, keys)
 ├── strategie/
 │   ├── Strategie.kt           # Interface
-│   ├── ActionCle.kt           # Enum: ECHANGER, RAFRAICHIR
+│   ├── ActionCle.kt           # Enum: RIEN, RAFRAICHIT, CHANGE_DECK
 │   ├── DirectionDeplacement.kt
 │   ├── StrategieAleatoire.kt
-│   └── StrategieGourmande.kt
+│   ├── StrategieGourmande.kt  # Greedy: marginal board score evaluation
+│   └── StrategiePrevoyante.kt # Greedy + foresighted: displacement optimisation, bourse gold reservation
 └── simulation/
     ├── Simulation.kt              # Runs N games, aggregates per-player, per-card, and per-effect stats
     └── StatistiquesSimulation.kt  # Data classes for stats output
@@ -218,14 +219,14 @@ stats/
 ├── effets.html                     # Effect scores dashboard
 ├── runs.json                       # Index of available runs (auto-updated by Main.kt)
 └── 2026-03-31_23:30/               # One directory per simulation run
-    ├── player_scores.json           # Global + per-player stats (avg, Q1, median, Q3)
+    ├── player_scores.json           # Global + per-player stats (avg, Q1, median, Q3, scoreCarteParTour: List<Double> × 9 turns)
     ├── card_scores.json             # Per-card stats (player score + card score contribution)
     ├── effect_scores.json           # Stats grouped by on-play effect type
     └── score_effect_scores.json     # Stats grouped by end-game scoring effect type
 ```
 
 **Dashboard** (3 static HTML pages + Chart.js CDN, no build step):
-- `players.html` — run selector, summary cards (games/players/avg/median/IQR), player balance chart (grouped bars Q1/median/avg/Q3 per strategy)
+- `players.html` — run selector, summary cards (games/players/avg/median/IQR), player balance chart (grouped bars Q1/median/avg/Q3 per strategy), average card score per turn line chart
 - `cartes.html` — card score ranking (horizontal bars, sortable), player score impact vs global average, scatter plots (card score vs player score, IQR spread)
 - `effets.html` — on-play effect stats and end-game score effect stats, toggleable between player score / card score metric
 
