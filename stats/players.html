@@ -259,10 +259,10 @@
     Chart.register(refLinePlugin);
 
     const STRATEGY_COLORS = [
-        {bg: 'rgba(37, 99, 235, 0.65)',  border: 'rgba(37, 99, 235, 1)'},
+        {bg: 'rgba(37, 99, 235, 0.65)', border: 'rgba(37, 99, 235, 1)'},
         {bg: 'rgba(245, 158, 11, 0.65)', border: 'rgba(245, 158, 11, 1)'},
         {bg: 'rgba(16, 185, 129, 0.65)', border: 'rgba(16, 185, 129, 1)'},
-        {bg: 'rgba(239, 68, 68, 0.65)',  border: 'rgba(239, 68, 68, 1)'},
+        {bg: 'rgba(239, 68, 68, 0.65)', border: 'rgba(239, 68, 68, 1)'},
     ];
 
     document.addEventListener('DOMContentLoaded', init);
@@ -365,7 +365,12 @@
             options: {
                 responsive: true, maintainAspectRatio: false,
                 scales: {
-                    y: {beginAtZero: true, grace: '5%', grid: {color: 'rgba(0,0,0,0.04)'}, title: {display: true, text: 'Score moyen (points)', font: {size: 12}}},
+                    y: {
+                        beginAtZero: true,
+                        grace: '5%',
+                        grid: {color: 'rgba(0,0,0,0.04)'},
+                        title: {display: true, text: 'Score moyen (points)', font: {size: 12}}
+                    },
                     x: {grid: {display: false}},
                 },
                 plugins: {
