@@ -42,7 +42,10 @@ class StrategieGourmande : Strategie {
         val scoreBase = scoreTotalTheorique(joueur)
         return deck.cartesDisponibles
             .filter { joueur.or >= it.coutEffectif(reductionVillageois, reductionChatelain) }
-            .flatMap { carte -> positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle, scoreBase) } }
+            .flatMap { carte ->
+                val coutEff = carte.coutEffectif(reductionVillageois, reductionChatelain)
+                positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle, scoreBase, coutEff) }
+            }
             .maxByOrNull { it.score }
     }
 
@@ -74,14 +77,16 @@ class StrategieGourmande : Strategie {
             else -> cout
         }
 
-    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int, scoreBase: Int): CoupEvalue {
+    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int, scoreBase: Int, coutEffectif: Int): CoupEvalue {
         val cartePositionee = CartePositionee(carte, pos)
         val tableauSimule = Tableau(
             cartesPositionees = (joueur.tableau.cartesPositionees + cartePositionee).toMutableList()
         )
         val joueurSimule = joueur.copy(tableau = tableauSimule)
-        val gain = scoreTotalTheorique(joueurSimule) - scoreBase
-        return CoupEvalue(carte, pos, gain - penaliteCle)
+        val gainTheorique = scoreTotalTheorique(joueurSimule) - scoreBase
+        val valeurEffetsPlacement = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueurSimule)
+        val coutOpportunite = EvaluateurHeuristique.coutOpportuniteOr(joueur, coutEffectif)
+        return CoupEvalue(carte, pos, gainTheorique + valeurEffetsPlacement - coutOpportunite - penaliteCle)
     }
 
     // Score théorique total du tableau : effets de score + valeur maximale des bourses (taille * 2)

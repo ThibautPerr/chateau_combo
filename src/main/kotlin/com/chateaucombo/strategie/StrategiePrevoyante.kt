@@ -38,19 +38,34 @@ class StrategiePrevoyante : Strategie {
         return if (changerDeck) ActionCle.CHANGE_DECK else ActionCle.RIEN
     }
 
+    // Seuil minimum pour qu'un déplacement soit choisi : l'évaluation marginale voit le gain
+    // immédiat mais pas la perte de flexibilité future (positions adjacentes disponibles).
+    private val seuilDeplacement = 3
+
     // scoreOriginal est calculé une fois sur le tableau avant déplacement et sert de référence commune
     // pour toutes les directions, capturant ainsi le bénéfice du déplacement sur les cartes existantes
     private fun evaluerMeilleurCoupToutesDirections(joueur: Joueur, deck: Deck, penaliteCle: Int): Pair<CoupEvalue?, DirectionDeplacement> {
         val scoreOriginal = scoreTotalTheorique(joueur)
-        return DirectionDeplacement.entries
+        val coupsParDirection = DirectionDeplacement.entries
             .mapNotNull { direction ->
                 val tableauDeplace = simulerDeplacement(joueur.tableau, direction) ?: return@mapNotNull null
                 val joueurDeplace = joueur.copy(tableau = tableauDeplace)
                 val meilleur = evaluerMeilleurCoupDeck(joueurDeplace, deck, penaliteCle, scoreOriginal)
                 meilleur?.let { Pair(it, direction) }
             }
-            .maxByOrNull { (coup, _) -> coup.score }
-            ?: Pair(null, DirectionDeplacement.AUCUN)
+        val sansDeplacement = coupsParDirection.firstOrNull { it.second == DirectionDeplacement.AUCUN }
+        val meilleurAvecDeplacement = coupsParDirection
+            .filter { it.second != DirectionDeplacement.AUCUN }
+            .maxByOrNull { it.first.score }
+
+        // Préfère ne pas se déplacer à moins que le gain dépasse seuilDeplacement
+        return when {
+            meilleurAvecDeplacement == null && sansDeplacement == null -> Pair(null, DirectionDeplacement.AUCUN)
+            meilleurAvecDeplacement == null -> sansDeplacement!!
+            sansDeplacement == null -> meilleurAvecDeplacement
+            meilleurAvecDeplacement.first.score >= sansDeplacement.first.score + seuilDeplacement -> meilleurAvecDeplacement
+            else -> sansDeplacement
+        }
     }
 
     private fun simulerDeplacement(tableau: Tableau, direction: DirectionDeplacement): Tableau? =
@@ -74,10 +89,12 @@ class StrategiePrevoyante : Strategie {
         val positions = positionsAutorisees(joueur)
         val reductionVillageois = joueur.reductionCoutVillageois()
         val reductionChatelain = joueur.reductionCoutChatelain()
-        val orDisponible = orDisponiblePourAchat(joueur)
         return deck.cartesDisponibles
-            .filter { orDisponible >= it.coutEffectif(reductionVillageois, reductionChatelain) }
-            .flatMap { carte -> positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle, scoreBase) } }
+            .filter { joueur.or >= it.coutEffectif(reductionVillageois, reductionChatelain) }
+            .flatMap { carte ->
+                val coutEff = carte.coutEffectif(reductionVillageois, reductionChatelain)
+                positions.map { pos -> evaluerCoup(joueur, carte, pos, penaliteCle, scoreBase, coutEff) }
+            }
             .maxByOrNull { it.score }
     }
 
@@ -89,15 +106,6 @@ class StrategiePrevoyante : Strategie {
                 .distinct()
                 .filter { pos -> cartesPositionees.none { it.position == pos } }
         }
-
-    // Reserve au plus la moitié de l'or courant pour remplir les bourses déjà posées
-    private fun orDisponiblePourAchat(joueur: Joueur): Int {
-        val capaciteRestanteBourses = joueur.tableau.cartesPositionees
-            .mapNotNull { it.carte.bourse }
-            .sumOf { bourse -> bourse.taille - bourse.orDepose }
-        val reserve = minOf(capaciteRestanteBourses, joueur.or / 2)
-        return joueur.or - reserve
-    }
 
     private fun Joueur.reductionCoutVillageois(): Int =
         tableau.cartesPositionees
@@ -118,14 +126,16 @@ class StrategiePrevoyante : Strategie {
             else -> cout
         }
 
-    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int, scoreBase: Int): CoupEvalue {
+    private fun evaluerCoup(joueur: Joueur, carte: Carte, pos: Position, penaliteCle: Int, scoreBase: Int, coutEffectif: Int): CoupEvalue {
         val cartePositionee = CartePositionee(carte, pos)
         val tableauSimule = Tableau(
             cartesPositionees = (joueur.tableau.cartesPositionees + cartePositionee).toMutableList()
         )
         val joueurSimule = joueur.copy(tableau = tableauSimule)
-        val gain = scoreTotalTheorique(joueurSimule) - scoreBase
-        return CoupEvalue(carte, pos, gain - penaliteCle)
+        val gainTheorique = scoreTotalTheorique(joueurSimule) - scoreBase
+        val valeurEffetsPlacement = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueurSimule)
+        val coutOpportunite = EvaluateurHeuristique.coutOpportuniteOr(joueur, coutEffectif)
+        return CoupEvalue(carte, pos, gainTheorique + valeurEffetsPlacement - coutOpportunite - penaliteCle)
     }
 
     // Score théorique total : effets de score (PointsParOrDepose supposé rempli) + valeur maximale des bourses (taille * 2)
@@ -162,17 +172,24 @@ class StrategiePrevoyante : Strategie {
         return direction
     }
 
-    // Évalue la meilleure direction sans nouvelles cartes (utilisé quand cle == 0)
-    private fun evaluerMeilleurDeplacementActuel(joueur: Joueur): DirectionDeplacement =
-        DirectionDeplacement.entries
+    // Évalue la meilleure direction sans nouvelles cartes (utilisé quand cle == 0).
+    // Applique le même seuil que pour les choix avec achat.
+    private fun evaluerMeilleurDeplacementActuel(joueur: Joueur): DirectionDeplacement {
+        val scoreSansDeplacement = scoreTotalTheorique(joueur)
+        val meilleurAvecDeplacement = DirectionDeplacement.entries
+            .filter { it != DirectionDeplacement.AUCUN }
             .mapNotNull { direction ->
                 val tableauDeplace = simulerDeplacement(joueur.tableau, direction) ?: return@mapNotNull null
                 val joueurDeplace = joueur.copy(tableau = tableauDeplace)
                 Pair(direction, scoreTotalTheorique(joueurDeplace))
             }
             .maxByOrNull { (_, score) -> score }
-            ?.first
-            ?: DirectionDeplacement.AUCUN
+        return when {
+            meilleurAvecDeplacement == null -> DirectionDeplacement.AUCUN
+            meilleurAvecDeplacement.second >= scoreSansDeplacement + seuilDeplacement -> meilleurAvecDeplacement.first
+            else -> DirectionDeplacement.AUCUN
+        }
+    }
 
     override fun choisitUneCarte(cartesAchetables: List<Carte>, cartesDisponibles: List<Carte>): Carte {
         val carte = meilleureCartePrevu?.takeIf { it in cartesAchetables }

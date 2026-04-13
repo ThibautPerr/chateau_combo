@@ -127,66 +127,6 @@ class StrategiePrevovanteTest {
         }
 
         @Nested
-        inner class ReservationOrBourse {
-
-            @Test
-            fun `doit considerer une carte inabordable si l'or disponible apres reserve est insuffisant`() {
-                // or=6, bourse taille=6 (orDepose=0) => reserve=min(6, 3)=3, orDisponible=3
-                // carte cout=4 reste inabordable : 4 > 3
-                val bourse = carteBourse("Bourse", taille = 6)
-                val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(bourse, MILIEUMILIEU)))
-                val joueur = Joueur(id = 1, or = 6, tableau = tableau)
-                val carteChere = carteAvecPoints("Trop chere apres reserve", points = 10, cout = 4)
-                val decks = listOf(
-                    deckActuel(listOf(carteChere)),
-                    autreDeck(listOf(carteChere))
-                )
-
-                strategie.choisitActionCle(joueur, decks)
-                val carteChoisie = strategie.choisitUneCarte(emptyList(), listOf(carteChere))
-
-                assertThat(carteChoisie).isInstanceOf(CarteVerso::class.java)
-            }
-
-            @Test
-            fun `doit pouvoir acheter une carte si l'or depasse la reserve pour les bourses`() {
-                // or=5, bourse taille=3 (orDepose=0) => orAReserver=3, orDisponible=2
-                // carte cout=2 est abordable
-                val bourse = carteBourse("Bourse", taille = 3)
-                val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(bourse, MILIEUMILIEU)))
-                val joueur = Joueur(id = 1, or = 5, tableau = tableau)
-                val carteCible = carteAvecPoints("Abordable", 5, cout = 2)
-                val decks = listOf(
-                    deckActuel(listOf(carteCible)),
-                    autreDeck(listOf(carteSansPoints("Autre")))
-                )
-
-                strategie.choisitActionCle(joueur, decks)
-                val carteChoisie = strategie.choisitUneCarte(listOf(carteCible), listOf(carteCible))
-
-                assertThat(carteChoisie).isEqualTo(carteCible)
-            }
-
-            @Test
-            fun `doit ne pas reserver d'or pour une bourse deja pleine`() {
-                // bourse taille=3, orDepose=3 => orAReserver=0, tout l'or reste disponible
-                val bourse = carteBourse("Bourse pleine", taille = 3, orDepose = 3)
-                val tableau = Tableau(cartesPositionees = mutableListOf(CartePositionee(bourse, MILIEUMILIEU)))
-                val joueur = Joueur(id = 1, or = 3, tableau = tableau)
-                val carteCible = carteAvecPoints("Abordable", 5, cout = 3)
-                val decks = listOf(
-                    deckActuel(listOf(carteCible)),
-                    autreDeck(listOf(carteSansPoints("Autre")))
-                )
-
-                strategie.choisitActionCle(joueur, decks)
-                val carteChoisie = strategie.choisitUneCarte(listOf(carteCible), listOf(carteCible))
-
-                assertThat(carteChoisie).isEqualTo(carteCible)
-            }
-        }
-
-        @Nested
         inner class ScoreTheoriquePointsParOrDepose {
 
             @Test
