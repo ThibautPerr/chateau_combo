@@ -2,6 +2,7 @@ package com.chateaucombo
 
 import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.strategie.StrategieAleatoire
+import com.chateaucombo.strategie.StrategieAnticipatrice
 import com.chateaucombo.strategie.StrategieGourmande
 import com.chateaucombo.strategie.StrategiePrevoyante
 import com.chateaucombo.simulation.ResultatSimulation
@@ -16,9 +17,9 @@ fun main(args: Array<String>) {
     println("Simulation de $nbParties parties en cours...")
     val joueurs = listOf(
         Joueur(id = 0, strategie = StrategieAleatoire()),
-        Joueur(id = 1, strategie = StrategieAleatoire()),
-        Joueur(id = 2, strategie = StrategieGourmande()),
-        Joueur(id = 3, strategie = StrategiePrevoyante()),
+        Joueur(id = 1, strategie = StrategieGourmande()),
+        Joueur(id = 2, strategie = StrategiePrevoyante()),
+        Joueur(id = 3, strategie = StrategieAnticipatrice()),
     )
     val resultat = Simulation(joueurs).run(nbParties)
     val runDir = File("stats", timestamp()).also { it.mkdirs() }
