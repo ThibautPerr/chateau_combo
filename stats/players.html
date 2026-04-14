@@ -218,6 +218,13 @@
         </div>
 
         <div class="chart-section">
+            <h2>Comparaison des strategies</h2>
+            <div class="chart-wrap medium">
+                <canvas id="chart-strat-compare"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-section">
             <h2>Score moyen des cartes par tour</h2>
             <div class="chart-wrap medium">
                 <canvas id="chart-score-par-tour"></canvas>
@@ -306,8 +313,10 @@
         document.getElementById('val-iqr').textContent = `${g.premierQuartile.toFixed(0)} — ${g.troisiemeQuartile.toFixed(0)}`;
 
         if (state.charts.players) state.charts.players.destroy();
+        if (state.charts.stratCompare) state.charts.stratCompare.destroy();
         if (state.charts.scoreParTour) state.charts.scoreParTour.destroy();
         renderPlayerChart();
+        renderStratCompareChart();
         renderScoreParTourChart();
     }
 
@@ -331,6 +340,40 @@
                 responsive: true, maintainAspectRatio: false,
                 scales: {
                     y: {beginAtZero: true, grace: '5%', grid: {color: 'rgba(0,0,0,0.04)'}},
+                    x: {grid: {display: false}},
+                },
+                plugins: {
+                    legend: {position: 'bottom', labels: {boxWidth: 12, padding: 16, font: {size: 12}}},
+                    refLine: {},
+                },
+            },
+        });
+    }
+
+    function renderStratCompareChart() {
+        const pd = state.playerData;
+        const joueurs = pd.parJoueur;
+        const metricLabels = ['Q1', 'Mediane', 'Moyenne', 'Q3'];
+        const metricKeys = ['premierQuartile', 'mediane', 'moyenne', 'troisiemeQuartile'];
+
+        const datasets = joueurs.map((j, i) => {
+            const col = STRATEGY_COLORS[i % STRATEGY_COLORS.length];
+            return {
+                label: j.nomStrategie,
+                data: metricKeys.map(k => j[k]),
+                backgroundColor: col.bg,
+                borderColor: col.border,
+                borderWidth: 1,
+            };
+        });
+
+        state.charts.stratCompare = new Chart(document.getElementById('chart-strat-compare'), {
+            type: 'bar',
+            data: {labels: metricLabels, datasets},
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: {beginAtZero: false, grace: '5%', grid: {color: 'rgba(0,0,0,0.04)'}},
                     x: {grid: {display: false}},
                 },
                 plugins: {
