@@ -4,12 +4,16 @@ import com.chateaucombo.deck.Deck
 import com.chateaucombo.deck.carte.Blason
 import com.chateaucombo.deck.carte.Carte
 import com.chateaucombo.deck.carte.CarteVerso
+import com.chateaucombo.deck.carte.Chatelain
 import com.chateaucombo.deck.carte.Villageois
 import com.chateaucombo.deck.carte.effet.EffetScoreVide
 import com.chateaucombo.deck.carte.effet.Effets
+import com.chateaucombo.deck.carte.effet.effetplacement.ReduceCoutChatelain
 import com.chateaucombo.deck.carte.effet.effetpoint.AjoutePoints
+import com.chateaucombo.deck.carte.effet.effetpoint.PointsSiCoin
 import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.strategie.ActionCle
+import com.chateaucombo.strategie.DirectionDeplacement
 import com.chateaucombo.strategie.StrategieAnticipatrice
 import com.chateaucombo.tableau.CartePositionee
 import com.chateaucombo.tableau.Position.BASMILIEU
@@ -123,6 +127,111 @@ class StrategieAnticipatriceTest {
             val action = strategie.choisitActionCle(joueur, decks)
 
             assertThat(action).isEqualTo(ActionCle.CHANGE_DECK)
+        }
+    }
+
+    @Nested
+    inner class ReductionCoutChatelain {
+
+        @Test
+        fun `doit acheter un chatelain couteux quand une reduction de cout le rend abordable`() {
+            val carteAvecReduction = Villageois(
+                nom = "Reducteur", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(effetsPassifs = listOf(ReduceCoutChatelain())),
+                effetScore = EffetScoreVide
+            )
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carteAvecReduction, MILIEUMILIEU))
+            )
+            val joueur = Joueur(id = 1, or = 2, tableau = tableau)
+            val chatelainCher = Chatelain(
+                nom = "Noble", cout = 3, blasons = listOf(Blason.NOBLE),
+                effets = Effets(), effetScore = AjoutePoints(10)
+            )
+            val decks = listOf(
+                deckActuel(listOf(chatelainCher)),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val carteChoisie = strategie.choisitUneCarte(listOf(chatelainCher), emptyList())
+
+            assertThat(carteChoisie).isEqualTo(chatelainCher)
+        }
+    }
+
+    @Nested
+    inner class ChoisitActionCleAucuneCarteAbordable {
+
+        @Test
+        fun `doit renvoyer RIEN si aucune carte n'est abordable dans les deux decks`() {
+            val joueur = Joueur(id = 1, or = 0)
+            val decks = listOf(
+                deckActuel(listOf(carteAvecPoints("Chere", 5, cout = 7))),
+                autreDeck(listOf(carteAvecPoints("Chere aussi", 8, cout = 7)))
+            )
+
+            val action = strategie.choisitActionCle(joueur, decks)
+
+            assertThat(action).isEqualTo(ActionCle.RIEN)
+        }
+    }
+
+    @Nested
+    inner class ChoisitUnDeplacement {
+
+        @Test
+        fun `doit renvoyer AUCUN si aucun deplacement n'ameliore le score`() {
+            val joueur = Joueur(id = 1)
+            val decks = listOf(
+                deckActuel(listOf(carteSansPoints("Carte"))),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val direction = strategie.choisitUnDeplacement(joueur)
+
+            assertThat(direction).isEqualTo(DirectionDeplacement.AUCUN)
+        }
+
+        @Test
+        fun `doit renvoyer une direction qui cree un coin quand une carte PointsSiCoin est disponible`() {
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carteSansPoints("Existante"), MILIEUMILIEU))
+            )
+            val joueur = Joueur(id = 1, tableau = tableau)
+            val carteCoin = Villageois(
+                nom = "Coin", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = PointsSiCoin(5)
+            )
+            val decks = listOf(
+                deckActuel(listOf(carteCoin)),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val direction = strategie.choisitUnDeplacement(joueur)
+
+            assertThat(direction).isIn(
+                DirectionDeplacement.GAUCHE, DirectionDeplacement.DROITE,
+                DirectionDeplacement.HAUT, DirectionDeplacement.BAS
+            )
+        }
+
+        @Test
+        fun `doit evaluer le deplacement sur la base du tableau courant quand choisitActionCle n'a pas ete appele`() {
+            val carteCoin = Villageois(
+                nom = "Coin", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = PointsSiCoin(5)
+            )
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carteCoin, MILIEUGAUCHE))
+            )
+            val joueur = Joueur(id = 1, tableau = tableau)
+
+            val direction = strategie.choisitUnDeplacement(joueur)
+
+            assertThat(direction).isIn(DirectionDeplacement.HAUT, DirectionDeplacement.BAS)
         }
     }
 

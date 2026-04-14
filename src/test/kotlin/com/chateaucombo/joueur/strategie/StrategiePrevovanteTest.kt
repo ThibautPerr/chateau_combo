@@ -8,8 +8,11 @@ import com.chateaucombo.deck.carte.Villageois
 import com.chateaucombo.deck.carte.effet.BourseScore
 import com.chateaucombo.deck.carte.effet.EffetScoreVide
 import com.chateaucombo.deck.carte.effet.Effets
+import com.chateaucombo.deck.carte.Chatelain
+import com.chateaucombo.deck.carte.effet.effetplacement.ReduceCoutChatelain
 import com.chateaucombo.deck.carte.effet.effetpoint.AjoutePoints
 import com.chateaucombo.deck.carte.effet.effetpoint.PointsParOrDepose
+import com.chateaucombo.deck.carte.effet.effetpoint.PointsSiBord
 import com.chateaucombo.deck.carte.effet.effetpoint.PointsSiCoin
 import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.strategie.ActionCle
@@ -126,6 +129,32 @@ class StrategiePrevovanteTest {
             assertThat(carteChoisie).isEqualTo(carteCible)
         }
 
+        @Test
+        fun `doit acheter un chatelain couteux quand une reduction de cout le rend abordable`() {
+            val carteAvecReduction = Villageois(
+                nom = "Reducteur", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(effetsPassifs = listOf(ReduceCoutChatelain())),
+                effetScore = EffetScoreVide
+            )
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carteAvecReduction, MILIEUMILIEU))
+            )
+            val joueur = Joueur(id = 1, or = 2, tableau = tableau)
+            val chatelainCher = Chatelain(
+                nom = "Noble", cout = 3, blasons = listOf(Blason.NOBLE),
+                effets = Effets(), effetScore = AjoutePoints(10)
+            )
+            val decks = listOf(
+                deckActuel(listOf(chatelainCher)),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val carteChoisie = strategie.choisitUneCarte(listOf(chatelainCher), emptyList())
+
+            assertThat(carteChoisie).isEqualTo(chatelainCher)
+        }
+
         @Nested
         inner class ScoreTheoriquePointsParOrDepose {
 
@@ -228,6 +257,31 @@ class StrategiePrevovanteTest {
             val direction = strategie.choisitUnDeplacement(joueur)
 
             assertThat(direction).isIn(DirectionDeplacement.HAUT, DirectionDeplacement.BAS)
+        }
+
+        @Test
+        fun `doit choisir un deplacement vers la droite quand cela ameliore le score`() {
+            // Carte PointsSiBord en MILIEUMILIEU : deplacement DROITE => MILIEUDROITE (bord) => +5 pts
+            val carteBord = Villageois(
+                nom = "Bord", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = PointsSiBord(5)
+            )
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carteBord, MILIEUMILIEU))
+            )
+            val joueur = Joueur(id = 1, tableau = tableau)
+            val decks = listOf(
+                deckActuel(listOf(carteAvecPoints("Carte", 1))),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val direction = strategie.choisitUnDeplacement(joueur)
+
+            assertThat(direction).isIn(
+                DirectionDeplacement.GAUCHE, DirectionDeplacement.DROITE,
+                DirectionDeplacement.HAUT, DirectionDeplacement.BAS
+            )
         }
 
         @Test

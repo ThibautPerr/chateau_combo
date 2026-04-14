@@ -9,6 +9,7 @@ import com.chateaucombo.deck.carte.Villageois
 import com.chateaucombo.deck.carte.effet.BourseScore
 import com.chateaucombo.deck.carte.effet.EffetScoreVide
 import com.chateaucombo.deck.carte.effet.Effets
+import com.chateaucombo.deck.carte.effet.effetplacement.ReduceCoutChatelain
 import com.chateaucombo.deck.carte.effet.effetpoint.AjoutePoints
 import com.chateaucombo.deck.carte.effet.effetpoint.PointsParVillageois
 import com.chateaucombo.deck.carte.effet.effetpoint.PointsSiCoin
@@ -292,6 +293,37 @@ class StrategieGourmandeTest {
             val deplacement = strategie.choisitUnDeplacement(Joueur(id = 1))
 
             assertThat(deplacement).isEqualTo(DirectionDeplacement.AUCUN)
+        }
+    }
+
+    @Nested
+    inner class ReductionCoutChatelain {
+
+        @Test
+        fun `doit acheter un chatelain couteux quand une reduction de cout le rend abordable`() {
+            // Carte existante avec ReduceCoutChatelain => chatelain cout 3 coute 2
+            val carteAvecReduction = Villageois(
+                nom = "Reducteur", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(effetsPassifs = listOf(ReduceCoutChatelain())),
+                effetScore = EffetScoreVide
+            )
+            val tableau = Tableau(
+                cartesPositionees = mutableListOf(CartePositionee(carteAvecReduction, MILIEUMILIEU))
+            )
+            val joueur = Joueur(id = 1, or = 2, tableau = tableau)
+            val chatelainCher = Chatelain(
+                nom = "Noble", cout = 3, blasons = listOf(Blason.NOBLE),
+                effets = Effets(), effetScore = AjoutePoints(10)
+            )
+            val decks = listOf(
+                deckActuel(listOf(chatelainCher)),
+                autreDeck(listOf(carteSansPoints("Autre")))
+            )
+
+            strategie.choisitActionCle(joueur, decks)
+            val carteChoisie = strategie.choisitUneCarte(listOf(chatelainCher), emptyList())
+
+            assertThat(carteChoisie).isEqualTo(chatelainCher)
         }
     }
 

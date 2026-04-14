@@ -9,15 +9,30 @@ import com.chateaucombo.deck.carte.effet.EffetScoreVide
 import com.chateaucombo.deck.carte.effet.EffetSeparateur
 import com.chateaucombo.deck.carte.effet.Effets
 import com.chateaucombo.deck.carte.effet.effetplacement.AjouteCle
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteCleParBlasonAbsent
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteCleParBlasonDistinct
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteCleParCarteBourse
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteCleParCarteAvecNbBlason
 import com.chateaucombo.deck.carte.effet.effetplacement.AjouteCleParChatelain
 import com.chateaucombo.deck.carte.effet.effetplacement.AjouteCleParVillageois
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteClePourChaqueBlason
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteClePourTousLesAdversaires
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteClePourTousLesJoueurs
 import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrDansBourses
 import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrParBlasonDistinct
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrParCarteAvecLeCout
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrParChatelain
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrParEmplacementVide
 import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrParVillageois
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrPourChaqueBlason
+import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrParBlasonDansTableauVoisin
 import com.chateaucombo.deck.carte.effet.effetplacement.AjouteOrPourTousLesAdversaires
 import com.chateaucombo.deck.carte.effet.effetplacement.RemplitBourses
 import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.tableau.CartePositionee
+import com.chateaucombo.tableau.Position.BASMILIEU
+import com.chateaucombo.tableau.Position.HAUTMILIEU
+import com.chateaucombo.tableau.Position.MILIEUGAUCHE
 import com.chateaucombo.tableau.Position.MILIEUMILIEU
 import com.chateaucombo.tableau.Tableau
 import org.assertj.core.api.Assertions.assertThat
@@ -192,6 +207,194 @@ class EvaluateurHeuristiqueTest {
             val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
 
             assertThat(valeur).isEqualTo(1) // 1 chatelain * 1 pt par cle
+        }
+
+        @Test
+        fun `doit valoriser AjouteOrParChatelain par nombre de chatelains`() {
+            val bourse = BourseScore(taille = 10)
+            val carteBourse = Villageois(
+                nom = "Bourse", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = EffetScoreVide, bourse = bourse,
+            )
+            val chatelain = Chatelain(
+                nom = "Noble", cout = 0, blasons = listOf(Blason.NOBLE),
+                effets = Effets(), effetScore = EffetScoreVide,
+            )
+            val carte = carteAvecEffets(listOf(AjouteOrParChatelain()))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteBourse, MILIEUMILIEU),
+                CartePositionee(chatelain, HAUTMILIEU),
+                CartePositionee(carte, BASMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            assertThat(valeur).isEqualTo(2) // 1 chatelain * 2 pts (bourse dispo)
+        }
+
+        @Test
+        fun `doit valoriser AjouteOrParEmplacementVide par emplacements vides`() {
+            val bourse = BourseScore(taille = 20)
+            val carteBourse = Villageois(
+                nom = "Bourse", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = EffetScoreVide, bourse = bourse,
+            )
+            val carte = carteAvecEffets(listOf(AjouteOrParEmplacementVide()))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteBourse, MILIEUMILIEU),
+                CartePositionee(carte, HAUTMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            // 9 positions - 2 cartes = 7 emplacements vides * 2 pts = 14
+            assertThat(valeur).isEqualTo(14)
+        }
+
+        @Test
+        fun `doit valoriser AjouteOrPourChaqueBlason par occurrences du blason`() {
+            val bourse = BourseScore(taille = 20)
+            val carteBourse = Villageois(
+                nom = "Bourse", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = EffetScoreVide, bourse = bourse,
+            )
+            val carte = carteAvecEffets(listOf(AjouteOrPourChaqueBlason(orParBlason = 2, blason = Blason.PAYSAN)))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteBourse, MILIEUMILIEU),
+                CartePositionee(carte, HAUTMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            // 2 cartes avec PAYSAN = 2 occurrences * 2 or * 2 pts = 8
+            assertThat(valeur).isEqualTo(8)
+        }
+
+        @Test
+        fun `doit valoriser AjouteOrParCarteAvecLeCout par cartes avec le cout cible`() {
+            val bourse = BourseScore(taille = 20)
+            val carteBourse = Villageois(
+                nom = "Bourse", cout = 3, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = EffetScoreVide, bourse = bourse,
+            )
+            val carte = carteAvecEffets(listOf(AjouteOrParCarteAvecLeCout(orParCarte = 3, cout = 3)))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteBourse, MILIEUMILIEU),
+                CartePositionee(carte, HAUTMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            // 1 carte avec cout=3 * 3 or * 2 pts = 6
+            assertThat(valeur).isEqualTo(6)
+        }
+
+        @Test
+        fun `doit valoriser AjouteCleParBlasonDistinct par blasons distincts`() {
+            val carte = carteAvecEffets(listOf(AjouteCleParBlasonDistinct()))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteSansEffet("A", listOf(Blason.PAYSAN)), MILIEUMILIEU),
+                CartePositionee(carteSansEffet("B", listOf(Blason.NOBLE)), HAUTMILIEU),
+                CartePositionee(carte, BASMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            // 3 blasons distincts (PAYSAN, NOBLE, PAYSAN de la carte) => 2 distincts + PAYSAN = 2 distinct? non:
+            // cartes: A(PAYSAN), B(NOBLE), carte(PAYSAN) => blasons = [PAYSAN, NOBLE, PAYSAN] => distinct = 2
+            assertThat(valeur).isEqualTo(2) // 2 blasons distincts * 1 pt cle
+        }
+
+        @Test
+        fun `doit valoriser AjouteCleParBlasonAbsent par blasons absents`() {
+            val carte = carteAvecEffets(listOf(AjouteCleParBlasonAbsent()))
+            // Seuls PAYSAN et NOBLE sont presents => 4 absents (MILITAIRE, RELIGIEUX, ERUDIT, ARTISAN)
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteSansEffet("A", listOf(Blason.PAYSAN)), MILIEUMILIEU),
+                CartePositionee(chatelainSansEffet("B"), HAUTMILIEU),
+                CartePositionee(carte, BASMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            assertThat(valeur).isEqualTo(4) // 6 - 2 presents = 4 absents * 1 pt
+        }
+
+        @Test
+        fun `doit valoriser AjouteClePourChaqueBlason par occurrences du blason`() {
+            val carte = carteAvecEffets(listOf(AjouteClePourChaqueBlason(blason = Blason.PAYSAN)))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteSansEffet("A"), MILIEUMILIEU),
+                CartePositionee(carteSansEffet("B"), HAUTMILIEU),
+                CartePositionee(carte, BASMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            // 3 cartes avec PAYSAN => 3 * 1 pt = 3
+            assertThat(valeur).isEqualTo(3)
+        }
+
+        @Test
+        fun `doit valoriser AjouteCleParCarteBourse par nombre de bourses`() {
+            val bourse = BourseScore(taille = 5)
+            val carteBourse = Villageois(
+                nom = "Bourse", cout = 0, blasons = listOf(Blason.PAYSAN),
+                effets = Effets(), effetScore = EffetScoreVide, bourse = bourse,
+            )
+            val carte = carteAvecEffets(listOf(AjouteCleParCarteBourse()))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteBourse, MILIEUMILIEU),
+                CartePositionee(carte, HAUTMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            assertThat(valeur).isEqualTo(1) // 1 bourse * 1 pt cle
+        }
+
+        @Test
+        fun `doit valoriser AjouteCleParCarteAvecNbBlason par cartes avec le nb de blasons`() {
+            val carte = carteAvecEffets(listOf(AjouteCleParCarteAvecNbBlason(nbBlason = 1)))
+            val joueur = joueurAvec(listOf(
+                CartePositionee(carteSansEffet("A", listOf(Blason.PAYSAN)), MILIEUMILIEU),
+                CartePositionee(carte, HAUTMILIEU),
+            ))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            // 2 cartes avec 1 blason * 1 pt = 2
+            assertThat(valeur).isEqualTo(2)
+        }
+
+        @Test
+        fun `doit valoriser AjouteClePourTousLesJoueurs au nombre de cles`() {
+            val carte = carteAvecEffets(listOf(AjouteClePourTousLesJoueurs(cle = 2)))
+            val joueur = joueurAvec(listOf(CartePositionee(carte, MILIEUMILIEU)))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            assertThat(valeur).isEqualTo(2) // 2 cles * 1 pt
+        }
+
+        @Test
+        fun `doit penaliser AjouteClePourTousLesAdversaires`() {
+            val carte = carteAvecEffets(listOf(AjouteClePourTousLesAdversaires(cle = 3)))
+            val joueur = joueurAvec(listOf(CartePositionee(carte, MILIEUMILIEU)))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            assertThat(valeur).isEqualTo(-3) // -3 cles * 1 pt
+        }
+
+        @Test
+        fun `doit valoriser a 0 les effets dependant du tableau voisin`() {
+            val carte = carteAvecEffets(listOf(AjouteOrParBlasonDansTableauVoisin(blason = Blason.PAYSAN)))
+            val joueur = joueurAvec(listOf(CartePositionee(carte, MILIEUMILIEU)))
+
+            val valeur = EvaluateurHeuristique.estimerValeurEffetsPlacement(carte, joueur)
+
+            assertThat(valeur).isZero()
         }
 
         @Test
