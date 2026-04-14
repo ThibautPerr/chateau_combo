@@ -73,12 +73,14 @@ com.chateaucombo/
 ├── score/
 │   └── ScoreRepository.kt # End-of-game scoring (fills bourses, score effects, keys)
 ├── strategie/
-│   ├── Strategie.kt           # Interface
-│   ├── ActionCle.kt           # Enum: RIEN, RAFRAICHIT, CHANGE_DECK
+│   ├── Strategie.kt              # Interface
+│   ├── ActionCle.kt              # Enum: RIEN, RAFRAICHIT, CHANGE_DECK
 │   ├── DirectionDeplacement.kt
+│   ├── EvaluateurHeuristique.kt  # Shared heuristics: placement effect valuation + gold opportunity cost
 │   ├── StrategieAleatoire.kt
-│   ├── StrategieGourmande.kt  # Greedy: marginal board score evaluation
-│   └── StrategiePrevoyante.kt # Greedy + foresighted: displacement optimisation, bourse gold reservation
+│   ├── StrategieGourmande.kt     # Greedy: marginal board score + shared heuristics
+│   ├── StrategiePrevoyante.kt    # Greedy + displacement optimisation + conservative threshold
+│   └── StrategieAnticipatrice.kt # 2-turn lookahead + raised key penalty for deck-swap decisions
 └── simulation/
     ├── Simulation.kt              # Runs N games, aggregates per-player, per-card, and per-effect stats
     └── StatistiquesSimulation.kt  # Data classes for stats output
@@ -226,7 +228,7 @@ stats/
 ```
 
 **Dashboard** (3 static HTML pages + Chart.js CDN, no build step):
-- `players.html` — run selector, summary cards (games/players/avg/median/IQR), player balance chart (grouped bars Q1/median/avg/Q3 per strategy), average card score per turn line chart
+- `players.html` — run selector, summary cards (games/players/avg/median/IQR), player balance chart (grouped bars Q1/median/avg/Q3 per strategy), strategy comparison chart (metrics side-by-side across strategies), average card score per turn line chart
 - `cartes.html` — card score ranking (horizontal bars, sortable), player score impact vs global average, scatter plots (card score vs player score, IQR spread)
 - `effets.html` — on-play effect stats and end-game score effect stats, toggleable between player score / card score metric
 

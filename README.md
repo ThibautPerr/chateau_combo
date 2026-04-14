@@ -76,13 +76,16 @@ A few examples:
 
 Four strategies are implemented, each implementing the `Strategie` interface:
 
-| Strategy              | Description                                                                                                                                                                                                                                              |
-|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `StrategieAleatoire`  | Fully random — random action, random card, random position                                                                                                                                                                                               |
-| `StrategieGourmande`  | Greedy — each turn picks the card × position that maximises the marginal score gain (including board synergies and bourse value)                                                                                                                         |
-| `StrategiePrevoyante` | Greedy + foresighted — same marginal evaluation as *Gourmande*, plus: evaluates all 4 displacement directions before choosing, reserves at most half of available gold for bourse filling, and scores `PointsParOrDepose` effects at theoretical maximum |
+| Strategy                 | Description                                                                                                                                                                                                                                                                  |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `StrategieAleatoire`     | Fully random — random action, random card, random position                                                                                                                                                                                                                   |
+| `StrategieGourmande`     | Greedy — each turn picks the card × position that maximises the marginal score gain (including board synergies, bourse value, on-placement effect estimation, and gold opportunity cost)                                                                                      |
+| `StrategiePrevoyante`    | Greedy + foresighted — same evaluation as *Gourmande*, plus: evaluates all 4 displacement directions with a conservative threshold, and scores `PointsParOrDepose` effects at theoretical maximum                                                                            |
+| `StrategieAnticipatrice` | 2-turn lookahead — extends *Prévoyante* with a raised key penalty (`penaliteCle = 2`) and evaluates deck-swap decisions by simulating this turn's best coup then estimating the best next-turn coup across both decks' remaining visible cards (discounted by 0.5)            |
 
-`Main.kt` pits two `StrategieAleatoire` players against one `StrategieGourmande` and one `StrategiePrevoyante`.
+All non-random strategies share heuristics from `EvaluateurHeuristique`: on-placement effect valuation (gold/keys → points) and gold opportunity cost (gold spent on a card that could have filled bourses).
+
+`Main.kt` pits one `StrategieAleatoire` player against one `StrategieGourmande`, one `StrategiePrevoyante`, and one `StrategieAnticipatrice`.
 
 ## Dashboard
 
@@ -90,7 +93,7 @@ Three static HTML pages read the JSON output and render Chart.js visualisations.
 
 | Page           | Content                                                                                       |
 |----------------|-----------------------------------------------------------------------------------------------|
-| `players.html` | Summary stats (avg / Q1 / median / Q3) per strategy; average card score per turn (line chart) |
+| `players.html` | Summary stats (avg / Q1 / median / Q3) per strategy; strategy comparison chart (metrics side-by-side); average card score per turn (line chart) |
 | `cartes.html`  | Card ranking by average score contribution; player score impact vs global average             |
 | `effets.html`  | On-placement and end-game effect stats, toggleable by player score or card score metric       |
 
