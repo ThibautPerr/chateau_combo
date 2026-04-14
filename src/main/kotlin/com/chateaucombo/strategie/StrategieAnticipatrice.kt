@@ -16,7 +16,7 @@ import com.chateaucombo.tableau.Tableau
 
 /**
  * Variante de StrategiePrevoyante qui :
- * - valorise davantage les clés (penaliteCleDeckSwap = 3), car une clé permet
+ * - valorise davantage les clés (penaliteCleDeckSwap = 2), car une clé permet
  *   potentiellement plusieurs actions futures (swap, rafraîchissement, chaînage)
  * - choisit le deck en anticipant le tour suivant : pour chaque option (rester
  *   ou swapper), on simule le coup de ce tour puis on estime le meilleur coup
@@ -136,10 +136,11 @@ class StrategieAnticipatrice : Strategie {
             .filter { it.second != DirectionDeplacement.AUCUN }
             .maxByOrNull { it.first.score }
 
+        val default = Pair(null, DirectionDeplacement.AUCUN)
         return when {
-            meilleurAvecDeplacement == null && sansDeplacement == null -> Pair(null, DirectionDeplacement.AUCUN)
-            meilleurAvecDeplacement == null -> sansDeplacement!!
-            sansDeplacement == null -> meilleurAvecDeplacement
+            sansDeplacement == null && meilleurAvecDeplacement == null -> default
+            sansDeplacement == null -> meilleurAvecDeplacement ?: default
+            meilleurAvecDeplacement == null -> sansDeplacement
             meilleurAvecDeplacement.first.score >= sansDeplacement.first.score + seuilDeplacement -> meilleurAvecDeplacement
             else -> sansDeplacement
         }
@@ -165,16 +166,16 @@ class StrategieAnticipatrice : Strategie {
         when (direction) {
             DirectionDeplacement.AUCUN -> tableau
             DirectionDeplacement.GAUCHE -> if (tableau.pasDeCarteAGauche())
-                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionAGauche())) }.toMutableList())
+                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionAGauche()) { "pas de position à gauche de ${it.position}" }) }.toMutableList())
             else null
             DirectionDeplacement.DROITE -> if (tableau.pasDeCarteADroite())
-                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionADroite())) }.toMutableList())
+                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionADroite()) { "pas de position à droite de ${it.position}" }) }.toMutableList())
             else null
             DirectionDeplacement.HAUT -> if (tableau.pasDeCarteEnHaut())
-                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionEnHaut())) }.toMutableList())
+                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionEnHaut()) { "pas de position en haut de ${it.position}" }) }.toMutableList())
             else null
             DirectionDeplacement.BAS -> if (tableau.pasDeCarteEnBas())
-                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionEnBas())) }.toMutableList())
+                Tableau(tableau.cartesPositionees.map { it.copy(position = requireNotNull(it.position.positionEnBas()) { "pas de position en bas de ${it.position}" }) }.toMutableList())
             else null
         }
 

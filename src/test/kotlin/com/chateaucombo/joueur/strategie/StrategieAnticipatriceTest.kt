@@ -12,7 +12,11 @@ import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.strategie.ActionCle
 import com.chateaucombo.strategie.StrategieAnticipatrice
 import com.chateaucombo.tableau.CartePositionee
-import com.chateaucombo.tableau.Position.*
+import com.chateaucombo.tableau.Position.BASMILIEU
+import com.chateaucombo.tableau.Position.HAUTMILIEU
+import com.chateaucombo.tableau.Position.MILIEUDROITE
+import com.chateaucombo.tableau.Position.MILIEUGAUCHE
+import com.chateaucombo.tableau.Position.MILIEUMILIEU
 import com.chateaucombo.tableau.Tableau
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -148,7 +152,8 @@ class StrategieAnticipatriceTest {
             val carteChoisie = strategie.choisitUneCarte(emptyList(), cartesDisponibles)
 
             assertThat(carteChoisie).isInstanceOf(CarteVerso::class.java)
-            assertThat(cartesDisponibles).contains((carteChoisie as CarteVerso).carteOriginale)
+            val verso = carteChoisie as? CarteVerso ?: error("carteChoisie devrait être CarteVerso")
+            assertThat(cartesDisponibles).contains(verso.carteOriginale)
         }
     }
 
