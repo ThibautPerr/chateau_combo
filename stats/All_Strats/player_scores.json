@@ -1,0 +1,40 @@
+{
+  "nbParties" : 10000,
+  "nbJoueurs" : 4,
+  "strategies" : [ "Aléatoire", "Gourmande", "Prévoyante", "Anticipatrice" ],
+  "global" : {
+    "moyenne" : 68.45,
+    "premierQuartile" : 57.0,
+    "mediane" : 71.0,
+    "troisiemeQuartile" : 81.0
+  },
+  "parJoueur" : [ {
+    "nomStrategie" : "Aléatoire",
+    "moyenne" : 45.0,
+    "premierQuartile" : 37.0,
+    "mediane" : 45.0,
+    "troisiemeQuartile" : 52.0,
+    "scoreCarteParTour" : [ 5.12, 4.82, 4.86, 4.4, 4.17, 4.12, 4.09, 4.02, 3.98 ]
+  }, {
+    "nomStrategie" : "Gourmande",
+    "moyenne" : 77.32,
+    "premierQuartile" : 69.0,
+    "mediane" : 78.0,
+    "troisiemeQuartile" : 85.0,
+    "scoreCarteParTour" : [ 9.68, 8.56, 8.2, 7.77, 7.52, 7.25, 7.08, 6.89, 6.46 ]
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "moyenne" : 76.01,
+    "premierQuartile" : 68.0,
+    "mediane" : 76.0,
+    "troisiemeQuartile" : 84.0,
+    "scoreCarteParTour" : [ 8.26, 8.34, 8.36, 7.84, 7.4, 7.06, 6.92, 6.65, 6.3 ]
+  }, {
+    "nomStrategie" : "Anticipatrice",
+    "moyenne" : 75.46,
+    "premierQuartile" : 68.0,
+    "mediane" : 75.0,
+    "troisiemeQuartile" : 83.0,
+    "scoreCarteParTour" : [ 8.13, 8.25, 8.36, 7.67, 7.16, 6.99, 6.72, 6.4, 6.21 ]
+  } ]
+}

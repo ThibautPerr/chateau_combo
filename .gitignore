@@ -34,6 +34,5 @@ bin/
 
 *.iml
 /target/
-/stats/*/
 
-/stats/runs.json
+todo.txt

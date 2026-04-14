@@ -1,0 +1,3556 @@
+[ {
+  "nomCarte" : "Agricultrice",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "PointsSiRangInferieur",
+  "scoreJoueur" : {
+    "moyenne" : 53.63,
+    "premierQuartile" : 39.0,
+    "mediane" : 50.0,
+    "troisiemeQuartile" : 67.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.42,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 7.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.62,
+      "premierQuartile" : 36.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.27,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 7.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.41,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.73,
+      "premierQuartile" : 7.0,
+      "mediane" : 7.0,
+      "troisiemeQuartile" : 7.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Alchimiste",
+  "effets" : [ "ReduceCoutVillageois", "ReduceCoutChatelain" ],
+  "effetScore" : "PointsParCarteAvecReductionDeCout",
+  "scoreJoueur" : {
+    "moyenne" : 53.36,
+    "premierQuartile" : 43.0,
+    "mediane" : 52.0,
+    "troisiemeQuartile" : 61.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 10.32,
+    "premierQuartile" : 8.0,
+    "mediane" : 8.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 50.23,
+      "premierQuartile" : 42.0,
+      "mediane" : 50.0,
+      "troisiemeQuartile" : 58.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.19,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.64,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 11.29,
+      "premierQuartile" : 8.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 16.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Apiculteur",
+  "effets" : [ "AjouteOrDansBourses" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 70.9,
+    "premierQuartile" : 56.0,
+    "mediane" : 73.0,
+    "troisiemeQuartile" : 85.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 14.62,
+    "premierQuartile" : 12.0,
+    "mediane" : 18.0,
+    "troisiemeQuartile" : 18.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 51.91,
+      "premierQuartile" : 44.0,
+      "mediane" : 52.0,
+      "troisiemeQuartile" : 60.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 12.91,
+      "premierQuartile" : 8.0,
+      "mediane" : 14.0,
+      "troisiemeQuartile" : 18.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 82.27,
+      "premierQuartile" : 74.0,
+      "mediane" : 82.0,
+      "troisiemeQuartile" : 91.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 15.64,
+      "premierQuartile" : 16.0,
+      "mediane" : 18.0,
+      "troisiemeQuartile" : 18.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Apothicaire",
+  "effets" : [ "ReduceCoutChatelain" ],
+  "effetScore" : "PointsParBlasonDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 46.91,
+    "premierQuartile" : 38.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 54.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.17,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.66,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.04,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.7,
+      "premierQuartile" : 67.0,
+      "mediane" : 75.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.92,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Architecte",
+  "effets" : [ "ReduceCoutVillageois" ],
+  "effetScore" : "PointsParBlasonDistinct",
+  "scoreJoueur" : {
+    "moyenne" : 53.08,
+    "premierQuartile" : 43.5,
+    "mediane" : 52.0,
+    "troisiemeQuartile" : 61.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 10.16,
+    "premierQuartile" : 10.0,
+    "mediane" : 10.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 50.25,
+      "premierQuartile" : 42.0,
+      "mediane" : 50.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.16,
+      "premierQuartile" : 10.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.69,
+      "premierQuartile" : 69.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.14,
+      "premierQuartile" : 10.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Armurière",
+  "effets" : [ "ReduceCoutVillageois", "ReduceCoutChatelain" ],
+  "effetScore" : "PointsParBlasonDansLaRangeeEtLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 45.04,
+    "premierQuartile" : 37.0,
+    "mediane" : 44.0,
+    "troisiemeQuartile" : 53.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 1.86,
+    "premierQuartile" : 0.0,
+    "mediane" : 2.0,
+    "troisiemeQuartile" : 2.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.15,
+      "premierQuartile" : 36.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.84,
+      "premierQuartile" : 0.0,
+      "mediane" : 2.0,
+      "troisiemeQuartile" : 2.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 66.92,
+      "premierQuartile" : 58.0,
+      "mediane" : 68.0,
+      "troisiemeQuartile" : 75.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.3,
+      "premierQuartile" : 0.0,
+      "mediane" : 2.0,
+      "troisiemeQuartile" : 4.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Artificier",
+  "effets" : [ "AjouteCle", "AjouteOrParBlasonDansTableauVoisin" ],
+  "effetScore" : "PointsParBlasonDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 49.69,
+    "premierQuartile" : 39.0,
+    "mediane" : 47.0,
+    "troisiemeQuartile" : 57.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.56,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.45,
+      "premierQuartile" : 38.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.26,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.04,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.43,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Astronome",
+  "effets" : [ "ReduceCoutChatelain" ],
+  "effetScore" : "PointsSiColonneGauche",
+  "scoreJoueur" : {
+    "moyenne" : 46.79,
+    "premierQuartile" : 36.0,
+    "mediane" : 45.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.19,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 42.75,
+      "premierQuartile" : 35.0,
+      "mediane" : 42.0,
+      "troisiemeQuartile" : 50.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.59,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 74.3,
+      "premierQuartile" : 66.0,
+      "mediane" : 75.0,
+      "troisiemeQuartile" : 83.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.32,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Aubergiste",
+  "effets" : [ "AjouteOrDansBourses" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 67.79,
+    "premierQuartile" : 52.0,
+    "mediane" : 69.0,
+    "troisiemeQuartile" : 83.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 10.53,
+    "premierQuartile" : 10.0,
+    "mediane" : 12.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 51.02,
+      "premierQuartile" : 43.0,
+      "mediane" : 51.0,
+      "troisiemeQuartile" : 58.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.0,
+      "premierQuartile" : 8.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 81.12,
+      "premierQuartile" : 73.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 90.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.94,
+      "premierQuartile" : 12.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Aumônier",
+  "effets" : [ "AjouteCleParCarteAvecNbBlason" ],
+  "effetScore" : "PointsParVillageois",
+  "scoreJoueur" : {
+    "moyenne" : 57.64,
+    "premierQuartile" : 45.0,
+    "mediane" : 54.0,
+    "troisiemeQuartile" : 68.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 8.81,
+    "premierQuartile" : 6.0,
+    "mediane" : 8.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.84,
+      "premierQuartile" : 42.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.16,
+      "premierQuartile" : 6.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 10.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 84.09,
+      "premierQuartile" : 76.0,
+      "mediane" : 84.0,
+      "troisiemeQuartile" : 92.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 11.01,
+      "premierQuartile" : 10.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 14.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Banquière",
+  "effets" : [ "AjouteCle", "AjouteOrDansBourses" ],
+  "effetScore" : "PointsParOrDepose",
+  "scoreJoueur" : {
+    "moyenne" : 57.52,
+    "premierQuartile" : 39.0,
+    "mediane" : 51.0,
+    "troisiemeQuartile" : 76.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 8.32,
+    "premierQuartile" : 0.0,
+    "mediane" : 5.5,
+    "troisiemeQuartile" : 14.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.67,
+      "premierQuartile" : 34.0,
+      "mediane" : 43.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.78,
+      "premierQuartile" : 0.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 86.56,
+      "premierQuartile" : 77.0,
+      "mediane" : 87.0,
+      "troisiemeQuartile" : 96.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 17.85,
+      "premierQuartile" : 13.0,
+      "mediane" : 18.0,
+      "troisiemeQuartile" : 22.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Barbare",
+  "effets" : [ "AjouteCle", "AjouteOrParBlasonDansTableauVoisin" ],
+  "effetScore" : "PointsSiBlasonAbsent",
+  "scoreJoueur" : {
+    "moyenne" : 53.69,
+    "premierQuartile" : 39.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 69.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.83,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.36,
+      "premierQuartile" : 35.0,
+      "mediane" : 43.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.07,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 0.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.14,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.99,
+      "premierQuartile" : 10.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Baron",
+  "effets" : [ "ReduceCoutVillageois", "ReduceCoutChatelain" ],
+  "effetScore" : "PointsSiBlasonAbsent",
+  "scoreJoueur" : {
+    "moyenne" : 50.08,
+    "premierQuartile" : 37.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 1.91,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 0.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.02,
+      "premierQuartile" : 35.0,
+      "mediane" : 42.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.15,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 0.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.76,
+      "premierQuartile" : 67.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.67,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Bergère",
+  "effets" : [ "AjouteOrParEmplacementVide" ],
+  "effetScore" : "PointsParBlasonDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 56.02,
+    "premierQuartile" : 41.0,
+    "mediane" : 52.0,
+    "troisiemeQuartile" : 71.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.23,
+    "premierQuartile" : 3.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.8,
+      "premierQuartile" : 38.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.71,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.07,
+      "premierQuartile" : 71.0,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.41,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Bouffon",
+  "effets" : [ "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParBlasonDansLaRangeeEtLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 52.18,
+    "premierQuartile" : 39.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 62.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.86,
+    "premierQuartile" : 2.0,
+    "mediane" : 4.0,
+    "troisiemeQuartile" : 4.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.58,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.19,
+      "premierQuartile" : 2.0,
+      "mediane" : 2.0,
+      "troisiemeQuartile" : 4.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.46,
+      "premierQuartile" : 70.25,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.17,
+      "premierQuartile" : 4.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Boulangère",
+  "effets" : [ "AjouteOrPourChaqueBlason", "AjouteCleParVillageois" ],
+  "effetScore" : "PointsSiBord",
+  "scoreJoueur" : {
+    "moyenne" : 56.47,
+    "premierQuartile" : 42.0,
+    "mediane" : 52.0,
+    "troisiemeQuartile" : 71.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 1.4,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 3.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 46.55,
+      "premierQuartile" : 39.0,
+      "mediane" : 46.0,
+      "troisiemeQuartile" : 54.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.33,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 3.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 80.95,
+      "premierQuartile" : 73.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.55,
+      "premierQuartile" : 0.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 3.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Bourreau",
+  "effets" : [ "AjouteOrEnDefaussantUnChatelain" ],
+  "effetScore" : "PointsParChatelain",
+  "scoreJoueur" : {
+    "moyenne" : 51.02,
+    "premierQuartile" : 41.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 59.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.39,
+    "premierQuartile" : 2.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 4.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.84,
+      "premierQuartile" : 40.0,
+      "mediane" : 48.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.36,
+      "premierQuartile" : 2.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 4.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 77.66,
+      "premierQuartile" : 69.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.65,
+      "premierQuartile" : 2.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 5.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Brigand",
+  "effets" : [ "AjouteCleParChatelainDansTableauVoisin" ],
+  "effetScore" : "PointsParTripleVillageois",
+  "scoreJoueur" : {
+    "moyenne" : 54.03,
+    "premierQuartile" : 43.0,
+    "mediane" : 51.0,
+    "troisiemeQuartile" : 61.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 10.93,
+    "premierQuartile" : 7.0,
+    "mediane" : 14.0,
+    "troisiemeQuartile" : 14.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.46,
+      "premierQuartile" : 42.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.28,
+      "premierQuartile" : 7.0,
+      "mediane" : 7.0,
+      "troisiemeQuartile" : 14.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 86.02,
+      "premierQuartile" : 79.0,
+      "mediane" : 87.0,
+      "troisiemeQuartile" : 94.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 15.49,
+      "premierQuartile" : 14.0,
+      "mediane" : 14.0,
+      "troisiemeQuartile" : 21.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Bâtard",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "PointsParBlasonDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 49.94,
+    "premierQuartile" : 40.0,
+    "mediane" : 48.0,
+    "troisiemeQuartile" : 57.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.88,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.77,
+      "premierQuartile" : 38.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.62,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.77,
+      "premierQuartile" : 70.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.6,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Bûcheron",
+  "effets" : [ "AjouteOrParCartePositionee" ],
+  "effetScore" : "PointsSiColonneDroite",
+  "scoreJoueur" : {
+    "moyenne" : 59.41,
+    "premierQuartile" : 42.0,
+    "mediane" : 56.0,
+    "troisiemeQuartile" : 77.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.89,
+    "premierQuartile" : 0.0,
+    "mediane" : 5.0,
+    "troisiemeQuartile" : 5.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.29,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.66,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 5.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 81.1,
+      "premierQuartile" : 73.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.79,
+      "premierQuartile" : 5.0,
+      "mediane" : 5.0,
+      "troisiemeQuartile" : 5.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Capitaine",
+  "effets" : [ "ReduceCoutVillageois" ],
+  "effetScore" : "PointsSiColonneDroite",
+  "scoreJoueur" : {
+    "moyenne" : 47.46,
+    "premierQuartile" : 37.0,
+    "mediane" : 45.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.18,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.24,
+      "premierQuartile" : 35.0,
+      "mediane" : 42.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.54,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.11,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 83.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.41,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Cardinale",
+  "effets" : [ "AjouteCleParChatelain" ],
+  "effetScore" : "PointsParBlasonDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 51.43,
+    "premierQuartile" : 40.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.49,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.85,
+      "premierQuartile" : 38.0,
+      "mediane" : 46.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.0,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 77.12,
+      "premierQuartile" : 70.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.7,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Carte Verso",
+  "effets" : [ ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 47.81,
+    "premierQuartile" : 39.0,
+    "mediane" : 47.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 0.0,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 0.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.82,
+      "premierQuartile" : 38.0,
+      "mediane" : 46.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 0.0,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 0.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.32,
+      "premierQuartile" : 69.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 0.0,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 0.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Chancelière",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "PointsParChatelain",
+  "scoreJoueur" : {
+    "moyenne" : 52.87,
+    "premierQuartile" : 42.0,
+    "mediane" : 51.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 8.45,
+    "premierQuartile" : 6.0,
+    "mediane" : 8.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.51,
+      "premierQuartile" : 41.0,
+      "mediane" : 48.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.07,
+      "premierQuartile" : 6.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 10.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.96,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.81,
+      "premierQuartile" : 8.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 14.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Charpentier",
+  "effets" : [ "AjouteCleParBlasonAbsent" ],
+  "effetScore" : "PointsSiCarteVersoPresente",
+  "scoreJoueur" : {
+    "moyenne" : 51.12,
+    "premierQuartile" : 41.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.65,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.37,
+      "premierQuartile" : 39.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 55.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.94,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.23,
+      "premierQuartile" : 68.0,
+      "mediane" : 75.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.76,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 0.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Chevaleresse",
+  "effets" : [ "AjouteOrParChatelain" ],
+  "effetScore" : "PointsParBlasonDansLaRangeeEtLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 46.54,
+    "premierQuartile" : 36.0,
+    "mediane" : 44.0,
+    "troisiemeQuartile" : 54.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.52,
+    "premierQuartile" : 0.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 3.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 42.33,
+      "premierQuartile" : 35.0,
+      "mediane" : 42.0,
+      "troisiemeQuartile" : 50.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.91,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 3.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.4,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.69,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Châtelaine",
+  "effets" : [ "ReduceCoutChatelain" ],
+  "effetScore" : "PointsParBlasonDistinctDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 52.84,
+    "premierQuartile" : 43.0,
+    "mediane" : 51.0,
+    "troisiemeQuartile" : 61.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.92,
+    "premierQuartile" : 6.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.21,
+      "premierQuartile" : 41.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.84,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.67,
+      "premierQuartile" : 69.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.45,
+      "premierQuartile" : 6.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Curé",
+  "effets" : [ "AjouteOrParVillageois" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 66.27,
+    "premierQuartile" : 50.0,
+    "mediane" : 67.0,
+    "troisiemeQuartile" : 82.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 8.03,
+    "premierQuartile" : 8.0,
+    "mediane" : 10.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.95,
+      "premierQuartile" : 41.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.37,
+      "premierQuartile" : 4.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 80.96,
+      "premierQuartile" : 73.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.59,
+      "premierQuartile" : 10.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Doyenne",
+  "effets" : [ "AjouteOrDansBourses" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 65.94,
+    "premierQuartile" : 51.0,
+    "mediane" : 67.0,
+    "troisiemeQuartile" : 80.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 8.92,
+    "premierQuartile" : 10.0,
+    "mediane" : 10.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.21,
+      "premierQuartile" : 42.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.59,
+      "premierQuartile" : 8.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.23,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 9.16,
+      "premierQuartile" : 10.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Duchesse",
+  "effets" : [ "AjouteCle" ],
+  "effetScore" : "PointsSiRangSuperieur",
+  "scoreJoueur" : {
+    "moyenne" : 53.07,
+    "premierQuartile" : 39.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 65.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.89,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.59,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.63,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.29,
+      "premierQuartile" : 71.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.63,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Dévot",
+  "effets" : [ "AjouteOrParEmplacementVide" ],
+  "effetScore" : "PointsSiBlasonAbsent",
+  "scoreJoueur" : {
+    "moyenne" : 57.83,
+    "premierQuartile" : 41.0,
+    "mediane" : 54.0,
+    "troisiemeQuartile" : 76.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.09,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.61,
+      "premierQuartile" : 36.0,
+      "mediane" : 43.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.52,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 0.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.12,
+      "premierQuartile" : 70.0,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.34,
+      "premierQuartile" : 0.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Espion",
+  "effets" : [ "AjouteOrPourChaqueBlason", "AjouteCleParBlasonDansTableauVoisin" ],
+  "effetScore" : "PointsSiColonneMilieu",
+  "scoreJoueur" : {
+    "moyenne" : 48.89,
+    "premierQuartile" : 38.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 56.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.57,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.37,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.16,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.89,
+      "premierQuartile" : 69.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.11,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Fermière",
+  "effets" : [ "ReduceCoutVillageois" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 59.52,
+    "premierQuartile" : 44.0,
+    "mediane" : 56.0,
+    "troisiemeQuartile" : 74.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 7.05,
+    "premierQuartile" : 4.0,
+    "mediane" : 10.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.84,
+      "premierQuartile" : 40.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.75,
+      "premierQuartile" : 4.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.62,
+      "premierQuartile" : 71.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.58,
+      "premierQuartile" : 6.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Forgeronne",
+  "effets" : [ "AjouteCle", "AjouteOrParBlasonDansTableauVoisin" ],
+  "effetScore" : "PointsParCarteAvecNbBlasonMinimum",
+  "scoreJoueur" : {
+    "moyenne" : 50.0,
+    "premierQuartile" : 41.0,
+    "mediane" : 48.0,
+    "troisiemeQuartile" : 57.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.92,
+    "premierQuartile" : 6.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.67,
+      "premierQuartile" : 40.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 55.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.78,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.43,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 83.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.44,
+      "premierQuartile" : 6.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Fossoyeur",
+  "effets" : [ "AjouteOrEnDefaussantUnVillageois" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 67.98,
+    "premierQuartile" : 52.0,
+    "mediane" : 69.0,
+    "troisiemeQuartile" : 84.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 11.88,
+    "premierQuartile" : 8.0,
+    "mediane" : 16.0,
+    "troisiemeQuartile" : 16.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 51.35,
+      "premierQuartile" : 43.0,
+      "mediane" : 51.0,
+      "troisiemeQuartile" : 60.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 9.98,
+      "premierQuartile" : 4.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 16.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 81.79,
+      "premierQuartile" : 73.0,
+      "mediane" : 82.0,
+      "troisiemeQuartile" : 91.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 13.47,
+      "premierQuartile" : 14.0,
+      "mediane" : 16.0,
+      "troisiemeQuartile" : 16.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Garde royal",
+  "effets" : [ "AjouteClePourTousLesJoueurs" ],
+  "effetScore" : "PointsParBlasonDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 48.1,
+    "premierQuartile" : 38.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.29,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.7,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.9,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 3.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.14,
+      "premierQuartile" : 69.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.52,
+      "premierQuartile" : 6.0,
+      "mediane" : 9.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Générale",
+  "effets" : [ "AjouteCleParBlasonDistinct" ],
+  "effetScore" : "PointsParTripleBlason",
+  "scoreJoueur" : {
+    "moyenne" : 56.01,
+    "premierQuartile" : 44.0,
+    "mediane" : 53.0,
+    "troisiemeQuartile" : 65.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 10.22,
+    "premierQuartile" : 6.0,
+    "mediane" : 12.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.79,
+      "premierQuartile" : 42.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 58.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 9.26,
+      "premierQuartile" : 6.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 83.91,
+      "premierQuartile" : 77.0,
+      "mediane" : 84.0,
+      "troisiemeQuartile" : 92.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 14.54,
+      "premierQuartile" : 12.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 18.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Horlogère",
+  "effets" : [ "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParBlasonDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 51.45,
+    "premierQuartile" : 39.0,
+    "mediane" : 48.0,
+    "troisiemeQuartile" : 61.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.73,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.03,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.26,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.7,
+      "premierQuartile" : 68.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.6,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Intendant",
+  "effets" : [ "RemplitBourses" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 65.3,
+    "premierQuartile" : 49.0,
+    "mediane" : 66.0,
+    "troisiemeQuartile" : 81.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.84,
+    "premierQuartile" : 6.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.98,
+      "premierQuartile" : 41.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.92,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.73,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 87.75
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.78,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Inventeur",
+  "effets" : [ "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParVillageois",
+  "scoreJoueur" : {
+    "moyenne" : 53.93,
+    "premierQuartile" : 42.0,
+    "mediane" : 51.0,
+    "troisiemeQuartile" : 63.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.5,
+    "premierQuartile" : 4.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 7.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.27,
+      "premierQuartile" : 39.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 55.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.27,
+      "premierQuartile" : 4.0,
+      "mediane" : 5.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.47,
+      "premierQuartile" : 70.0,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.37,
+      "premierQuartile" : 5.0,
+      "mediane" : 7.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Juge",
+  "effets" : [ "AjouteCle" ],
+  "effetScore" : "PointsParPaireVillageoisChatelain",
+  "scoreJoueur" : {
+    "moyenne" : 52.95,
+    "premierQuartile" : 43.0,
+    "mediane" : 51.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 9.09,
+    "premierQuartile" : 9.0,
+    "mediane" : 9.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.68,
+      "premierQuartile" : 42.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.95,
+      "premierQuartile" : 6.0,
+      "mediane" : 9.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.06,
+      "premierQuartile" : 70.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.18,
+      "premierQuartile" : 9.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Maître d'armes",
+  "effets" : [ "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 61.1,
+    "premierQuartile" : 46.0,
+    "mediane" : 59.0,
+    "troisiemeQuartile" : 77.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.18,
+    "premierQuartile" : 4.0,
+    "mediane" : 8.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.66,
+      "premierQuartile" : 40.0,
+      "mediane" : 48.0,
+      "troisiemeQuartile" : 55.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.83,
+      "premierQuartile" : 4.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.15,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.64,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Maître de guilde",
+  "effets" : [ "AjouteCleEnDefaussantUnVillageois" ],
+  "effetScore" : "PointsSiRangInferieur",
+  "scoreJoueur" : {
+    "moyenne" : 47.44,
+    "premierQuartile" : 39.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 1.83,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 5.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.83,
+      "premierQuartile" : 38.0,
+      "mediane" : 46.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.69,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 5.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.51,
+      "premierQuartile" : 67.25,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 83.75
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.37,
+      "premierQuartile" : 5.0,
+      "mediane" : 5.0,
+      "troisiemeQuartile" : 5.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Mendiante",
+  "effets" : [ "AjouteOrParCartePositionee" ],
+  "effetScore" : "PointsParBlasonDansLaRangeeEtLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 56.89,
+    "premierQuartile" : 41.0,
+    "mediane" : 53.0,
+    "troisiemeQuartile" : 73.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.16,
+    "premierQuartile" : 0.0,
+    "mediane" : 2.0,
+    "troisiemeQuartile" : 4.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.59,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 54.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.51,
+      "premierQuartile" : 0.0,
+      "mediane" : 2.0,
+      "troisiemeQuartile" : 2.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.8,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.49,
+      "premierQuartile" : 2.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Mercenaire",
+  "effets" : [ "AjouteOrParBlasonDistinct" ],
+  "effetScore" : "PointsParGroupeDeBlasons",
+  "scoreJoueur" : {
+    "moyenne" : 58.7,
+    "premierQuartile" : 44.0,
+    "mediane" : 55.0,
+    "troisiemeQuartile" : 73.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 9.01,
+    "premierQuartile" : 7.0,
+    "mediane" : 7.0,
+    "troisiemeQuartile" : 14.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.54,
+      "premierQuartile" : 40.0,
+      "mediane" : 48.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.44,
+      "premierQuartile" : 7.0,
+      "mediane" : 7.0,
+      "troisiemeQuartile" : 14.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 82.66,
+      "premierQuartile" : 74.0,
+      "mediane" : 83.0,
+      "troisiemeQuartile" : 91.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 12.72,
+      "premierQuartile" : 7.0,
+      "mediane" : 14.0,
+      "troisiemeQuartile" : 14.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Milicien",
+  "effets" : [ "AjouteCle", "AjouteOrParBlasonDansTableauVoisin" ],
+  "effetScore" : "PointsParBlasonDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 49.61,
+    "premierQuartile" : 39.0,
+    "mediane" : 47.0,
+    "troisiemeQuartile" : 57.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.49,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.56,
+      "premierQuartile" : 38.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.25,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.48,
+      "premierQuartile" : 68.5,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.14,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Miraculée",
+  "effets" : [ "AjouteCleParCarteBourse" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 59.87,
+    "premierQuartile" : 44.0,
+    "mediane" : 56.0,
+    "troisiemeQuartile" : 76.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.77,
+    "premierQuartile" : 4.0,
+    "mediane" : 8.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.49,
+      "premierQuartile" : 40.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 55.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.57,
+      "premierQuartile" : 2.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 80.03,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.08,
+      "premierQuartile" : 4.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Moine",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "PointsParBlasonDansLaRangeeEtLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 50.31,
+    "premierQuartile" : 39.0,
+    "mediane" : 48.0,
+    "troisiemeQuartile" : 58.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.47,
+    "premierQuartile" : 2.0,
+    "mediane" : 4.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.92,
+      "premierQuartile" : 38.0,
+      "mediane" : 46.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.15,
+      "premierQuartile" : 2.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.79,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.63,
+      "premierQuartile" : 4.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Mère supérieure",
+  "effets" : [ "AjouteCle" ],
+  "effetScore" : "PointsSiRangSuperieur",
+  "scoreJoueur" : {
+    "moyenne" : 53.41,
+    "premierQuartile" : 41.0,
+    "mediane" : 50.0,
+    "troisiemeQuartile" : 63.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.31,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 5.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.94,
+      "premierQuartile" : 38.0,
+      "mediane" : 46.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.62,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 5.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 77.71,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.55,
+      "premierQuartile" : 5.0,
+      "mediane" : 5.0,
+      "troisiemeQuartile" : 5.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Mécène",
+  "effets" : [ "AjouteOrPourTousLesAdversaires" ],
+  "effetScore" : "PointsParCarteAvecCoutMinimum",
+  "scoreJoueur" : {
+    "moyenne" : 55.13,
+    "premierQuartile" : 44.0,
+    "mediane" : 53.0,
+    "troisiemeQuartile" : 64.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 14.36,
+    "premierQuartile" : 10.0,
+    "mediane" : 15.0,
+    "troisiemeQuartile" : 20.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 50.63,
+      "premierQuartile" : 43.0,
+      "mediane" : 51.0,
+      "troisiemeQuartile" : 58.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 14.01,
+      "premierQuartile" : 10.0,
+      "mediane" : 15.0,
+      "troisiemeQuartile" : 15.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.26,
+      "premierQuartile" : 69.0,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 16.19,
+      "premierQuartile" : 15.0,
+      "mediane" : 15.0,
+      "troisiemeQuartile" : 20.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Médecin",
+  "effets" : [ "AjouteOrPourChaqueBlason", "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParGroupeDeBlasons",
+  "scoreJoueur" : {
+    "moyenne" : 58.73,
+    "premierQuartile" : 44.0,
+    "mediane" : 55.0,
+    "troisiemeQuartile" : 73.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 8.6,
+    "premierQuartile" : 4.0,
+    "mediane" : 8.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.98,
+      "premierQuartile" : 40.0,
+      "mediane" : 48.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.05,
+      "premierQuartile" : 4.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 81.43,
+      "premierQuartile" : 74.0,
+      "mediane" : 82.0,
+      "troisiemeQuartile" : 90.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 9.87,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Nonne",
+  "effets" : [ "AjouteOrParChatelain" ],
+  "effetScore" : "PointsParBlasonDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 53.23,
+    "premierQuartile" : 40.0,
+    "mediane" : 50.0,
+    "troisiemeQuartile" : 64.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.75,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.37,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.09,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 77.93,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.81,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Officier",
+  "effets" : [ "AjouteOrPourChaqueBlason", "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParGroupeDeBlasons",
+  "scoreJoueur" : {
+    "moyenne" : 49.66,
+    "premierQuartile" : 39.0,
+    "mediane" : 47.0,
+    "troisiemeQuartile" : 57.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.0,
+    "premierQuartile" : 4.0,
+    "mediane" : 4.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.64,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.31,
+      "premierQuartile" : 0.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 77.19,
+      "premierQuartile" : 69.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.78,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Orfèvre",
+  "effets" : [ "AjouteCleParCarteAvecNbBlason" ],
+  "effetScore" : "PointsSiColonneGauche",
+  "scoreJoueur" : {
+    "moyenne" : 48.87,
+    "premierQuartile" : 38.0,
+    "mediane" : 47.0,
+    "troisiemeQuartile" : 57.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.52,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.61,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.08,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.08,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 83.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.19,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Philosophe",
+  "effets" : [ "ReduceCoutChatelain" ],
+  "effetScore" : "PointsSiBlasonAbsent",
+  "scoreJoueur" : {
+    "moyenne" : 51.86,
+    "premierQuartile" : 37.0,
+    "mediane" : 47.0,
+    "troisiemeQuartile" : 64.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 3.02,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.01,
+      "premierQuartile" : 35.0,
+      "mediane" : 42.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.38,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 0.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 77.85,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.84,
+      "premierQuartile" : 10.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Potier",
+  "effets" : [ "AjouteOrDansBourses" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 64.47,
+    "premierQuartile" : 48.0,
+    "mediane" : 64.0,
+    "troisiemeQuartile" : 80.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 7.39,
+    "premierQuartile" : 8.0,
+    "mediane" : 8.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.38,
+      "premierQuartile" : 41.0,
+      "mediane" : 48.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.25,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.61,
+      "premierQuartile" : 71.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.53,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Prince",
+  "effets" : [ "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParBlasonDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 50.92,
+    "premierQuartile" : 38.0,
+    "mediane" : 47.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.13,
+    "premierQuartile" : 4.0,
+    "mediane" : 4.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.25,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.23,
+      "premierQuartile" : 4.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 4.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.75,
+      "premierQuartile" : 68.0,
+      "mediane" : 77.0,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 9.61,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Princesse",
+  "effets" : [ "ReduceCoutChatelain" ],
+  "effetScore" : "PointsParBlasonDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 47.41,
+    "premierQuartile" : 38.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.18,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.76,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.5,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.92,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.89,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.5,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.0,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Professeur",
+  "effets" : [ "AjouteOrParBlasonDistinct" ],
+  "effetScore" : "PointsParBlasonDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 52.32,
+    "premierQuartile" : 40.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 62.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.36,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.56,
+      "premierQuartile" : 38.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.06,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 76.53,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 85.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.44,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Prêteur sur gages",
+  "effets" : [ "AjouteOrParCarteAvecLeCout" ],
+  "effetScore" : "PointsParCarteAvecCoutExact",
+  "scoreJoueur" : {
+    "moyenne" : 51.1,
+    "premierQuartile" : 41.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 59.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 7.42,
+    "premierQuartile" : 6.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 9.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.15,
+      "premierQuartile" : 40.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 54.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.26,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.7,
+      "premierQuartile" : 68.0,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.44,
+      "premierQuartile" : 6.0,
+      "mediane" : 9.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Pèlerin",
+  "effets" : [ "ReduceCoutVillageois" ],
+  "effetScore" : "PointsParBlasonDistinctDansLaRangee",
+  "scoreJoueur" : {
+    "moyenne" : 57.18,
+    "premierQuartile" : 45.0,
+    "mediane" : 54.0,
+    "troisiemeQuartile" : 68.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 11.16,
+    "premierQuartile" : 8.0,
+    "mediane" : 12.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 50.19,
+      "premierQuartile" : 43.0,
+      "mediane" : 50.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.84,
+      "premierQuartile" : 8.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 78.87,
+      "premierQuartile" : 71.0,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 12.18,
+      "premierQuartile" : 12.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Pêcheur",
+  "effets" : [ "ReduceCoutChatelain" ],
+  "effetScore" : "PointsSiCoin",
+  "scoreJoueur" : {
+    "moyenne" : 46.68,
+    "premierQuartile" : 37.0,
+    "mediane" : 45.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 1.95,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 4.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.75,
+      "premierQuartile" : 36.0,
+      "mediane" : 43.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.75,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 4.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 73.51,
+      "premierQuartile" : 66.0,
+      "mediane" : 73.0,
+      "troisiemeQuartile" : 82.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.82,
+      "premierQuartile" : 4.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 4.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Révolutionnaire",
+  "effets" : [ "AjouteCleParVillageois" ],
+  "effetScore" : "PointsSiBlasonAbsent",
+  "scoreJoueur" : {
+    "moyenne" : 56.3,
+    "premierQuartile" : 40.0,
+    "mediane" : 52.0,
+    "troisiemeQuartile" : 72.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.12,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 9.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.07,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.73,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 9.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 80.5,
+      "premierQuartile" : 72.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.12,
+      "premierQuartile" : 9.0,
+      "mediane" : 9.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Sa Majesté la reine",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "PointsParGroupeDeBlasons",
+  "scoreJoueur" : {
+    "moyenne" : 49.99,
+    "premierQuartile" : 39.0,
+    "mediane" : 48.0,
+    "troisiemeQuartile" : 58.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 8.42,
+    "premierQuartile" : 0.0,
+    "mediane" : 10.0,
+    "troisiemeQuartile" : 10.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 46.66,
+      "premierQuartile" : 38.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 54.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.7,
+      "premierQuartile" : 0.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 10.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.48,
+      "premierQuartile" : 70.5,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 14.76,
+      "premierQuartile" : 10.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 20.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Sa Sainteté",
+  "effets" : [ "AjouteCle", "AjouteClePourTousLesAdversaires" ],
+  "effetScore" : "PointsParBlasonManquant",
+  "scoreJoueur" : {
+    "moyenne" : 65.95,
+    "premierQuartile" : 49.0,
+    "mediane" : 69.0,
+    "troisiemeQuartile" : 82.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 9.26,
+    "premierQuartile" : 6.0,
+    "mediane" : 12.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 46.47,
+      "premierQuartile" : 38.0,
+      "mediane" : 46.0,
+      "troisiemeQuartile" : 54.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.1,
+      "premierQuartile" : 0.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.25,
+      "premierQuartile" : 71.0,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 11.41,
+      "premierQuartile" : 6.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Scribe",
+  "effets" : [ "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParBlasonDansLaRangeeEtLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 46.2,
+    "premierQuartile" : 36.0,
+    "mediane" : 44.0,
+    "troisiemeQuartile" : 54.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.43,
+    "premierQuartile" : 0.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 3.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 43.15,
+      "premierQuartile" : 35.0,
+      "mediane" : 43.0,
+      "troisiemeQuartile" : 51.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.25,
+      "premierQuartile" : 0.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 3.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 74.74,
+      "premierQuartile" : 68.0,
+      "mediane" : 75.0,
+      "troisiemeQuartile" : 83.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.13,
+      "premierQuartile" : 0.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Sculptrice",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "EffetScoreVide",
+  "scoreJoueur" : {
+    "moyenne" : 65.32,
+    "premierQuartile" : 49.0,
+    "mediane" : 64.0,
+    "troisiemeQuartile" : 82.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 9.48,
+    "premierQuartile" : 4.0,
+    "mediane" : 14.0,
+    "troisiemeQuartile" : 14.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.16,
+      "premierQuartile" : 41.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.18,
+      "premierQuartile" : 2.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 14.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 80.74,
+      "premierQuartile" : 72.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 90.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.72,
+      "premierQuartile" : 8.0,
+      "mediane" : 14.0,
+      "troisiemeQuartile" : 14.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Serrurier",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "PointsParCle",
+  "scoreJoueur" : {
+    "moyenne" : 51.55,
+    "premierQuartile" : 41.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.47,
+    "premierQuartile" : 3.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 9.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.69,
+      "premierQuartile" : 39.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.03,
+      "premierQuartile" : 3.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 80.64,
+      "premierQuartile" : 72.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 9.78,
+      "premierQuartile" : 6.0,
+      "mediane" : 10.0,
+      "troisiemeQuartile" : 13.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Son Altesse",
+  "effets" : [ "AjouteOrPourTousLesAdversaires" ],
+  "effetScore" : "PointsParBlasonDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 48.1,
+    "premierQuartile" : 38.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 55.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.82,
+    "premierQuartile" : 4.0,
+    "mediane" : 4.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.45,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.17,
+      "premierQuartile" : 4.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 4.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 74.25,
+      "premierQuartile" : 66.0,
+      "mediane" : 75.0,
+      "troisiemeQuartile" : 82.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.44,
+      "premierQuartile" : 8.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Sorcière",
+  "effets" : [ "AjouteOrPourChaqueBlason", "AjouteCleParBlasonDansTableauVoisin" ],
+  "effetScore" : "PointsSiBlasonAbsent",
+  "scoreJoueur" : {
+    "moyenne" : 52.06,
+    "premierQuartile" : 39.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 63.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.9,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 9.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.51,
+      "premierQuartile" : 36.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 52.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.36,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 9.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.5,
+      "premierQuartile" : 68.25,
+      "mediane" : 76.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.58,
+      "premierQuartile" : 0.0,
+      "mediane" : 9.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Souffleur de verre",
+  "effets" : [ "AjouteOrPourChaqueBlason", "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsParGroupeDeBlasons",
+  "scoreJoueur" : {
+    "moyenne" : 52.78,
+    "premierQuartile" : 40.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 63.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.79,
+    "premierQuartile" : 4.0,
+    "mediane" : 4.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.24,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.76,
+      "premierQuartile" : 4.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.89,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 9.48,
+      "premierQuartile" : 8.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Tailleuse de pierre",
+  "effets" : [ "ReduceCoutVillageois" ],
+  "effetScore" : "PointsParBlasonDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 47.96,
+    "premierQuartile" : 38.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 56.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 4.54,
+    "premierQuartile" : 3.0,
+    "mediane" : 3.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.03,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 4.23,
+      "premierQuartile" : 3.0,
+      "mediane" : 3.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 75.07,
+      "premierQuartile" : 66.0,
+      "mediane" : 75.0,
+      "troisiemeQuartile" : 84.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.39,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 9.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Templier",
+  "effets" : [ "AjouteClePourChaqueBlason", "AjouteOrParBlasonDansTableauVoisin" ],
+  "effetScore" : "PointsParCle",
+  "scoreJoueur" : {
+    "moyenne" : 51.47,
+    "premierQuartile" : 41.0,
+    "mediane" : 49.0,
+    "troisiemeQuartile" : 59.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.41,
+    "premierQuartile" : 4.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 9.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.07,
+      "premierQuartile" : 39.0,
+      "mediane" : 48.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.12,
+      "premierQuartile" : 4.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 81.03,
+      "premierQuartile" : 73.0,
+      "mediane" : 83.0,
+      "troisiemeQuartile" : 89.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 8.96,
+      "premierQuartile" : 6.0,
+      "mediane" : 9.0,
+      "troisiemeQuartile" : 12.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Usurpateur",
+  "effets" : [ "AjouteCleParCarteAvecNbBlason" ],
+  "effetScore" : "PointsParChatelain",
+  "scoreJoueur" : {
+    "moyenne" : 52.01,
+    "premierQuartile" : 42.0,
+    "mediane" : 50.0,
+    "troisiemeQuartile" : 60.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.0,
+    "premierQuartile" : 4.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 47.87,
+      "premierQuartile" : 40.0,
+      "mediane" : 47.0,
+      "troisiemeQuartile" : 55.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.89,
+      "premierQuartile" : 4.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.52,
+      "premierQuartile" : 72.0,
+      "mediane" : 79.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.73,
+      "premierQuartile" : 4.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Veilleur",
+  "effets" : [ "AjouteClePourChaqueBlason" ],
+  "effetScore" : "PointsParBlasonDistinctDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 59.46,
+    "premierQuartile" : 46.0,
+    "mediane" : 56.0,
+    "troisiemeQuartile" : 73.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 11.29,
+    "premierQuartile" : 8.0,
+    "mediane" : 12.0,
+    "troisiemeQuartile" : 12.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.71,
+      "premierQuartile" : 42.0,
+      "mediane" : 50.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 10.4,
+      "premierQuartile" : 8.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 12.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 79.63,
+      "premierQuartile" : 72.0,
+      "mediane" : 80.0,
+      "troisiemeQuartile" : 87.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 13.12,
+      "premierQuartile" : 12.0,
+      "mediane" : 12.0,
+      "troisiemeQuartile" : 16.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Vigneron",
+  "effets" : [ "AjouteOrParVillageois" ],
+  "effetScore" : "PointsParBlasonDistinctDansLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 60.29,
+    "premierQuartile" : 46.0,
+    "mediane" : 57.0,
+    "troisiemeQuartile" : 75.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 6.79,
+    "premierQuartile" : 6.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 8.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 49.36,
+      "premierQuartile" : 41.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 57.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.57,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 80.29,
+      "premierQuartile" : 72.0,
+      "mediane" : 81.0,
+      "troisiemeQuartile" : 88.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 7.2,
+      "premierQuartile" : 6.0,
+      "mediane" : 8.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Voyageuse",
+  "effets" : [ "AjouteOrParCarteAvecLeCout" ],
+  "effetScore" : "PointsParCarteAvecCoutExact",
+  "scoreJoueur" : {
+    "moyenne" : 61.86,
+    "premierQuartile" : 46.0,
+    "mediane" : 58.0,
+    "troisiemeQuartile" : 79.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 5.75,
+    "premierQuartile" : 4.0,
+    "mediane" : 6.0,
+    "troisiemeQuartile" : 6.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 48.78,
+      "premierQuartile" : 41.0,
+      "mediane" : 49.0,
+      "troisiemeQuartile" : 56.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 5.24,
+      "premierQuartile" : 4.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 6.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 82.48,
+      "premierQuartile" : 75.0,
+      "mediane" : 83.0,
+      "troisiemeQuartile" : 90.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 6.55,
+      "premierQuartile" : 6.0,
+      "mediane" : 6.0,
+      "troisiemeQuartile" : 8.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Écuyer",
+  "effets" : [ "ReduceCoutVillageois", "ReduceCoutChatelain" ],
+  "effetScore" : "PointsParBlasonDansLaRangeeEtLaColonne",
+  "scoreJoueur" : {
+    "moyenne" : 47.72,
+    "premierQuartile" : 38.0,
+    "mediane" : 46.0,
+    "troisiemeQuartile" : 56.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 1.98,
+    "premierQuartile" : 0.0,
+    "mediane" : 2.0,
+    "troisiemeQuartile" : 4.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 44.87,
+      "premierQuartile" : 37.0,
+      "mediane" : 44.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.82,
+      "premierQuartile" : 0.0,
+      "mediane" : 2.0,
+      "troisiemeQuartile" : 2.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 73.73,
+      "premierQuartile" : 65.0,
+      "mediane" : 74.0,
+      "troisiemeQuartile" : 82.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 3.44,
+      "premierQuartile" : 2.0,
+      "mediane" : 4.0,
+      "troisiemeQuartile" : 6.0
+    }
+  } ]
+}, {
+  "nomCarte" : "Épicière",
+  "effets" : [ "AjouteOrPourChaqueBlason" ],
+  "effetScore" : "PointsSiRangMilieu",
+  "scoreJoueur" : {
+    "moyenne" : 55.1,
+    "premierQuartile" : 41.0,
+    "mediane" : 52.0,
+    "troisiemeQuartile" : 69.0
+  },
+  "scoreCarte" : {
+    "moyenne" : 2.0,
+    "premierQuartile" : 0.0,
+    "mediane" : 0.0,
+    "troisiemeQuartile" : 5.0
+  },
+  "parStrategie" : [ {
+    "nomStrategie" : "Aléatoire",
+    "scoreJoueur" : {
+      "moyenne" : 45.05,
+      "premierQuartile" : 37.0,
+      "mediane" : 45.0,
+      "troisiemeQuartile" : 53.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 1.69,
+      "premierQuartile" : 0.0,
+      "mediane" : 0.0,
+      "troisiemeQuartile" : 5.0
+    }
+  }, {
+    "nomStrategie" : "Prévoyante",
+    "scoreJoueur" : {
+      "moyenne" : 77.59,
+      "premierQuartile" : 70.0,
+      "mediane" : 78.0,
+      "troisiemeQuartile" : 86.0
+    },
+    "scoreCarte" : {
+      "moyenne" : 2.71,
+      "premierQuartile" : 0.0,
+      "mediane" : 5.0,
+      "troisiemeQuartile" : 5.0
+    }
+  } ]
+} ]
