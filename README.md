@@ -74,7 +74,7 @@ A few examples:
 
 ## Strategies
 
-Four strategies are implemented, each implementing the `Strategie` interface:
+Five strategies are implemented, each implementing the `Strategie` interface:
 
 | Strategy                 | Description                                                                                                                                                                                                                                                                  |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -82,10 +82,11 @@ Four strategies are implemented, each implementing the `Strategie` interface:
 | `StrategieGourmande`     | Greedy — each turn picks the card × position that maximises the marginal score gain (including board synergies, bourse value, on-placement effect estimation, and gold opportunity cost)                                                                                      |
 | `StrategiePrevoyante`    | Greedy + foresighted — same evaluation as *Gourmande*, plus: evaluates all 4 displacement directions with a conservative threshold, and scores `PointsParOrDepose` effects at theoretical maximum                                                                            |
 | `StrategieAnticipatrice` | 2-turn lookahead — extends *Prévoyante* with a raised key penalty (`penaliteCle = 2`) and evaluates deck-swap decisions by simulating this turn's best coup then estimating the best next-turn coup across both decks' remaining visible cards (discounted by 0.5)            |
+| `StrategieGenetique`     | Learnable — scores each candidate move (carte × position × action clé) as the dot product of a 15-dimension feature vector and a `Genome` of weights. Default genome approximates *Gourmande*; weights are designed to be evolved by a GA and to feed an RL policy net later  |
 
-All non-random strategies share heuristics from `EvaluateurHeuristique`: on-placement effect valuation (gold/keys → points) and gold opportunity cost (gold spent on a card that could have filled bourses).
+All non-random heuristic strategies share `EvaluateurHeuristique`: on-placement effect valuation (gold/keys → points) and gold opportunity cost (gold spent on a card that could have filled bourses). `StrategieGenetique` reuses the same heuristics inside its feature extractor.
 
-`Main.kt` pits one `StrategieAleatoire` player against one `StrategieGourmande`, one `StrategiePrevoyante`, and one `StrategieAnticipatrice`.
+`Main.kt` pits one `StrategieGenetique` player against one `StrategieGourmande`, one `StrategiePrevoyante`, and one `StrategieAnticipatrice`.
 
 ## Dashboard
 
@@ -111,6 +112,7 @@ src/main/kotlin/com/chateaucombo/
 ├── joueur/                  # Player state and repository
 ├── score/                   # End-of-game scoring
 ├── strategie/               # AI strategies
+│   └── genetique/           # Genome + feature extractor + StrategieGenetique
 ├── tableau/                 # 3×3 board + position logic
 └── simulation/              # N-game runner + stats aggregation
 

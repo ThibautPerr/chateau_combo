@@ -80,7 +80,11 @@ com.chateaucombo/
 │   ├── StrategieAleatoire.kt
 │   ├── StrategieGourmande.kt     # Greedy: marginal board score + shared heuristics
 │   ├── StrategiePrevoyante.kt    # Greedy + displacement optimisation + conservative threshold
-│   └── StrategieAnticipatrice.kt # 2-turn lookahead + raised key penalty for deck-swap decisions
+│   ├── StrategieAnticipatrice.kt # 2-turn lookahead + raised key penalty for deck-swap decisions
+│   └── genetique/
+│       ├── Genome.kt             # FloatArray of 15 weights, JSON (de)serialisable, content-based equality
+│       ├── ExtracteurFeatures.kt # Pure: (joueur, carte, position, ActionCle, tour) → FloatArray[15]
+│       └── StrategieGenetique.kt # Argmax of genome · features over (carte × position × ActionCle); designed to host an evolved or RL-trained policy
 └── simulation/
     ├── Simulation.kt              # Runs N games, aggregates per-player, per-card, and per-effect stats
     └── StatistiquesSimulation.kt  # Data classes for stats output
