@@ -224,14 +224,34 @@ class Simulation(
     }
 
     private fun silenceLogs(block: () -> Unit) {
-        val rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger
-        val originalLevel = rootLogger.level
-        rootLogger.level = Level.WARN
+        // `as?` plutôt que `as` : pendant l'init SLF4J (notamment quand plusieurs Simulation
+        // démarrent en parallèle depuis l'évolution), getLogger peut renvoyer un
+        // SubstituteLogger non castable. Dans ce cas on exécute le bloc sans silencer.
+        val rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as? Logger
+        if (rootLogger == null) {
+            block()
+            return
+        }
+        val depth = silenceDepth.getAndIncrement()
+        if (depth == 0) {
+            originalLevel = rootLogger.level
+            rootLogger.level = Level.WARN
+        }
         try {
             block()
         } finally {
-            rootLogger.level = originalLevel
+            if (silenceDepth.decrementAndGet() == 0) {
+                originalLevel?.let { rootLogger.level = it }
+                originalLevel = null
+            }
         }
+    }
+
+    companion object {
+        // Compteur global de profondeur de silence : permet à plusieurs Simulation.run()
+        // concurrents de partager le même bascule de niveau racine sans se piétiner.
+        private val silenceDepth = java.util.concurrent.atomic.AtomicInteger(0)
+        @Volatile private var originalLevel: Level? = null
     }
 
     private fun List<Int>.stats() =

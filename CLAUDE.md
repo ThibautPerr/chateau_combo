@@ -23,6 +23,11 @@ mvn exec:java -Dexec.mainClass=com.chateaucombo.MainKt
 # Run simulation with custom number of games
 mvn exec:java -Dexec.mainClass=com.chateaucombo.MainKt -Dexec.args="50000"
 
+# Train a Genome via genetic algorithm (default: 60 pop × 30 gens × 100 games)
+mvn exec:java -Dexec.mainClass=com.chateaucombo.MainEvolutionKt
+# Custom: <population> <generations> <games per eval> <RNG seed>
+mvn exec:java -Dexec.mainClass=com.chateaucombo.MainEvolutionKt -Dexec.args="80 50 200 42"
+
 # Serve dashboard locally
 cd stats && python3 -m http.server 8080
 ```
@@ -43,7 +48,8 @@ Kotlin + Maven board game simulator for **Château Combo** (a card placement gam
 ```
 com.chateaucombo/
 ├── ChateauCombo.kt        # Main game orchestrator (9-turn loop)
-├── Main.kt                # Entry point – runs simulation, writes stats JSON + runs.json index
+├── Main.kt                # Entry point – runs simulation; auto-loads stats/genomes/best.json if present
+├── MainEvolution.kt       # Entry point – trains a Genome via the GA, writes best.json + history
 ├── ReglesDuJeu.kt         # Game rules constants
 ├── deck/
 │   ├── Deck.kt
@@ -84,7 +90,13 @@ com.chateaucombo/
 │   └── genetique/
 │       ├── Genome.kt             # FloatArray of 15 weights, JSON (de)serialisable, content-based equality
 │       ├── ExtracteurFeatures.kt # Pure: (joueur, carte, position, ActionCle, tour) → FloatArray[15]
-│       └── StrategieGenetique.kt # Argmax of genome · features over (carte × position × ActionCle); designed to host an evolved or RL-trained policy
+│       ├── StrategieGenetique.kt # Argmax of genome · features over (carte × position × ActionCle); designed to host an evolved or RL-trained policy
+│       └── evolution/
+│           ├── Population.kt     # Random init via Gaussian (injectable Random)
+│           ├── Selection.kt      # Tournament selection (k participants, with replacement)
+│           ├── Croisement.kt     # Uniform crossover + per-gene Gaussian mutation
+│           ├── Fitness.kt        # Score advantage = avg(Genetique) - avg(mean of 3 baselines) over N games
+│           └── Evolution.kt      # Generational loop with elitism, parallel eval via ForkJoinPool, exposes a `surGeneration` callback for progress
 └── simulation/
     ├── Simulation.kt              # Runs N games, aggregates per-player, per-card, and per-effect stats
     └── StatistiquesSimulation.kt  # Data classes for stats output

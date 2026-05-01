@@ -4,6 +4,7 @@ import com.chateaucombo.joueur.Joueur
 import com.chateaucombo.strategie.StrategieAnticipatrice
 import com.chateaucombo.strategie.StrategieGourmande
 import com.chateaucombo.strategie.StrategiePrevoyante
+import com.chateaucombo.strategie.genetique.Genome
 import com.chateaucombo.strategie.genetique.StrategieGenetique
 import com.chateaucombo.simulation.ResultatSimulation
 import com.chateaucombo.simulation.Simulation
@@ -14,9 +15,10 @@ import java.time.format.DateTimeFormatter
 
 fun main(args: Array<String>) {
     val nbParties = args.firstOrNull()?.toIntOrNull() ?: 10000
+    val genome = chargeGenome()
     println("Simulation de $nbParties parties en cours...")
     val joueurs = listOf(
-        Joueur(id = 0, strategie = StrategieGenetique()),
+        Joueur(id = 0, strategie = StrategieGenetique(genome)),
         Joueur(id = 1, strategie = StrategieGourmande()),
         Joueur(id = 2, strategie = StrategiePrevoyante()),
         Joueur(id = 3, strategie = StrategieAnticipatrice()),
@@ -40,12 +42,23 @@ private fun ecritsResultats(resultat: ResultatSimulation, runDir: File) {
 
 private fun metsAJourIndex(statsDir: File) {
     val runs = statsDir.listFiles()
-        ?.filter { it.isDirectory }
+        ?.filter { it.isDirectory && File(it, "player_scores.json").exists() }
         ?.map { it.name }
         ?.sortedDescending()
         ?: emptyList()
     mapper.writeValue(File(statsDir, "runs.json"), runs)
     println("Index des simulations mis à jour (${runs.size} runs)")
+}
+
+private fun chargeGenome(): Genome {
+    val fichier = File("stats/genomes/best.json")
+    return if (fichier.exists()) {
+        println("Chargement du génome appris depuis ${fichier.path}")
+        Genome.depuis(fichier)
+    } else {
+        println("Aucun génome appris (${fichier.path}), utilisation du génome par défaut")
+        Genome.parDefaut()
+    }
 }
 
 private fun afficheResume(resultat: ResultatSimulation) {

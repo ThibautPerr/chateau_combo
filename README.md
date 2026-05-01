@@ -86,7 +86,24 @@ Five strategies are implemented, each implementing the `Strategie` interface:
 
 All non-random heuristic strategies share `EvaluateurHeuristique`: on-placement effect valuation (gold/keys → points) and gold opportunity cost (gold spent on a card that could have filled bourses). `StrategieGenetique` reuses the same heuristics inside its feature extractor.
 
-`Main.kt` pits one `StrategieGenetique` player against one `StrategieGourmande`, one `StrategiePrevoyante`, and one `StrategieAnticipatrice`.
+`Main.kt` pits one `StrategieGenetique` player against one `StrategieGourmande`, one `StrategiePrevoyante`, and one `StrategieAnticipatrice`. If `stats/genomes/best.json` exists, that learned genome is loaded automatically; otherwise the default (Gourmande-like) genome is used.
+
+## Training a genome
+
+```bash
+# Default: 60 genomes × 30 generations × 100 games each (≈ 3 min on a laptop)
+mvn exec:java -Dexec.mainClass=com.chateaucombo.MainEvolutionKt
+
+# Custom: <population> <generations> <games per evaluation> <RNG seed>
+mvn exec:java -Dexec.mainClass=com.chateaucombo.MainEvolutionKt -Dexec.args="80 50 200 42"
+```
+
+The evolution loop runs a generational GA: tournament selection (k=3), uniform crossover, Gaussian mutation, with elitism. Fitness = average score advantage of the genome's player vs. the mean of the three baseline strategies, evaluated by full simulations. Evaluations are parallelised across the JVM `ForkJoinPool`.
+
+Outputs in `stats/genomes/`:
+- `best.json` — best genome ever observed (used by `MainKt` automatically)
+- `<timestamp>.json` — archive of the same genome
+- `<timestamp>_historique.json` — per-generation fitness stats (best / mean / median)
 
 ## Dashboard
 
@@ -113,6 +130,7 @@ src/main/kotlin/com/chateaucombo/
 ├── score/                   # End-of-game scoring
 ├── strategie/               # AI strategies
 │   └── genetique/           # Genome + feature extractor + StrategieGenetique
+│       └── evolution/       # GA training loop (Population, Selection, Croisement, Fitness, Evolution)
 ├── tableau/                 # 3×3 board + position logic
 └── simulation/              # N-game runner + stats aggregation
 
