@@ -1,10 +1,10 @@
 package com.chateaucombo
 
 import com.chateaucombo.joueur.Joueur
-import com.chateaucombo.strategie.StrategieAleatoire
 import com.chateaucombo.strategie.StrategieAnticipatrice
 import com.chateaucombo.strategie.StrategieGourmande
 import com.chateaucombo.strategie.StrategiePrevoyante
+import com.chateaucombo.strategie.genetique.StrategieGenetique
 import com.chateaucombo.simulation.ResultatSimulation
 import com.chateaucombo.simulation.Simulation
 import tools.jackson.module.kotlin.jacksonMapperBuilder
@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
     val nbParties = args.firstOrNull()?.toIntOrNull() ?: 10000
     println("Simulation de $nbParties parties en cours...")
     val joueurs = listOf(
-        Joueur(id = 0, strategie = StrategieAleatoire()),
+        Joueur(id = 0, strategie = StrategieGenetique()),
         Joueur(id = 1, strategie = StrategieGourmande()),
         Joueur(id = 2, strategie = StrategiePrevoyante()),
         Joueur(id = 3, strategie = StrategieAnticipatrice()),
